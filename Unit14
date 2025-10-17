@@ -1,0 +1,45 @@
+Unit 14 Lists
+
+
+Difficulty level - EASY
+
+Task #1
+NAME OF THE PLANET
+
+Write a program that receives the name of a planet from the user, 
+removes extra spaces at the beginning and end of the line, 
+changes all letters to uppercase, and displays the processed name on the screen.
+
+Task #2
+THREE PLANETS
+
+Write a program that concatenates the names of three planets entered by the user 
+into a single string with spaces between them and displays the result on the screen.
+
+Difficulty level - MEDIUM
+
+Task #3
+VOWEL LETTERS
+
+Write a program that receives the name of a planet from the user and replaces all vowels with asterisks (*), 
+and then displays the processed name on the screen.
+
+Task #4
+SEARCHING FOR A STAR
+
+Write a program that receives the name of a planet from the user and checks whether the name contains the substring "star". 
+If it does, the program displays the message "The planet has a star in its name!", otherwise "No star found in the planet name."
+
+Difficulty level - HARD
+
+Task #5
+THE PROBLEM OF THREE PLANETS
+
+Write a program that receives the names of three planets from the user, 
+concatenates them into a single string with commas between them, removes extra spaces and replaces all 'e’s with the number '3', 
+and then outputs the processed string to the screen.
+
+Task #6
+NUMBER OF LETTERS
+
+Write a program that receives the name of a planet from the user and displays the number of letters 'a' in that name.
