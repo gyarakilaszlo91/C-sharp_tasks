@@ -139,5 +139,41 @@ class Program
 
 Hard Task 5
 ////////////////////////////////////////////////////////////////////////////////////////
+using System;
 
+class Program
+{
+    static void Main()
+    {
+
+        List<string> planets = new List<string> { "Mercury", "Venus", "Jupiter", "Mars", "Earth", "Saturn", "Uranus", "Neptune" };
+
+        char wantsToChange = 'y';
+        bool changingPlanets = false;
+
+        while(wantsToChange == 'y')
+        {
+            Console.WriteLine("Planets in order: ");
+            foreach (string planet in planets)
+            {
+                Console.Write($" {planet} ");
+            }
+            Console.WriteLine();
+
+            Console.Write("Is each planet in correct place (Y/N) ?");
+            wantsToChange = Convert.ToChar(Console.ReadLine().Trim().ToLower());
+
+            if(wantsToChange == 'y')
+            {
+                continue;
+            }
+
+            Console.WriteLine("Hallo");
+
+
+        }
+
+        Console.ReadKey();
+    }
+}
 ////////////////////////////////////////////////////////////////////////////////////////
