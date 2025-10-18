@@ -10,12 +10,58 @@ Write a program that receives the name of a planet from the user,
 removes extra spaces at the beginning and end of the line, changes all letters to uppercase, 
 and displays the processed name on the screen.
 
+////////////////////////////////////////////////////////////////////////////////////////
+using System;
+
+class Program
+{
+    static void Main()
+    {
+        Console.Write("Enter the name of a planet: ");
+        string planetName = Console.ReadLine();
+
+        string trimmedName = planetName.Trim();
+        string upperName = trimmedName.ToUpper();
+
+        Console.WriteLine($"Cleaned planetname : {upperName}");
+
+        Console.ReadKey();
+    }
+}
+////////////////////////////////////////////////////////////////////////////////////////
+
 Task #2
 THREE PLANETS
 
 Write a program that concatenates the names of three planets entered by the user 
 into a single string with spaces between them and displays the result on the screen.
 
+////////////////////////////////////////////////////////////////////////////////////////
+using System;
+
+class Program
+{
+    static void Main()
+    {
+        Console.WriteLine("Enter three planets name");
+
+        Console.Write("First planet: ");
+        string firstPlanet = Console.ReadLine();
+        Console.Write("Second planet: ");
+        string secondPlanet = Console.ReadLine();
+        Console.Write("Third planet: ");
+        string thirdPlanet = Console.ReadLine();
+
+        string trimmedFirstPlanet = firstPlanet.Trim();
+        string trimmedSecondPlanet = secondPlanet.Trim();
+        string trimmedThirdPlanet = thirdPlanet.Trim();
+
+        Console.WriteLine($"Entered names: " + trimmedFirstPlanet + " " + trimmedSecondPlanet + " " + trimmedThirdPlanet);
+
+        Console.ReadKey();
+    }
+}
+////////////////////////////////////////////////////////////////////////////////////////
 
 Difficulty level - MEDIUM
 
@@ -25,11 +71,65 @@ VOWEL LETTERS
 Write a program that receives the name of a planet from the user and replaces all vowels with asterisks (*), 
 and then displays the processed name on the screen.
 
+////////////////////////////////////////////////////////////////////////////////////////
+using System;
+
+class Program
+{
+    static void Main()
+    {
+        Console.Write("Enter the name of a planet: ");
+
+        string planetName = Console.ReadLine().Trim();
+
+        string replacing = "aeiouyAEIOUY";
+
+        for (int i = 0; i < replacing.Length; i++)
+        {
+            if (planetName.Contains(replacing[i]))
+            {
+                planetName = planetName.Replace(replacing[i], '*');
+            }
+        }
+
+
+        Console.WriteLine(planetName);
+
+        Console.ReadKey();
+    }
+}
+////////////////////////////////////////////////////////////////////////////////////////
+
 Task #4
 SEARCHING FOR A STAR
 
 Write a program that receives the name of a planet from the user and checks whether the name contains the substring "star". 
 If it does, the program displays the message "The planet has a star in its name!", otherwise "No star found in the planet name."
+
+////////////////////////////////////////////////////////////////////////////////////////
+using System;
+
+class Program
+{
+    static void Main()
+    {
+        Console.Write("Enter a planet name: ");
+        string planetName = Console.ReadLine().Trim();
+
+        if (planetName.Contains("star"))
+        {
+            Console.WriteLine("The planet has a star in its name!");
+        }
+        else
+        {
+            Console.WriteLine("No star found in the planet name.");
+        }
+
+
+            Console.ReadKey();
+    }
+}
+////////////////////////////////////////////////////////////////////////////////////////
 
 Difficulty level - HARD
 
@@ -39,7 +139,68 @@ THE PROBLEM OF THREE PLANETS
 Write a program that receives the names of three planets from the user, concatenates them into a single string with commas between them, 
 removes extra spaces and replaces all 'e’s with the number '3', and then outputs the processed string to the screen.
 
+////////////////////////////////////////////////////////////////////////////////////////
+using System;
+
+class Program
+{
+    static void Main()
+    {
+
+        Console.WriteLine("Enter three planetname");
+        Console.Write("Firs planet: ");
+        string firstPlanet = Console.ReadLine().Trim();
+        Console.Write("Second planet: ");
+        string secondPlanet = Console.ReadLine().Trim();
+        Console.Write("Trird planet: ");
+        string thirdPlanet = Console.ReadLine().Trim();
+
+        string allPlanet = firstPlanet + ", " + secondPlanet + ", " + thirdPlanet;
+        allPlanet = allPlanet.Replace('e', '3');
+
+        Console.WriteLine($"Processed planetname: {allPlanet}");
+
+            Console.ReadKey();
+    }
+}
+////////////////////////////////////////////////////////////////////////////////////////
+
 Task #6
 NUMBER OF LETTERS
 
 Write a program that receives the name of a planet from the user and displays the number of letters 'a' in that name.
+
+////////////////////////////////////////////////////////////////////////////////////////
+using System;
+
+class Program
+{
+    static void Main()
+    {
+        Console.Write("Enter a planets name: ");
+        string planetName = Console.ReadLine().Trim();
+
+        int numberOfA = 0;
+
+        for (int i = 0; i < planetName.Length; i++)
+        {
+            if (planetName[i] == 'a')
+            {
+                numberOfA++;
+            }
+        }
+
+        if (numberOfA == 0)
+        {
+            Console.WriteLine("There are no 'a' letters in the planets name");
+        }
+        else
+        {
+            Console.WriteLine($"The planet name {planetName} contains {numberOfA} 'a' letter.");
+        }
+
+            Console.ReadKey();
+    }
+}
+////////////////////////////////////////////////////////////////////////////////////////
+
