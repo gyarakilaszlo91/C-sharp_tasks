@@ -1,45 +1,143 @@
 Unit 14 Lists
 
+Easy Task 1
+////////////////////////////////////////////////////////////////////////////////////////
+using System;
 
-Difficulty level - EASY
+class Program
+{
+    static void Main()
+    {
 
-Task #1
-NAME OF THE PLANET
+        List<string> planets = new List<string> { "Mercury", "Venus", "Mars", "Jupiter", "Saturn", "Uranus", "Neptune" };
 
-Write a program that receives the name of a planet from the user, 
-removes extra spaces at the beginning and end of the line, 
-changes all letters to uppercase, and displays the processed name on the screen.
+        int indexOfMars = planets.IndexOf("Mars");
 
-Task #2
-THREE PLANETS
 
-Write a program that concatenates the names of three planets entered by the user 
-into a single string with spaces between them and displays the result on the screen.
+        planets.Insert(indexOfMars, "Earth");
 
-Difficulty level - MEDIUM
+        foreach (string planet in planets)
+        {
+            Console.WriteLine($"{planet} ");
+        }
 
-Task #3
-VOWEL LETTERS
 
-Write a program that receives the name of a planet from the user and replaces all vowels with asterisks (*), 
-and then displays the processed name on the screen.
+        Console.ReadKey();
+    }
+}
+////////////////////////////////////////////////////////////////////////////////////////
 
-Task #4
-SEARCHING FOR A STAR
+Easy Task 2
+////////////////////////////////////////////////////////////////////////////////////////
+using System;
 
-Write a program that receives the name of a planet from the user and checks whether the name contains the substring "star". 
-If it does, the program displays the message "The planet has a star in its name!", otherwise "No star found in the planet name."
+class Program
+{
+    static void Main()
+    {
+        List<string> planets_first = new List<string> { "Mercury", "Venus", "Mars", "Jupiter", "Saturn", "Uranus", "Neptune", "Pluto" };
+        List<string> planets_second = new List<string> { "Mercury", "Venus", "Mars", "Jupiter", "Saturn", "Uranus", "Neptune", "Pluto" };
 
-Difficulty level - HARD
+        planets_first.Remove("Pluto");
 
-Task #5
-THE PROBLEM OF THREE PLANETS
+        planets_second.RemoveAt(planets_second.IndexOf("Pluto"));
 
-Write a program that receives the names of three planets from the user, 
-concatenates them into a single string with commas between them, removes extra spaces and replaces all 'e’s with the number '3', 
-and then outputs the processed string to the screen.
+        foreach (string planet in planets_first)
+        {
+            Console.Write($"{planet} ");
+        }
+        Console.WriteLine();
 
-Task #6
-NUMBER OF LETTERS
+        foreach ( string planet in planets_second)
+        {
+            Console.Write($"{planet} ");
+        }
 
-Write a program that receives the name of a planet from the user and displays the number of letters 'a' in that name.
+        Console.ReadKey();
+    }
+}
+////////////////////////////////////////////////////////////////////////////////////////
+
+Medium Task 3
+////////////////////////////////////////////////////////////////////////////////////////
+using System;
+
+class Program
+{
+    static void Main()
+    {
+
+        List<string> ships = new List<string> { "Enterprise", "Kyushu", "Phoenix", "Pasteur" };
+
+        Console.WriteLine($"Ship names before inspection: ");
+        foreach (string name in ships)
+        {
+            Console.Write($"{name} ");
+        }
+
+        Console.WriteLine();
+
+        if (ships[1] == "Kyushu")
+        {
+            ships[1] = "Stargazer";
+        }
+
+        Console.WriteLine($"Ship names after inspection: ");
+        foreach (string name in ships)
+        {
+            Console.Write($"{name} ");
+        }
+
+        Console.ReadKey();
+    }
+}
+////////////////////////////////////////////////////////////////////////////////////////
+
+Medium Task 4
+////////////////////////////////////////////////////////////////////////////////////////
+using System;
+
+class Program
+{
+    static void Main()
+    {
+        List<string> ships = new List<string>();
+
+        int emptyPlaces = 5;
+
+        while (emptyPlaces > 0)
+        {
+
+            if (ships.Count > 0)
+            {
+                Console.Write($"Currently parking ships: ");
+                foreach (string name in ships)
+                {
+                    Console.Write($"{name} ");
+                }
+                Console.WriteLine();
+            }
+
+            Console.Write("Parking ship name: ");
+            ships.Add(Console.ReadLine());
+
+            emptyPlaces--;
+
+            if (emptyPlaces > 0)
+            {
+                Console.WriteLine($"Empty places left: {emptyPlaces}\n");
+            }
+
+        }
+
+        Console.WriteLine("\nThe station can no longer accept ships");
+
+        Console.ReadKey();
+    }
+}
+////////////////////////////////////////////////////////////////////////////////////////
+
+Hard Task 5
+////////////////////////////////////////////////////////////////////////////////////////
+
+////////////////////////////////////////////////////////////////////////////////////////
