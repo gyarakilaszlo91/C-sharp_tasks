@@ -340,7 +340,7 @@ class Program
         {
             string currentShipName = waiting_ships.Dequeue();
             int currentShipSize = ship_sizes.Dequeue();
-
+            
             // Displaying remaining ships
             if (waiting_ships.Count > 0)
             {
@@ -381,6 +381,8 @@ class Program
             {
                 refused_ships.Add(currentShipName);
             }
+
+            Console.WriteLine();
 
         }
         
