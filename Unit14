@@ -1,15 +1,1 @@
-CHECKING THE PLANETS
 
-Imagine you are a space explorer with a list of the planets in the solar system that looks like this: 
-Mercury, Venus, Jupiter, Mars, Earth, Saturn, Uranus, Neptune. 
-The program should display a list of planets and ask if it is necessary to check that each planet is in its correct place. 
-If you type Y, the program will ask for the planet’s name, 
-display its location in the solar system, and ask you to confirm that the planet’s location is correct. 
-If you enter N, indicating the planet is not in its place, the program will ask for the number of another planet with which they must be swapped. 
-After that, or if you type Y, the program should ask again if there is another planet to check.
-If you type N, the program will exit. Y answer equates to yes, and N answer or any others equate to no. 
-Before searching for the position of the entered planet by name, 
-the program must check whether such a planet is even in the list and output an error if it is not,
-returning to the question about checking the planet. 
-Planet numbers, as well as list indices, must start with 0.
-When entering Y or N, the case must not be taken into account.
