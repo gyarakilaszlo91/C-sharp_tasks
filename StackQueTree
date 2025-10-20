@@ -1,0 +1,235 @@
+Easy
+
+Task 1
+//////////////////////////////////////////////////////////////
+using System;
+
+class Program
+{
+    static void Main()
+    {
+        Stack<string> completed_space_missions = new Stack<string>();
+
+
+        while (true)
+        {
+            Console.Write("Add a planet to the completed space missions or q to quit: ");
+
+            string nextPlanet = Console.ReadLine().Trim();
+
+            if (nextPlanet == "")
+            {
+                Console.WriteLine("No input found\n");
+                continue;
+            }
+            else if (nextPlanet.ToLower() == "q")
+            {
+                break;
+            }
+
+            completed_space_missions.Push(nextPlanet);
+
+        }
+
+        Console.WriteLine($"\nNumber of planets visited: {completed_space_missions.Count()}");
+        Console.WriteLine("List of planets visited:");
+
+        foreach ( string planet in completed_space_missions)
+        {
+            Console.WriteLine($"{planet} ");
+        }
+
+        Console.WriteLine($"Last visited planet: {completed_space_missions.First()}");
+
+        if (completed_space_missions.First() == "Jupiter")
+        {
+            Console.WriteLine("\nReturnig to Jupiter...");
+            Console.WriteLine("Jupiter removed from the completed space missions.");
+        }
+
+        Console.ReadKey();
+    }
+}
+//////////////////////////////////////////////////////////////
+
+Task 2
+//////////////////////////////////////////////////////////////
+using System;
+
+class Program
+{
+    static void Main()
+    {
+        Queue<int> coordinate_x = new Queue<int>();
+        Queue<int> coordinate_y = new Queue<int>();
+
+        var rand = new Random();
+
+        int setTrajectory = rand.Next(10, 31);
+        int xCoordinateSpeed = rand.Next(1, 6);
+        int yCoordinateSpeed = rand.Next(1, 6);
+
+        coordinate_x.Enqueue(0);
+        coordinate_y.Enqueue(0);
+
+        for (int i = 0; i < setTrajectory; i++)
+        {
+            int nextCoordinateX = coordinate_x.Last() + xCoordinateSpeed;
+            int nextCoordinateY = coordinate_y.Last() + yCoordinateSpeed;
+
+            coordinate_x.Enqueue(nextCoordinateX);
+            coordinate_y.Enqueue(nextCoordinateY);
+
+            Console.WriteLine($"x: {nextCoordinateX} y: {nextCoordinateY}");
+        }
+
+        Console.WriteLine($"\nThe ships last coordinates are:\nx: {coordinate_x.Last()} y: {coordinate_y.Last()}");
+
+        Console.ReadKey();
+    }
+}
+//////////////////////////////////////////////////////////////
+
+Medium
+
+Task3
+//////////////////////////////////////////////////////////////
+using System;
+
+class Program
+{
+    static void Main()
+    {
+
+        Stack<string> movements = new Stack<string>();
+
+        int coordinateX = 0;
+        int coordinateY = 0;
+        int speed = 1;
+
+        while (true)
+        {
+            Console.WriteLine("Add the next movement to the stack");
+            Console.Write("forward, backward, left, right or q to quit: ");
+
+            string nextMove = Console.ReadLine().Trim().ToLower();
+
+            if (nextMove == "")
+            {
+                Console.WriteLine("No movement added");
+                continue;
+            }
+            else if(nextMove == "q")
+            {
+                break;
+            }
+
+            movements.Push(nextMove);
+        }
+
+        while(movements.Count > 0)
+        {
+
+            string currentMovement = movements.Pop();
+
+            switch(currentMovement)
+            {
+                case "left":
+                    coordinateX -= speed;
+                    break;
+                case "right":
+                    coordinateX += speed;
+                    break;
+                case "forward":
+                    coordinateY += speed;
+                    break;
+                case "backward":
+                    coordinateY -= speed;
+                    break;
+                default:
+                    Console.WriteLine("Wrong movement input, position of spaceship doesn't changed.");
+                    break;
+            }
+
+            Console.WriteLine($"Current coordinate of the ship:  x: {coordinateX} y: {coordinateY}");
+
+        }
+
+        Console.WriteLine($"\nFinal position of the spacecraft:\nx: {coordinateX} y: {coordinateY}");
+
+        Console.ReadKey();
+    }
+}
+//////////////////////////////////////////////////////////////
+
+Task 4
+//////////////////////////////////////////////////////////////
+using System;
+using System.Threading;
+
+class Program
+{
+    static void Main()
+    {
+
+        Queue<string> tasks = new Queue<string>();
+
+        while(true)
+        {
+            Console.Write("Enter next task to the queue or q to quit: ");
+
+            string currentTask = Console.ReadLine().Trim();
+
+            if (currentTask == "")
+            {
+                Console.WriteLine("No task entered\n");
+                continue;
+            }
+            else if (currentTask.ToLower() == "q")
+            {
+                break;
+            }
+
+            tasks.Enqueue(currentTask);
+        }
+
+        while(tasks.Count > 0)
+        {
+            string currentTask = tasks.Dequeue();
+
+            if(currentTask.ToUpper() == "STOP")
+            {
+                Console.WriteLine("Stopped working on the tasks");
+                break;
+            }
+            else if(currentTask.ToUpper() == "REBOOT")
+            {
+                Console.Write("System rebooting");
+
+                for (int i = 0; i < 3; i++)
+                {
+                Thread.Sleep(1000);
+                Console.Write(".");
+                }
+                Console.WriteLine();
+
+                continue;
+            }
+
+            Console.WriteLine($"Working on task {currentTask}.");
+            Thread.Sleep(2000);
+        }
+
+        Console.WriteLine("Finished with all task");
+
+        Console.ReadKey();
+    }
+}
+//////////////////////////////////////////////////////////////
+
+Hard
+
+Task 5
+//////////////////////////////////////////////////////////////
+
+//////////////////////////////////////////////////////////////
