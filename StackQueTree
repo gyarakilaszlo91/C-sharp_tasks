@@ -308,5 +308,84 @@ class Program
 
 Task 6
 //////////////////////////////////////////////////////////////
+using System;
 
+class Program
+{
+    static void Main()
+    {
+
+        var rand = new Random();
+
+        // Creating list of available parking sizes
+        List<int> free_berths = new List<int> { 10, 20, 30, 40, 50, 60, 70, 80, 90 };
+
+        // Creating Queue for ships and their sizes
+        Queue<string> waiting_ships = new Queue<string>();
+        Queue<int> ship_sizes = new Queue<int>();
+
+        // Filling up the Queues
+        for (int i = 0; i < 30; i++)
+        {
+            waiting_ships.Enqueue($"Ship #{i}");
+            ship_sizes.Enqueue(rand.Next(1, 10) * 10);
+        }
+
+        // Creating List for the parked ships
+        List<string> parked_ships = new List<string>();
+        // Creating List for refused ships
+        List<string> refused_ships = new List<string>();
+
+        while (waiting_ships.Count > 0)
+        {
+            string currentShipName = waiting_ships.Dequeue();
+            int currentShipSize = ship_sizes.Dequeue();
+
+            // Displaying remaining ships
+            if (waiting_ships.Count > 0)
+            {
+                Console.WriteLine($"There is {waiting_ships.Count} ship waiting: ");
+                foreach (string shipName in waiting_ships)
+                {
+                    Console.Write($"{shipName} ");
+                }
+                Console.WriteLine();
+            }
+            else
+            {
+                Console.WriteLine("No ship remaining.");
+            }
+
+            // Displaying currently parked ships
+            if (parked_ships.Count > 0)
+            {
+                Console.WriteLine($"There is {parked_ships.Count} ship at the station:");
+                foreach (string shipName in parked_ships)
+                {
+                    Console.Write($"{shipName} ");
+                }
+                Console.WriteLine();
+            }
+            else
+            {
+                Console.WriteLine("There are no parked ship.");
+            }
+
+            // Moving current ship to its destination
+            if (free_berths.Contains(currentShipSize))
+            {
+                free_berths.Remove(currentShipSize);
+                parked_ships.Add(currentShipName);
+            }
+            else
+            {
+                refused_ships.Add(currentShipName);
+            }
+
+        }
+        
+
+        Console.ReadKey();
+    }
+}
 //////////////////////////////////////////////////////////////
