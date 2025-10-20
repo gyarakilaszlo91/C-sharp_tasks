@@ -231,5 +231,82 @@ Hard
 
 Task 5
 //////////////////////////////////////////////////////////////
+using System;
+
+class Program
+{
+    static void Main()
+    {
+        // Creating a list of spaceships
+        Queue<string> spaceships = new Queue<string>();
+
+        for (int i = 0; i < 20; i++)
+        {
+            spaceships.Enqueue($"Spaceship #{i}");
+        }
+
+        // Free terminal counter
+        int parkingSpaces = 2;
+
+        // Queue for terminal
+        Queue<string> terminal = new Queue<string>();
+
+        while (spaceships.Count > 0)
+        {
+            string vacatedShip = "";
+
+            if (parkingSpaces > 0)
+            {
+                terminal.Enqueue(spaceships.Dequeue());
+                parkingSpaces--;
+            }
+            else
+            {
+                vacatedShip = terminal.Dequeue();
+                Console.WriteLine($"Ship {vacatedShip} has been ordered to leave the station");
+
+                terminal.Enqueue(spaceships.Dequeue());
+            }
+
+            // Displaying the ships waiting for terminal
+            if (spaceships.Count > 0)
+            {
+                Console.WriteLine($"There is {spaceships.Count} ship waiting:");
+            }
+            else
+            {
+                Console.WriteLine("There is no ship waiting for terminal");
+            }
+
+            foreach (string spaceship in spaceships)
+                {
+                    Console.Write($"{spaceship} ");
+                }
+            Console.WriteLine();
+
+            // Displaying the ships at the station
+            Console.WriteLine($"There is {terminal.Count} at the terminal:");
+            foreach (string ship in terminal)
+            {
+                Console.Write($"{ship} \n");
+            }
+            Console.WriteLine();
+
+        }
+
+        while (terminal.Count > 0)
+        {
+            string currentShip = terminal.Dequeue();
+            Console.WriteLine($"Ship {currentShip} cleared to land.");
+            parkingSpaces++;
+        }
+
+        Console.ReadKey();
+    }
+}
+//////////////////////////////////////////////////////////////
+
+Task 6
+//////////////////////////////////////////////////////////////
 
 //////////////////////////////////////////////////////////////
