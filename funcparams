@@ -2,5 +2,96 @@ Easy
 
 Task 1
 //////////////////////////////////////////////////////////////
+using System;
+
+class Program
+{
+    static void Main()
+    {
+
+        double distance = 384400;
+        double correctionValue = 1.1;
+
+        DistanceCorrection(distance, correctionValue);
+
+
+        Console.ReadKey();
+    }
+
+    static void DistanceCorrection(double distance, double correctionValue)
+    {
+
+        distance = Math.Round(distance * correctionValue, 2);
+
+        Console.WriteLine($"Corrected value: {distance} km");
+    }
+}
+//////////////////////////////////////////////////////////////
+
+Task 2
+//////////////////////////////////////////////////////////////
+using System;
+
+class Program
+{
+    static void Main()
+    {
+
+        double distance = 80000;
+
+        CalculateFuelNeeded(distance);
+
+        Console.ReadKey();
+    }
+
+    static void CalculateFuelNeeded(double distance)
+    {
+        // fuel used per 1000 km
+        double fuelUsed = 0.1;
+
+        double fuelNeeded = distance / 1000 * fuelUsed;
+        Console.WriteLine($"{fuelNeeded} liter fuel needed for {distance} km.");
+
+    }
+
+}
+//////////////////////////////////////////////////////////////
+
+Medium
+
+Task 3
+//////////////////////////////////////////////////////////////
+using System;
+
+class Program
+{
+    static void Main()
+    {
+
+        string passCode = "AsE4fY23FSsfc";
+
+        UpdatePasscode(ref passCode);
+
+        Console.WriteLine(passCode);
+
+        Console.ReadKey();
+    }
+
+    static void UpdatePasscode(ref string code)
+    {
+        char[] codeInside = code.ToCharArray();
+        for (int i = 0; i < codeInside.Length; i++)
+        {
+            codeInside[i] = (char)((int)codeInside[i] + 1);
+        }
+
+        code = new string(codeInside);
+    }
+
+}
+//////////////////////////////////////////////////////////////
+
+Task 4
+//////////////////////////////////////////////////////////////
 
 //////////////////////////////////////////////////////////////
