@@ -93,5 +93,99 @@ class Program
 
 Task 4
 //////////////////////////////////////////////////////////////
+using System;
 
+class Program
+{
+    static void Main()
+    {
+        string[] messages = new string[] { "No Oxygen.", "No water.", "No life observed." };
+
+        SendMessages(messages);
+
+        Console.ReadKey();
+    }
+
+    static void SendMessages(params string[] messages)
+    {
+        foreach(string message in messages)
+        {
+            Console.WriteLine(message);
+        }
+    }
+}
+//////////////////////////////////////////////////////////////
+
+Hard
+
+Task 5
+//////////////////////////////////////////////////////////////
+using System;
+
+class Program
+{
+    static void Main()
+    {
+
+        int coordinateX = 10;
+        int coordinateY = 15;
+
+        int adjustX = 2;
+        int adjustY = 5;
+
+        Console.WriteLine($"Coordinates before adjustment: X:{coordinateX} Y:{coordinateY}");
+
+        AdjustCoordinates(ref coordinateX, ref coordinateY, adjustX, adjustY);
+
+        Console.WriteLine($"Adjusted coordinates: X:{coordinateX} Y:{coordinateY}");
+
+
+        Console.ReadKey();
+    }
+
+    static void AdjustCoordinates(ref int x, ref int y, int adjustX, int adjustY)
+    {
+        x = x + adjustX;
+        y = y + adjustY;
+    }
+
+}
+//////////////////////////////////////////////////////////////
+
+Task 6
+//////////////////////////////////////////////////////////////
+using System;
+
+class Program
+{
+    static void Main()
+    {
+        var rand = new Random();
+
+        int[] containerWeights = new int[40];
+
+        for (int i = 0; i < containerWeights.Length; i++)
+        {
+            containerWeights[i] = rand.Next(10, 1001);
+        }
+
+        Console.WriteLine($"Total weight of the containers: {CountWeight(containerWeights)} kg");
+
+
+        Console.ReadKey();
+    }
+
+    static int CountWeight(int[] weights)
+    {
+        int totalWeight = 0;
+
+        foreach (int weight in weights)
+        {
+            totalWeight += weight;
+        }
+
+        return totalWeight;
+    }
+
+}
 //////////////////////////////////////////////////////////////
