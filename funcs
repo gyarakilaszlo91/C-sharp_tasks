@@ -1,1 +1,177 @@
 
+Easy
+
+Task 1
+//////////////////////////////////////////////////////////////
+using System;
+
+class Program
+{
+    static void Main()
+    {
+
+        LaunchFlare();
+        LaunchFlare();
+
+        Console.ReadKey();
+    }
+
+    static void LaunchFlare()
+    {
+        Console.WriteLine("Flare launched");
+    }
+}
+//////////////////////////////////////////////////////////////
+
+Task2
+//////////////////////////////////////////////////////////////
+using System;
+
+class Program
+{
+    static void Main()
+    {
+        bool landed = false;
+
+        Console.WriteLine("Landing on the surface...");
+        Console.WriteLine("Landed on the planet.");
+        landed = true;
+        
+        OpeningAirlock(landed);
+
+        Console.ReadKey();
+    }
+
+    static void OpeningAirlock(bool landing)
+    {
+        if (landing)
+        {
+            Console.WriteLine("Opening airlock.");
+        }
+    }
+}
+//////////////////////////////////////////////////////////////
+
+Medium
+
+Task 3
+//////////////////////////////////////////////////////////////
+using System;
+
+class Program
+{
+    static void Main()
+    {
+        // fuel level %
+        int fuelLevel = 60;
+
+        CheckFuelLevel(fuelLevel);
+
+        Console.ReadKey();
+    }
+
+    static void CheckFuelLevel(int fuellevel)
+    {
+        if(fuellevel >= 50)
+        {
+            Console.WriteLine("Journey can be continued.");
+        }
+        else
+        {
+            Console.WriteLine("Ship need to be refueled.");
+        }
+    }
+
+}
+//////////////////////////////////////////////////////////////
+
+Task 4
+//////////////////////////////////////////////////////////////
+using System;
+
+class Program
+{
+    static void Main()
+    {
+        Queue<string> detected_malfunctions = new Queue<string>();
+
+        for (int i = 0; i < 20; i++)
+        {
+            detected_malfunctions.Enqueue($"Malfunction {i}");
+        }
+
+        while (detected_malfunctions.Count > 0)
+        {
+            string currentMalfunction = detected_malfunctions.Dequeue();
+            HandlingError(currentMalfunction);
+        }
+
+        Console.ReadKey();
+    }
+
+    static void HandlingError(string error)
+    {
+        Console.WriteLine($"Error: {error} occurred!");
+        Console.WriteLine("Attempting to fix it...");
+        Console.WriteLine($"{error} has been fixed.");
+    }
+
+}
+//////////////////////////////////////////////////////////////
+
+Hard
+
+Task 5
+//////////////////////////////////////////////////////////////
+using System;
+
+class Program
+{
+    static void Main()
+    {
+        // weight in kg
+        double weight = 78;
+        // planets gravity coefficient
+        double gravityCoefficient = 0.62;
+
+        double currentWeight = CalculateGravityAffectedWeight(weight, gravityCoefficient);
+
+        Console.WriteLine($"Weight affected by current gravity: {currentWeight} kg");
+
+
+        Console.ReadKey();
+    }
+
+    static double CalculateGravityAffectedWeight(double weight, double coefficient)
+    {
+        return weight * coefficient;
+    }
+}
+//////////////////////////////////////////////////////////////
+
+Task 6
+//////////////////////////////////////////////////////////////
+using System;
+
+class Program
+{
+    static void Main()
+    {
+        // distance in km
+        double distance = 384400;
+        // speed in km/h
+        double speed = 10000;
+
+
+        Console.WriteLine($"If distance={distance} km, and speed={speed} km/h,the travel time is {CalculateTravelTime(distance, speed)} hour.");
+
+        Console.ReadKey();
+    }
+
+    static double CalculateTravelTime(double distance, double speed)
+    {
+        return Math.Ceiling(distance / speed);
+    }
+
+}
+//////////////////////////////////////////////////////////////
