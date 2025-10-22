@@ -1,0 +1,104 @@
+Easy
+
+Task 1
+/////////////////////////////////////////////////////////////////
+using System;
+
+class Program
+{
+    static void Main()
+    {
+        int trips = 5;
+
+        int mileage = CalculateMileage(trips);
+
+        Console.WriteLine($"Total mileage: {mileage}");
+
+        Console.ReadKey();
+    }
+
+    static int CalculateMileage(int trip, int accumulate = 0)
+    {
+        if(trip == 1)
+        {
+            return accumulate + 1;
+        }
+
+        return CalculateMileage(trip - 1, accumulate += trip);
+    }
+
+}
+/////////////////////////////////////////////////////////////////
+
+Task 2
+/////////////////////////////////////////////////////////////////
+using System;
+
+class Program
+{
+    static void Main()
+    {
+        int galaxiesInJourney = 5;
+        int starsInJourney = CalculateStars(galaxiesInJourney);
+
+        Console.WriteLine($"In a journey through {galaxiesInJourney} galaxies, there was {starsInJourney} stars");
+
+        Console.ReadKey();
+    }
+
+    static int CalculateStars(int galaxy, int accumulate = 1)
+    {
+        if (galaxy == 0) 
+        {
+            return accumulate ;
+        };
+
+        accumulate *= 2;
+        return CalculateStars(galaxy - 1, accumulate);
+    }
+
+}
+/////////////////////////////////////////////////////////////////
+
+Medium 
+
+Task 3
+/////////////////////////////////////////////////////////////////
+using System;
+
+class Program
+{
+    static void Main()
+    {
+        var rand = new Random();
+        int[] stars_in_galaxies = new int[10];
+
+        for(int i = 0; i < stars_in_galaxies.Length; i++)
+        {
+            stars_in_galaxies[i] = rand.Next(1, 100);
+        }
+
+        int totalStars = CalculateSumStars(stars_in_galaxies);
+
+        Console.WriteLine($"Total stars in the galaxies: {totalStars}");
+
+        Console.ReadKey();
+    }
+
+    static int CalculateSumStars(int[] galaxies, int index = 0)
+    {
+        if (galaxies[index] == galaxies[galaxies.Length - 1])
+        {
+            return galaxies[galaxies.Length - 1];
+        }
+
+        return galaxies[index] + CalculateSumStars(galaxies, index + 1);
+    }
+
+}
+/////////////////////////////////////////////////////////////////
+
+Task 4
+/////////////////////////////////////////////////////////////////
+
+/////////////////////////////////////////////////////////////////
