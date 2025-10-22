@@ -100,5 +100,65 @@ class Program
 
 Task 4
 /////////////////////////////////////////////////////////////////
+using System;
 
+class Program
+{
+    static void Main()
+    {
+        var rand = new Random();
+
+        int[] minerals = new int[20];
+
+        for (int i = 0; i < minerals.Length; i++)
+        {
+            minerals[i] = rand.Next(0, 20);
+        }
+
+        int sumMinerals = CalculateTotelMinerals(minerals);
+
+        Console.WriteLine($"Total amount of minerals: {sumMinerals}");
+
+
+        Console.ReadKey();
+    }
+
+    static int CalculateTotelMinerals(int[] minerals, int index = 0)
+    {
+        if (minerals[index] == minerals[minerals.Length - 1]) return minerals[minerals.Length - 1];
+
+        return minerals[index] + CalculateTotelMinerals(minerals, index + 1);
+    }
+
+}
+/////////////////////////////////////////////////////////////////
+
+Hard
+
+Task 5
+/////////////////////////////////////////////////////////////////
+using System;
+
+class Program
+{
+    static void Main()
+    {
+
+        int galaxys = 10;
+
+        int totalDistance = CalculateDistance(galaxys);
+
+        Console.WriteLine($"Total distance in the galaxyes: {totalDistance} km");
+
+        Console.ReadKey();
+    }
+
+    static int CalculateDistance(int starSystem, int current = 0, int next = 1)
+    {
+        if (starSystem == 0) return current;
+
+        return CalculateDistance(starSystem - 1, next, current + next);
+    }
+
+}
 /////////////////////////////////////////////////////////////////
