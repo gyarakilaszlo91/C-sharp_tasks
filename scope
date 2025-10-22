@@ -1,0 +1,183 @@
+Easy
+
+Task 1
+
+//////////////////////////////////////////////////////////////
+using System;
+
+class Program
+{
+    static void Main()
+    {
+
+        CalculateSpeed();
+
+        Console.ReadKey();
+    }
+
+    static void CalculateSpeed()
+    {
+        // distance in km
+        int distance = 6000;
+        // time in h
+        int time = 4;
+
+        int speed = distance / time;
+        Console.WriteLine($"The speed of the aircraft, if distance = {distance} and travel time = {time} is {speed} km/h");
+    }
+
+}
+//////////////////////////////////////////////////////////////
+
+Task 2 
+//////////////////////////////////////////////////////////////
+using System;
+
+class Program
+{
+    static void Main()
+    {
+
+        CalculateTotalConsumption();
+
+        Console.ReadKey();
+    }
+
+    static void CalculateTotalConsumption()
+    {
+        // distance in km
+        int distance = 60;
+        // fuel consumption /km
+        int consumption = 3;
+        // total amount of fuel in l
+        int fuel = 500;
+
+        int totalConsumtion = distance * consumption;
+        int fuelLeft = fuel - totalConsumtion;
+
+        Console.WriteLine($"Fuel left after the travel: {fuelLeft} l");
+
+    }
+
+}
+//////////////////////////////////////////////////////////////
+
+Medium
+
+Task 3
+//////////////////////////////////////////////////////////////
+using System;
+
+class Program
+{
+    static void Main()
+    {
+        // distance in km
+        int distance = 6000;
+        // time in h
+        int time = 4;
+
+        int speed = CalculateSpeed(distance, time);
+
+        Console.WriteLine($"The speed of the spacecraft: {speed} km/h");
+
+        Console.ReadKey();
+    }
+
+    static int CalculateSpeed(int distance, int time)
+    {
+        return distance / time;
+    }
+
+}
+//////////////////////////////////////////////////////////////
+
+Task 4
+//////////////////////////////////////////////////////////////
+using System;
+
+class Program
+{
+    static void Main()
+    {
+        // distance in km
+        int distance = 600;
+        // fuel used per km
+        int fuelConsumption = 50;
+
+        int fuelNeeded = CalculateFuelNeeded(distance, fuelConsumption);
+
+        Console.WriteLine($"{fuelNeeded} l fuel is needed for the travel.");
+
+        Console.ReadKey();
+    }
+
+    static int CalculateFuelNeeded(int distance, int fuelConsumption)
+    {
+        return distance * fuelConsumption;
+    }
+
+}
+//////////////////////////////////////////////////////////////
+
+Hard
+
+Task 5
+//////////////////////////////////////////////////////////////
+using System;
+
+class Program
+{
+
+    static int speedOfAircraft = 0;
+
+    static void Main()
+    {
+        // distance in km
+        int distance = 7000;
+        // time of travel in h
+        int timeNeeded = 5;
+
+        UpdateSpeed(distance, timeNeeded);
+
+        Console.ReadKey();
+    }
+
+    static void UpdateSpeed(int distance, int time)
+    {
+        speedOfAircraft = distance / time;
+        Console.WriteLine($"Current speed of the aircraft: {speedOfAircraft} km/h");
+    }
+
+}
+//////////////////////////////////////////////////////////////
+
+Task 6
+//////////////////////////////////////////////////////////////
+using System;
+
+class Program
+{
+
+    static int fuelNeeded = 0;
+
+    static void Main()
+    {
+        // distance in km
+        int distance = 6000;
+        // fuel consumption per km
+        int fuelConsumption = 40;
+
+        UpdateConsumption(distance, fuelConsumption);
+
+        Console.WriteLine($"Fuel needed for the travel: {fuelNeeded} l");
+
+        Console.ReadKey();
+    }
+
+    static void UpdateConsumption(int distance, int consumption)
+    {
+        fuelNeeded = distance * consumption;
+    }
+}
+//////////////////////////////////////////////////////////////
