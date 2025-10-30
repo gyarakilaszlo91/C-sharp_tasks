@@ -1,0 +1,100 @@
+Easy
+
+Task 1
+//////////////////////////////////////////////////////////////////
+using System;
+
+class Program
+{
+    static void Main()
+    {
+        int resources = 0;
+
+        Console.WriteLine($"Initial resources: {resources}");
+        PrepareResources(resources);
+        Console.WriteLine($"Resources left: {resources}");
+
+
+        Console.ReadKey();
+    }
+
+    static void PrepareResources(int resource)
+    {
+        resource += 50;
+        Console.WriteLine($"Prepared resources: {resource}");
+    }
+}
+//////////////////////////////////////////////////////////////////
+
+Task 2
+//////////////////////////////////////////////////////////////////
+using System;
+
+class Program
+{
+    static void Main()
+    {
+
+        string planet = "Mars";
+
+        Console.WriteLine(planet);
+        UpdateStatus(ref planet);
+        Console.WriteLine(planet);
+
+
+        Console.ReadKey();
+    }
+
+    static void UpdateStatus(ref string planet)
+    {
+        planet += " - Prepared";
+    }
+
+}
+//////////////////////////////////////////////////////////////////
+
+Medium
+
+Task 3
+//////////////////////////////////////////////////////////////////
+using System;
+
+class Program
+{
+
+    public struct Spaceship
+    {
+        public string Name;
+        public int Speed;
+        public Spaceship(string name, int speed)
+        {
+            Name = name;
+            Speed = speed;
+        }
+    }
+    static void Main()
+    {
+
+        Spaceship spaceship = new Spaceship("Executor", 0);
+
+        Console.WriteLine($"{spaceship.Name} initial speed is {spaceship.Speed} km/h");
+        ChangeSpeed(ref spaceship);
+        Console.WriteLine($"{spaceship.Name} current speed is {spaceship.Speed} km/h");
+
+        Console.ReadKey();
+    }
+
+    static void ChangeSpeed(ref Spaceship spaceship)
+    {
+        spaceship.Speed = 100;
+    }
+
+}
+//////////////////////////////////////////////////////////////////
+
+Hard
+
+Task 4
+//////////////////////////////////////////////////////////////////
+
+//////////////////////////////////////////////////////////////////
