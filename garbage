@@ -96,5 +96,48 @@ Hard
 
 Task 4
 //////////////////////////////////////////////////////////////////
+using System;
 
+class Program
+{
+
+    public class Spacestation
+    {
+        public string Name;
+
+        public Spacestation(string name)
+        {
+            Name = name;
+        }
+    }
+
+    static void Main()
+    {
+
+        Spacestation firstStation = new Spacestation("Alpha");
+        Console.WriteLine($"Generation of {firstStation.Name} : {GC.GetGeneration(firstStation)}");
+
+        Spacestation secondStation = new Spacestation("Beta");
+        Console.WriteLine($"Generation of {secondStation.Name} : {GC.GetGeneration(secondStation)}");
+
+        Spacestation thirdStation = new Spacestation("Gamma");
+        Console.WriteLine($"Generation of {thirdStation.Name} : {GC.GetGeneration(thirdStation)}");
+
+        firstStation = null;
+        GC.Collect();
+        Console.WriteLine("\nGarbage collection #1");
+
+        Console.WriteLine($"Generation of {secondStation.Name} : {GC.GetGeneration(secondStation)}");
+        Console.WriteLine($"Generation of {thirdStation.Name} : {GC.GetGeneration(thirdStation)}");
+
+        secondStation = null;
+        GC.Collect();
+        Console.WriteLine("\nGarbage collection #2");
+
+        Console.WriteLine($"Generation of {thirdStation.Name} : {GC.GetGeneration(thirdStation)}");
+
+        Console.ReadKey();
+    }
+
+}
 //////////////////////////////////////////////////////////////////
