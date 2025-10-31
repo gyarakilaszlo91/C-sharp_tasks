@@ -1,0 +1,98 @@
+Easy
+
+Task 1
+///////////////////////////////////////////////////////////////////
+using System;
+
+class Program
+{
+
+    public class SpaceObject
+    {
+        string Type;
+        string Name;
+        double Weight;
+        string MainComposition;
+
+        int Distance;
+
+
+        public SpaceObject(string type, string name, double weight, string mainComposition)
+        {
+            Type = type;
+            Name = name;
+            Weight = weight;
+            MainComposition = mainComposition;
+
+            Distance = new Random().Next(1, 200);
+        }
+
+        public void DescribeMovement()
+        {
+            Console.WriteLine($"I am the {Name} {Type} and I am flying around a star at a distance of {Distance}");
+        }
+    }
+
+    static void Main()
+    {
+
+        SpaceObject[] spaceObjects = new SpaceObject[5];
+
+        GetUserInput(spaceObjects);
+
+        for (int i = 0; i < spaceObjects.Length; i++)
+        {
+            spaceObjects[i].DescribeMovement();
+        }
+        
+
+        Console.ReadKey();
+    }
+
+
+    static void GetUserInput(SpaceObject[] spaceObject)
+    {
+
+        for (int i = 0; i < spaceObject.Length; i++)
+        {
+            string type = "";
+            string name = "";
+            double weight = 0;
+            string composition = "";
+
+            while (type == "")
+            {
+                Console.Write($"Enter the type of the spaceobject #{i}: ");
+                type = Console.ReadLine().Trim();
+            }
+
+            while (name == "")
+            {
+                Console.Write($"Enter the name of the spaceobject #{i}: ");
+                name = Console.ReadLine().Trim();
+            }
+
+            while (weight == 0)
+            {
+                Console.Write($"Enter the weight of the spaceobject #{i}: ");
+                try
+                {
+                    weight = Convert.ToDouble(Console.ReadLine().Trim());
+                }
+                catch (Exception e)
+                {
+                    Console.WriteLine(e.Message);
+                }
+            }
+
+            while (composition == "")
+            {
+                Console.Write("Enter the main composition of the spaceobject: ");
+                composition = Console.ReadLine().Trim();
+            }
+
+            spaceObject[i] = new SpaceObject(type, name, weight, composition);  
+        }  
+    }
+}
+///////////////////////////////////////////////////////////////////
