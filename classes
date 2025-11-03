@@ -171,3 +171,67 @@ class Program
     }
 }
 ///////////////////////////////////////////////////////////////////
+
+Medium
+
+Task 3
+///////////////////////////////////////////////////////////////////
+using System;
+using static Program.Station;
+
+class Program
+{
+
+    public class Station
+    {
+        string Name;
+
+        public Station(string name)
+        {
+            Name = name;
+        }
+
+        public void Interrogation(string name)
+        {
+            Console.WriteLine($"{Name} is interrogating ship {name}");
+        }
+        public void Landing(string type)
+        {
+            if (type == "Military")
+            {
+                Console.WriteLine("Landing approved for military personnel");
+            }
+            else if (type == "Civilian")
+            {
+                Console.WriteLine("Landing denied for civilian ships");
+            }
+            else
+            {
+                Console.WriteLine("Unauthorized space object");
+            }
+        }
+
+    public class Ship
+    {
+        public string Name;
+        public string Type;
+
+        public Ship(string name, string type)
+        {
+            Name = name;
+            Type = type;
+        }
+    }
+
+    }
+    static void Main()
+    {
+
+        Station spaceStation = new Station("Gloriana");
+        Ship spaceShip = new Ship("Alpha-1", "Military");
+
+        spaceStation.Interrogation(spaceShip.Name);
+        spaceStation.Landing(spaceShip.Type);
+    }
+}
+///////////////////////////////////////////////////////////////////
