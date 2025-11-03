@@ -167,7 +167,7 @@ class Program
                 Console.WriteLine($"{ShipB.Name} {message}.");
             }
         }
-
+        Console.ReadKey();
     }
 }
 ///////////////////////////////////////////////////////////////////
@@ -232,6 +232,82 @@ class Program
 
         spaceStation.Interrogation(spaceShip.Name);
         spaceStation.Landing(spaceShip.Type);
+
+        Console.ReadKey();
     }
 }
+///////////////////////////////////////////////////////////////////
+
+Task 4
+///////////////////////////////////////////////////////////////////
+using System;
+
+class Program
+{
+    
+    public class Probe
+    {
+        public string Name;
+        public string Position;
+        public int HP;
+
+        public Probe(string name, string position, int health)
+        {
+            Name = name;
+            Position = position;
+            HP = health;
+        }
+    }
+
+    public class HunterDrone
+    {
+        private static Random random = new Random();
+        public string Name;
+
+        public HunterDrone(string name)
+        {
+            Name = name;
+        }
+
+        public void HuntAndReturn(List<Probe> probes)
+        {
+            Probe selectedProbe = probes[random.Next(probes.Count)];
+
+            Console.WriteLine($"{Name} going out for hunting...");
+            Console.WriteLine($"Target found: {selectedProbe.Name}, who is {selectedProbe.Position}");
+            Console.WriteLine($"Attacking probe with {selectedProbe.HP} amount of health");
+            selectedProbe.HP = 0;
+            Console.WriteLine($"Target destroyed, drone returning to ship.");
+
+        }
+    }
+
+    static void Main()
+    {
+        // Creating List of probes
+        List<Probe> probes = new List<Probe>();
+
+        // Filling up the List with probes
+        for (int i = 0; i < 30; i++)
+        {
+            var rand = new Random();
+            string location = rand.Next(0, 2) == 0 ? "on ship" : "elsewhere";
+            probes.Add(new Probe($"Probe #{i}", location, rand.Next(1, 201)));
+        }
+
+        // Creating drone
+        HunterDrone drone = new HunterDrone("B1 battle droid");
+
+        drone.HuntAndReturn(probes);
+
+        Console.ReadKey();
+    }
+}
+///////////////////////////////////////////////////////////////////
+
+Hard
+
+Task 5
+///////////////////////////////////////////////////////////////////
+
 ///////////////////////////////////////////////////////////////////
