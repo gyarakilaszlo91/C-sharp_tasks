@@ -309,5 +309,151 @@ Hard
 
 Task 5
 ///////////////////////////////////////////////////////////////////
+using System;
+
+class Program
+{
+
+    public class Ship
+    {
+        public string Name;
+        public int Identifier;
+
+        public Ship(string name, int id)
+        {
+            Name = name;
+            Identifier = id;
+        }
+    }
+
+    public class WarshipsAlpha : Ship
+    {
+        bool Warship = true;
+
+        public WarshipsAlpha(string name, int id) : base(name, id)
+        {
+            Name = name + "*Alpha";
+        }
+    }
+
+    public class WarshipsBeta : Ship
+    {
+        bool Warship = true;
+
+        public WarshipsBeta(string name, int id) : base (name, id)
+        {
+            Name = name + "*Beta";
+        }
+    }
+
+    public class WarshipsGamma : Ship
+    {
+        bool Warship = true;
+
+        public WarshipsGamma(string name, int id) : base(name, id)
+        {
+            Name = name + "*Gamma";
+        }
+    }
+
+    public class CivilianShipsAlpha : Ship
+    {
+        bool Civilian = true;
+
+        public CivilianShipsAlpha(string name, int id) : base(name, id)
+        {
+            Name = name + "*Alpha";
+        }
+    }
+
+    public class CivilianShipsBeta : Ship
+    {
+        bool Civilian = true;
+
+        public CivilianShipsBeta(string name, int id) : base(name, id)
+        {
+            Name = name + "*Beta";
+        }
+    }
+
+    public class Convoys
+    {
+        List<Ship> convoy = new List<Ship>();
+
+        public void AddShip(Ship ship)
+        {
+            convoy.Add(ship);
+        }
+
+        public void CheckConvoy()
+        {
+            Console.WriteLine("Reconnaissance Probe is flying by...");
+
+            foreach (Ship ship in convoy)
+            {
+                string name = ship.Name + "-" + Convert.ToString(ship.Identifier).PadLeft(3, '0');
+                Console.WriteLine($"Ship encountered: {name}");
+            }
+        }
+    }
+
+    static void Main()
+    {
+
+        var rand = new Random();
+        // Creating a convoy
+        Convoys convoy = new Convoys();
+        // creating a counter for warships and civilianships
+        int countWarshipsAplha = 1;
+        int countWarshipsBeta = 1;
+        int countWarshipsGamma = 1;
+
+        int countCivilianshipsAlpha = 1;
+        int countCivilianshipsBeta = 1;
+
+        // adding ships to the convoy
+        for (int i = 0; i < 100; i++)
+        {
+            int chance = rand.Next(0, 5);
+
+            switch (chance)
+            {
+                case 0: 
+                    convoy.AddShip(new WarshipsAlpha($"Warship", countWarshipsAplha));
+                    countWarshipsAplha++;
+                    break;
+                case 1:
+                    convoy.AddShip(new WarshipsBeta($"Warship", countWarshipsBeta));
+                    countWarshipsBeta++;
+                    break;
+                case 2:
+                    convoy.AddShip(new WarshipsGamma($"Warship", countWarshipsGamma));
+                    countWarshipsGamma++;
+                    break;
+                case 3:
+                    convoy.AddShip(new CivilianShipsAlpha($"Civilianship", countCivilianshipsAlpha));
+                    countCivilianshipsAlpha++;
+                    break;
+                case 4:
+                    convoy.AddShip(new CivilianShipsBeta($"Civilianship", countCivilianshipsBeta));
+                    countCivilianshipsBeta++;
+                    break;
+                default: 
+                    break;
+            }
+
+
+        }
+
+        convoy.CheckConvoy();
+
+        Console.ReadKey();
+    }
+
+}
+///////////////////////////////////////////////////////////////////
+
+Task 6 
+///////////////////////////////////////////////////////////////////
 
 ///////////////////////////////////////////////////////////////////
