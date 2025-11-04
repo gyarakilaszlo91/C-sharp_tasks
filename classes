@@ -455,5 +455,58 @@ class Program
 
 Task 6 
 ///////////////////////////////////////////////////////////////////
+using System;
 
+class Program
+{
+
+    public class Nomos
+    {
+        Random random = new Random();
+        string Name = "Nomos";
+        int[] Location = new int[2];
+        string[,] Space = new string[5,5];
+
+        public void FillField()
+        {
+            // Filling up the space with random asteroids
+            for (int i = 0; i < Space.GetLength(0); i++)
+            {
+                for (int j = 0; j < Space.GetLength(1); j++)
+                {
+                    int choice = random.Next(0, 2);
+                    string currentElement = Convert.ToString(choice);
+                    Space[i,j] = currentElement;
+                }
+            }
+            // Adding the Convoy to a random position
+            Location[0] = random.Next(0, 5);
+            Location[1] = random.Next(0, 5);
+            Space[Location[0], Location[1]] = "K";
+        }
+
+        public void DisplayField()
+        {
+            for (int i = 0; i < Space.GetLength(0); i++)
+            {
+                for (int j = 0; j < Space.GetLength(1); j++)
+                {
+                    Console.Write($"{Space[i, j]} ");
+                }
+                Console.WriteLine();
+            }
+        }
+
+    }
+    static void Main()
+    {
+
+        Nomos nomos = new Nomos();
+
+        nomos.FillField();
+        nomos.DisplayField();
+
+        Console.ReadKey();
+    }
+}
 ///////////////////////////////////////////////////////////////////
