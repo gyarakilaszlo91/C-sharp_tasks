@@ -1,0 +1,96 @@
+Easy
+
+Task 1
+////////////////////////////////////////////
+using System;
+
+class Program
+{
+
+    class BlackLuck
+    {
+        Random random = new Random();
+        int Points;
+        string Name;
+
+        public BlackLuck(string name)
+        {
+            Name = name;
+        }
+
+
+        public void RollDice()
+        {
+            Console.WriteLine($"{Name} starts the rolling the dices.");
+            for (int i = 0; i < 3; i++)
+            {
+                int currentPoints = 0;
+
+                for (int j = 0; j < 4; j++)
+                {
+                    currentPoints += random.Next(1, 7);
+                }
+                Console.WriteLine($"The result of the first throw is {currentPoints}");
+
+                if (currentPoints > Points)
+                {
+                    Points = currentPoints;
+                }
+            }
+            Console.WriteLine($"The best throw of three is {Points} points\n");
+        }
+
+        public static void CheckWinner(BlackLuck a, BlackLuck b)
+        {
+
+            while (a.Points == b.Points)
+            {
+                Console.WriteLine("The points are the same! Reroll follows.\n");
+                a.RollDice();
+                b.RollDice();
+            }
+
+            string winner = a.Points > b.Points ? a.Name : b.Name;
+            int points = a.Points > b.Points ? a.Points : b.Points;
+
+            Console.WriteLine(new string('-', 51));
+            Console.WriteLine($"The winner is {winner} with {points} amount of points.");
+            Console.WriteLine(new string('-', 51));
+
+        }
+
+        public static void Introduction(BlackLuck a, BlackLuck b)
+        {
+            Console.WriteLine(new string('-', 51));
+            Console.WriteLine();
+            Console.WriteLine("Blackluck\n".PadLeft(30, ' '));
+            Console.WriteLine($"We present our two player: {a.Name} and {b.Name}");
+            Console.WriteLine("Let the game begin!");
+            Console.WriteLine();
+            Console.WriteLine(new string('-', 51));
+            Console.WriteLine();
+        }
+    }
+
+    static void Main()
+    {
+
+        BlackLuck vasquez = new BlackLuck("Vasquez");
+        BlackLuck captain = new BlackLuck("Captain");
+
+        BlackLuck.Introduction(vasquez, captain);
+
+        vasquez.RollDice();
+        captain.RollDice();
+
+        BlackLuck.CheckWinner(vasquez, captain);
+
+        Console.ReadKey();
+    }
+}
+////////////////////////////////////////////
+
+Task 2
+////////////////////////////////////////////
+
+////////////////////////////////////////////
