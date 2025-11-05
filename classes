@@ -464,7 +464,7 @@ class Program
     {
         Random random = new Random();
         string Name = "Nomos";
-        int[] Location = new int[2];
+        public int[] ConvoyLocation = new int[2];
         string[,] Space = new string[5,5];
 
         public void FillField()
@@ -480,9 +480,9 @@ class Program
                 }
             }
             // Adding the Convoy to a random position
-            Location[0] = random.Next(0, 5);
-            Location[1] = random.Next(0, 5);
-            Space[Location[0], Location[1]] = "K";
+            ConvoyLocation[0] = random.Next(0, 5);
+            ConvoyLocation[1] = random.Next(0, 5);
+            Space[ConvoyLocation[0], ConvoyLocation[1]] = "K";
         }
 
         public void DisplayField()
@@ -497,14 +497,142 @@ class Program
             }
         }
 
+
+        public int ChangeConvoyLocation(int[] newLocation, string shipname, string asteroidname)
+        {
+
+            if (newLocation[0] < 0 || newLocation[1] > 4 || newLocation[1] < 0 || newLocation[1] > 4)
+            {
+                Console.WriteLine("The convoy left the asteroid field");
+                Space[ConvoyLocation[0], ConvoyLocation[1]] = "0";
+                Console.WriteLine();
+                DisplayField();
+                return -1;
+            }
+            else
+            {
+                Space[ConvoyLocation[0], ConvoyLocation[1]] = "0";
+                ConvoyLocation[0] = newLocation[0];
+                ConvoyLocation[1] = newLocation[1];
+
+                if (Space[ConvoyLocation[0], ConvoyLocation[1]] == "1")
+                {
+                    Console.WriteLine("\nAsteroid detected, chosing ship to destroy it...");
+                    Console.WriteLine($"{shipname} has destroyed {asteroidname}");
+                }
+
+                Space[ConvoyLocation[0], ConvoyLocation[1]] = "K";
+
+                Console.WriteLine();
+                DisplayField();
+                return 0;
+            }
+
+        }
+
     }
+
+    public class Convoys
+    {
+        Random random = new Random();
+        List<string> Convoy = new List<string>();
+
+        public Convoys()
+        {
+            for (int i = 0; i < 10; i++)
+            {
+                Convoy.Add($"Ship {i}");
+            }
+        }
+
+        public string ChooseShip()
+        {
+            return Convoy[random.Next(0, Convoy.Count)];
+        }
+
+        public string GetDirection()
+        {
+            int movement = random.Next(0, 4);
+
+            switch(movement)
+            {
+                case 0:
+                    return "Left";
+                case 1:
+                    return "Right";
+                case 2:
+                    return "Up";
+                case 3:
+                    return "Down";
+                default:
+                    return "";
+            }
+        }
+
+        public int[] Move(int[] coordinate)
+        {
+            string movement = GetDirection();
+
+            int[] changedcoordinates = new int[2];
+            changedcoordinates[0] = coordinate[0];
+            changedcoordinates[1] = coordinate[1];
+
+            switch (movement)
+            {
+                case "Left":
+                    changedcoordinates[1] -= 1;
+                    break;
+                case "Right":
+                    changedcoordinates[1] += 1;
+                    break;
+                case "Up":
+                    changedcoordinates[0] += 1;
+                    break;
+                case "Down":
+                    changedcoordinates[0] -= 1;
+                    break;
+                default:
+                    break;
+            }
+
+            return changedcoordinates;
+
+        }
+    }
+
+    public class  Asteroids
+    {
+        Random random = new Random();
+        List<string> Asteroid = new List<string>();
+
+        public Asteroids()
+        {
+            for (int i = 0; i < 20; i++)
+            {
+                Asteroid.Add($"Asteroid {i}");
+            }
+        }
+
+        public string ChooseAsteroid()
+        {
+            return Asteroid[random.Next(0, Asteroid.Count)];
+        }
+    }
+
     static void Main()
     {
-
+        Convoys convoy = new Convoys();
         Nomos nomos = new Nomos();
+        Asteroids asteroids = new Asteroids();
 
         nomos.FillField();
         nomos.DisplayField();
+
+        for(int i = 0; i < 10; i++)
+        {
+            if (nomos.ChangeConvoyLocation(convoy.Move(nomos.ConvoyLocation), convoy.ChooseShip(), asteroids.ChooseAsteroid()) == -1) break;
+        }
+
 
         Console.ReadKey();
     }
