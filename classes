@@ -501,7 +501,7 @@ class Program
         public int ChangeConvoyLocation(int[] newLocation, string shipname, string asteroidname)
         {
 
-            if (newLocation[0] < 0 || newLocation[1] > 4 || newLocation[1] < 0 || newLocation[1] > 4)
+            if (newLocation[0] < 0 || newLocation[0] > 4 || newLocation[1] < 0 || newLocation[1] > 4)
             {
                 Console.WriteLine("The convoy left the asteroid field");
                 Space[ConvoyLocation[0], ConvoyLocation[1]] = "0";
