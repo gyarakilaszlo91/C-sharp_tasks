@@ -114,3 +114,57 @@ class Program
     }
 }
 ///////////////////////////////////////////////////////
+
+Medium
+
+Task 3
+///////////////////////////////////////////////////////
+using System;
+
+class Program
+{
+
+    class SeniorEngineer
+    {
+        string Name;
+        public int Age;
+
+        public SeniorEngineer(string name, int age)
+        {
+            Name = name;
+            Age = age;
+        }
+
+        public static void ValidateAge(int minAge, int maxAge, int age)
+        {
+            if (age > minAge && age <= maxAge)
+            {
+                Console.WriteLine("The candidate's age meets the conditions.");
+            }
+            else
+            {
+                Console.WriteLine("The candidate's age doesn't meet the conditions.");
+            }
+        }
+    }
+
+    static void Main()
+    {
+
+        SeniorEngineer engineer1 = new SeniorEngineer("Mikhelson", 45);
+        SeniorEngineer engineer2 = new SeniorEngineer("John", 79);
+        SeniorEngineer engineer3 = new SeniorEngineer("Ridley", 33);
+
+        SeniorEngineer.ValidateAge(35, 75, engineer1.Age);
+        SeniorEngineer.ValidateAge(35, 75, engineer2.Age);
+        SeniorEngineer.ValidateAge(35, 75, engineer3.Age);
+
+        Console.ReadKey();
+    }
+}
+///////////////////////////////////////////////////////
+
+Task 4
+///////////////////////////////////////////////////////
+
+///////////////////////////////////////////////////////
