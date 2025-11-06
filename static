@@ -166,5 +166,91 @@ class Program
 
 Task 4
 ///////////////////////////////////////////////////////
+using System;
+
+class Program
+{
+
+    class Engineer
+    {
+        string Name;
+        int Age;
+        int Experience;
+
+        public Engineer(string name, int age, int experience)
+        {
+            Name = name;
+            Age = age;
+            Experience = experience;
+        }
+
+        public Engineer (string name, int age)
+        {
+            Name = name;
+            Age = age;
+            this.Experience = 10;
+        }
+
+        public void Sleep()
+        {
+            CheckExperience();
+            Console.WriteLine($"Engineer {Name} is sleeping, but he could be working!");
+        }
+
+        public void Eat()
+        {
+            CheckExperience();
+            Console.WriteLine($"Engineer {Name} is eating.");
+        }
+
+        public void Work()
+        {
+            CheckExperience();
+            Console.WriteLine($"Engineer {Name} is working.");
+        }
+
+        public void Work(int hours)
+        {
+            CheckExperience();
+            Console.WriteLine($"Engineer {Name} is working for {hours} hour");
+        }
+
+        void CheckExperience()
+        {
+            if (Experience < 5 || Experience > 25)
+            {
+                Console.WriteLine($"Engineer {Name} has invalid experience for this position!");
+            }
+        }
+    }
+    
+    static void Main()
+    {
+
+        Engineer dandolo1 = new Engineer("Dandolo1", 25, 3);
+        Engineer dandolo2 = new Engineer("Dandolo2", 47);
+        Engineer dandolo3 = new Engineer("Dandolo3", 73, 30);
+
+        dandolo1.Eat();
+        dandolo1.Sleep();
+        dandolo1.Work();
+        Console.WriteLine();
+        dandolo2.Eat();
+        dandolo2.Sleep();
+        dandolo2.Work(10);
+        Console.WriteLine();
+        dandolo3.Eat();
+        dandolo3.Sleep();
+        dandolo3.Work();
+
+        Console.ReadKey();
+    }
+}
+///////////////////////////////////////////////////////
+
+Hard
+
+Task 5
+///////////////////////////////////////////////////////
 
 ///////////////////////////////////////////////////////
