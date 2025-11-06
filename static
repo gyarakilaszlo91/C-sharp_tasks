@@ -1,0 +1,59 @@
+Easy 
+
+Task 1
+///////////////////////////////////////////////////////
+using System;
+
+class Program
+{
+    class SeniorEngineerMikhelson
+    {
+        string Name;
+        string Position;
+
+        public SeniorEngineerMikhelson(string name, string position)
+        {
+            Name = name;
+            Position = position;
+        }
+
+        public void ShowAngelicPantience()
+        {
+            Console.WriteLine($"{Name} demonstrate angelic patience.");
+        }
+
+        public void PerformAMiracle()
+        {
+            Console.WriteLine($"{Name} performs a miracle.");
+        }
+
+        public void PerformAMiracle(string oversomeone)
+        {
+            Console.WriteLine($"{Name} performs a miracle over {oversomeone}.");
+        }
+    }
+
+
+    static void Main()
+    {
+
+        SeniorEngineerMikhelson mikhelson = new SeniorEngineerMikhelson("Mikhelson", "Senior Engineer");
+        SeniorEngineerMikhelson john = new SeniorEngineerMikhelson("John", "Senior Engineer");
+
+        mikhelson.ShowAngelicPantience();
+        mikhelson.PerformAMiracle();
+        mikhelson.PerformAMiracle("John");
+        Console.WriteLine();
+        john.ShowAngelicPantience();
+        john.PerformAMiracle();
+        john.PerformAMiracle("Mikhelson");
+
+        Console.ReadKey();
+    }
+}
+///////////////////////////////////////////////////////
+
+Task 2
+///////////////////////////////////////////////////////
+
+///////////////////////////////////////////////////////
