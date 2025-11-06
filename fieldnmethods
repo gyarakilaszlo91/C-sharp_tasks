@@ -327,5 +327,176 @@ Hard
 
 Task 5
 ////////////////////////////////////////////
+using System;
+using System.Text;
+
+class Program
+{
+    // Class for Dice
+    class Dice
+    {
+
+        public static int NumberFellOut()
+        {
+            Random random = new Random();
+
+            return random.Next(1, 7);
+        }
+    }
+
+    // Class for Cup
+    class Cup
+    {
+        int NumberOfDice;
+
+        public int ShakeGlass(int times)
+        {
+            int sumOfPoints = 0;
+
+            for (int i = 0; i < times; i++)
+            {
+                sumOfPoints += Dice.NumberFellOut();
+            }
+
+            return sumOfPoints;
+        }
+    }
+
+    // Class for Diceplayer
+    class DicePlayer
+    {
+        string Name;
+        Cup DiceCup;
+
+        public DicePlayer(string name)
+        {
+            Name = name;
+            DiceCup = new Cup();
+        }
+
+        public int ShakeGlass(int times)
+        {
+            return DiceCup.ShakeGlass(times);
+        }
+    }
+
+    // Class for the computer
+    class ComputerPlayer : DicePlayer
+    {
+        public ComputerPlayer(string name = "Computer") : base(name) { }
+
+        public int ShakeGlass()
+        {
+            Random random = new Random();
+            int result = base.ShakeGlass(random.Next(1, 6));
+            return result;
+        }
+    }
+
+    //Class for Round
+    class Round
+    {
+        public static (int, int) SimulateRound(DicePlayer Player1, ComputerPlayer Player2, int times, int currentRound)
+        {
+            int currentPlayerScore = Player1.ShakeGlass(times);
+            int currentComputerScore = Player2.ShakeGlass();
+            string round;
+
+            if (currentRound == 0)
+            {
+                round = "1st round";
+            }
+            else if (currentRound == 1)
+            {
+                round = "2nd round";
+            }
+            else
+            {
+                round = "3rd round";
+            }
+
+            Console.WriteLine($"\nRound {currentRound+1} begins:");
+            Console.WriteLine("Player 1 shakes the glass.");
+            Console.WriteLine($"Player 1 rolls the dice, result: {currentPlayerScore}");
+            Console.WriteLine("Computer Player shakes the glass.");
+            Console.WriteLine($"Computer player rolls the dice, result: {currentComputerScore}");
+
+            string message;
+            
+            if (currentPlayerScore > currentComputerScore)
+            {
+                message = $"Player 1 won the {round} with a score of {currentPlayerScore} vs {currentComputerScore}";
+            }
+            else if (currentComputerScore > currentPlayerScore)
+            {
+                message = $"Player 2 won the {round} with a score of {currentComputerScore} vs {currentPlayerScore}";
+            }
+            else
+            {
+                message = $"It's a tie with score {currentComputerScore}";
+            }
+
+                Console.WriteLine(message);
+
+            return (currentPlayerScore, currentComputerScore);
+        }
+    }
+
+    // Class for the Game
+    class Game
+    {
+
+        public static void SimulateGame(DicePlayer Player1, ComputerPlayer Player2, int times)
+        {
+            int player1Score = 0;
+            int computerScore = 0;
+
+            for (int i = 0; i < 3; i++)
+            {
+                int currentPlayerScore = 0;
+                int currentComputerScore = 0;
+
+                (currentPlayerScore, currentComputerScore) = Round.SimulateRound(Player1, Player2, times, i);
+
+                player1Score += currentPlayerScore;
+                computerScore += currentComputerScore;
+            }
+
+            Console.WriteLine("\nGame Over");
+            string message;
+
+            if (player1Score > computerScore)
+            {
+                message = $"Player 1 won the game with a score {player1Score} vs {computerScore}";
+            }
+            else if (computerScore > player1Score)
+            {
+                message = $"Player 2 won the game with a score {computerScore} vs {player1Score}";
+            }
+            else
+            {
+                message = $"It's a tie with {computerScore} points";
+            }
+            
+            Console.WriteLine(message);
+        }
+    }
+      
+    static void Main()
+    {
+
+        DicePlayer player1 = new DicePlayer("Vasquez");
+        ComputerPlayer player2 = new ComputerPlayer();
+
+        Game.SimulateGame(player1, player2, 3);
+
+
+        Console.ReadKey();
+    }
+}
+////////////////////////////////////////////
+
+Task 6
+////////////////////////////////////////////
 
 ////////////////////////////////////////////
