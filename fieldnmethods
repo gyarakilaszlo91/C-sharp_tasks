@@ -146,5 +146,86 @@ Medium
 
 Task 3
 ////////////////////////////////////////////
+using System;
+
+class Program
+{
+
+    class Dice
+    {
+        public static int NumberFellOut()
+        {
+            var random = new Random();
+
+            return random.Next(0, 7);
+        }
+    }
+
+    class Cup
+    {
+        int NumberOfDice;
+
+        public Cup(int numberOfDice)
+        {
+            NumberOfDice = numberOfDice;
+        }
+
+        public int ShakeGlass()
+        {
+            int sumOfPoints = 0;
+
+            for (int i = 0; i < NumberOfDice; i++)
+            {
+                sumOfPoints += Dice.NumberFellOut();
+            }
+
+            return sumOfPoints;
+
+        }
+    }
+
+    class DicePlayer
+    {
+        List<int> RollQue = new List<int>();
+        string Name;
+        int NumberOfDice;
+        Cup GlassWithDice;
+
+        public DicePlayer(string name, int numberOfDice)
+        {
+            Name = name;
+            NumberOfDice = numberOfDice;
+            GlassWithDice = new Cup(numberOfDice);
+        }
+
+        public void ShakeGlass(int times)
+        {
+            for (int i = 0; i < times; i++)
+            {
+                int currentRoll = GlassWithDice.ShakeGlass();
+                RollQue.Add(currentRoll);
+                Console.WriteLine($"{Name} rolled: {currentRoll}");
+            }
+        }
+
+    }
+
+    static void Main()
+    {
+        DicePlayer vasquez = new DicePlayer("Vasquez", 4);
+        DicePlayer miller = new DicePlayer("Miller", 4);
+
+        Console.WriteLine("Player 1's rolls:");
+        vasquez.ShakeGlass(3);
+        Console.WriteLine("\nPlayer 2's rolls:");
+        miller.ShakeGlass(3);
+
+        Console.ReadKey();
+    }
+}
+////////////////////////////////////////////
+
+Task 4
+////////////////////////////////////////////
 
 ////////////////////////////////////////////
