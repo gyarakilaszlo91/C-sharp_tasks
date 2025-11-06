@@ -17,7 +17,7 @@ class Program
             Position = position;
         }
 
-        public void ShowAngelicPantience()
+        public void ShowAngelicPatience()
         {
             Console.WriteLine($"{Name} demonstrate angelic patience.");
         }
@@ -55,5 +55,62 @@ class Program
 
 Task 2
 ///////////////////////////////////////////////////////
+using System;
 
+class Program
+{
+    class SeniorEngineerMikhelson
+    {
+        string Name;
+        string Position;
+
+        public SeniorEngineerMikhelson(string name, string position)
+        {
+            Name = name;
+            Position = position;
+        }
+
+        public void ShowAngelicPatience()
+        {
+            DisplayInformation("ShowAngelicPantience");
+            Console.WriteLine($"{Name} demonstrate angelic patience.");
+        }
+
+        public void PerformAMiracle()
+        {
+            DisplayInformation("PerformAMiracle");
+
+            Console.WriteLine($"{Name} performs a miracle.");
+        }
+
+        public void PerformAMiracle(string oversomeone)
+        {
+            DisplayInformation("PerformAMiracle");
+            Console.WriteLine($"{Name} performs a miracle over {oversomeone}.");
+        }
+
+        public static void DisplayInformation(string methodName)
+        {
+            Console.WriteLine($"Author: John, Running method: {methodName}:");
+        }
+    }
+
+
+    static void Main()
+    {
+
+        SeniorEngineerMikhelson mikhelson = new SeniorEngineerMikhelson("Mikhelson", "Senior Engineer");
+        SeniorEngineerMikhelson john = new SeniorEngineerMikhelson("John", "Senior Engineer");
+
+        mikhelson.ShowAngelicPatience();
+        mikhelson.PerformAMiracle();
+        mikhelson.PerformAMiracle("John");
+        Console.WriteLine();
+        john.ShowAngelicPatience();
+        john.PerformAMiracle();
+        john.PerformAMiracle("Mikhelson");
+
+        Console.ReadKey();
+    }
+}
 ///////////////////////////////////////////////////////
