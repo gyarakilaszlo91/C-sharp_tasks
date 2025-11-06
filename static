@@ -252,5 +252,106 @@ Hard
 
 Task 5
 ///////////////////////////////////////////////////////
+using System;
+
+class Program
+{
+
+    public class Meteorites
+    {
+        string Name;
+        public int Health;
+
+        public Meteorites(string name, int health)
+        {
+            Name = name;
+            Health = health;
+        }
+
+        public void Fly()
+        {
+            Console.WriteLine($"{Name} is flying through space!");
+        }
+
+        public void WhoAreYou()
+        {
+            Console.WriteLine($"I am {Name}");
+        }
+
+        public void TakeDamage(int damage, string weaponName)
+        {
+            Console.WriteLine($"{weaponName} is attacking {Name} with {damage} damage");
+
+            if (damage > 10)
+            {
+                Console.Write($"{Name} took {damage}!");
+                Health -= damage;
+                Console.WriteLine($"Remaining health: {Health}");
+            }
+            else
+            {
+                Console.WriteLine($"{Name} is too strong! Damage less than 10 has no effect.");
+            }
+
+            if (Health < 0) Disappear();
+        }
+
+        public void Disappear()
+        {
+
+            Console.WriteLine($"I, {Name}, have disappeared.");
+        }
+    }
+
+    public class Weapon
+    {
+        Random random = new Random();
+        string Name;
+
+        public Weapon(string name = "Anti-meteorite weapon")
+        {
+            Name = name;
+        }
+
+        public void DamageMeteor(Meteorites meteor)
+        {
+            int damage = random.Next(1, 31);
+            meteor.TakeDamage(damage, Name);
+        }
+    }
+
+    static void Main()
+    {
+        Random random = new Random();
+        Weapon weapon = new Weapon();
+        Meteorites meteor1 = new Meteorites("Meteor 1", random.Next(1, 101));
+        Meteorites meteor2 = new Meteorites("Meteor 2", random.Next(1, 101));
+        Meteorites meteor3 = new Meteorites("Meteor 3", random.Next(1, 101));
+
+        PlayGame(meteor1, weapon);
+        Console.WriteLine();
+        PlayGame(meteor2, weapon);
+        Console.WriteLine();
+        PlayGame(meteor3, weapon);
+
+
+        Console.ReadKey();
+    }
+
+    public static void PlayGame(Meteorites meteor, Weapon weapon)
+    {
+        meteor.Fly();
+        meteor.WhoAreYou();
+
+        while(meteor.Health > 0)
+        {
+            weapon.DamageMeteor(meteor);
+        }
+    }
+}
+///////////////////////////////////////////////////////
+
+Task 6
+///////////////////////////////////////////////////////
 
 ///////////////////////////////////////////////////////
