@@ -92,5 +92,59 @@ class Program
 
 Task 2
 ////////////////////////////////////////////
+using System;
+
+class Program
+{
+
+    class Dice
+    {
+        public static int NumberFellOut()
+        {
+            var random = new Random();
+
+            return random.Next(1, 7);
+        }
+    }
+
+    class Cup
+    {
+        public int NumberOfDice;
+
+        public Cup(int numberOfDice)
+        {
+            NumberOfDice = numberOfDice;
+        }
+
+        public int ShakeGlass()
+        {
+            int sumOfDice = 0;
+            
+            for (int i = 0; i < NumberOfDice; i++)
+            {
+                sumOfDice += Dice.NumberFellOut();
+            }
+
+            return sumOfDice;
+        }
+    }
+
+    static void Main()
+    {
+        Cup glassCup = new Cup(4);
+
+        int result = glassCup.ShakeGlass();
+
+        Console.WriteLine($"The result of the shake is {result}");
+
+        Console.ReadKey();
+    }
+}
+////////////////////////////////////////////
+
+Medium
+
+Task 3
+////////////////////////////////////////////
 
 ////////////////////////////////////////////
