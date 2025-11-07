@@ -1,0 +1,20 @@
+
+Briefing
+
+Captain Freeman calls for you. He has a new task for you.
+
+Let’s start from the beginning. One of the main tasks of corvettes in the Federation fleet is to check asteroid fields. They are looking for minerals, pirates, lost tourists, and so on.
+
+Captain Lovegold’s friend offered him a cheap option to replace the propulsion system with Proud. He claims that with his product, our corvette will become “a proud bird that can flutter like a butterfly!” However, the captain has some doubts about the necessity of this process: “Mikhelson grumbles that the engines are already thirty years old, but they work! And replacing them costs so much money! So much money!!!” On the other hand, since the introduction of Proud, new types of engines have appeared.
+
+Your task for today is to simulate Proud’s traversal of an asteroid cluster using different types of engines. Specifically, the Proud model must enter the asteroid field from one side and exit from the other without crashing into anything along the way; otherwise, a complete repair will be much more expensive than replacing the engines. Let’s imagine a cluster of asteroids as a two-dimensional array, where 0 will mark passable routes, and 1 will mark unpassable routes. As has already happened in other tasks. We will consider the following groups of engines:
+
+    What we have now is superluminal, which allows you to move 10 cells forward, maneuverable, which allows you to turn the direction of movement, and marching, which allows you to move forward 1 cell.
+
+    Jumping, which allows you to jump in any direction diagonally at a distance from 3 to 5 cells
+
+    Super engine, it allows you to move between obstacles, that is, after specifying the direction of movement, the ship will move in this direction until it encounters an obstacle, where the ship stops.
+
+If the ship ends up on an impassable square, it is damaged and the task is failed. Consider this information when simulating exercises.
+
+
