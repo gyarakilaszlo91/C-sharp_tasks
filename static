@@ -353,5 +353,136 @@ class Program
 
 Task 6
 ///////////////////////////////////////////////////////
+using System;
 
+class Program
+{
+    public class EnergyGenerator
+    {
+        Random random = new Random();
+        static int Serial = 1;
+        string Name;
+        public int Energy = 0;
+        string GeneratorType;
+
+        public EnergyGenerator(string generatorType)
+        {
+            GeneratorType = generatorType;
+            Name = "Generator #" + Serial;
+            Serial++;
+        }
+
+        public void GenerateEnergy()
+        {
+            if (GeneratorType == "Type 1")
+            {
+                Energy = 10;
+                Console.Write($"{Name} - 10, ");
+            }
+            else if (GeneratorType == "Type 2")
+            {
+                int energy = random.Next(-10, 51);
+                Energy = energy;
+                Console.Write($"{Name} - {energy}, ");
+            }
+        }
+    }
+
+    public class Weapon
+    {
+        Random random = new Random();
+        string Name;
+        int EnergyRequiredToFire = 5;
+        int EnergyRequiredForShot;
+        int EnergyAvailable = 0;
+
+        public Weapon(string name = "Anti-meteorite weapon")
+        {
+            Name = name;
+        }
+
+        public int Fire(EnergyGenerator[] generators, int shotId)
+        {
+            // Getting the damage number
+            int damage = random.Next(1, 31);
+            // Updating the energy required for the shot
+            EnergyRequiredForShot = damage;
+
+            Console.Write($"{Name} shot attempt No. {shotId}, planned damage {damage}, energy generated: ");
+            // Generating energy
+            foreach (EnergyGenerator generator in generators)
+            {
+                generator.GenerateEnergy();
+                EnergyAvailable += generator.Energy;
+            }
+
+            if (EnergyAvailable < EnergyRequiredForShot + EnergyRequiredToFire)
+            {
+                Console.WriteLine("shot succesful: False");
+                Console.WriteLine($"Energy remaining: {EnergyAvailable}\n");
+                // Resetting the currently available energy
+                EnergyAvailable = 0;
+                return -1;
+            }
+            else
+            {
+                Console.WriteLine("shot succesful: True");
+                EnergyAvailable -= EnergyRequiredForShot;
+                Console.WriteLine($"Energy remaining: {EnergyAvailable}\n");
+                // Resetting the currently available energy
+                EnergyAvailable = 0;
+                // Returning the damage
+                return damage;
+            }
+
+        }
+    }
+
+    static void Main()
+    {
+        Random random = new Random();
+        Weapon[] weapons = new Weapon[5];
+        EnergyGenerator[] generators = new EnergyGenerator[4];
+
+        // filling up the weapon list
+        for(int i = 0; i < 5; i++)
+        {
+            weapons[i] = new Weapon($"Weapon {i+1}");
+        }
+        // filling up the generator list
+        for(int i = 0; i < 4; i++)
+        {
+            if(i % 2 == 0)
+            {
+                generators[i] = new EnergyGenerator("Type 1");
+            }
+            else
+            {
+                generators[i] = new EnergyGenerator("Type 2");
+            }
+        }
+
+        // firing the weapons 5 time
+        FireWeapons(5, weapons, generators);
+
+
+        Console.ReadKey();
+    }
+
+    public static void FireWeapons(int times, Weapon[] weapons, EnergyGenerator[] generators)
+    {
+        for(int i = 0; i < times; i++)
+        {
+            Console.WriteLine($"Shot No. {i+1}");
+            foreach(Weapon weapon in weapons)
+            {
+                int attempt = 1;
+                while(weapon.Fire(generators, attempt) == -1)
+                {
+                    attempt++;
+                }
+            }
+        }
+    }
+}
 ///////////////////////////////////////////////////////
