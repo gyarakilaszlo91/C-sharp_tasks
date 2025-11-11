@@ -276,25 +276,30 @@ Implementation Details
 
     Identify Necessary Fields and Methods for Each Class:
 
-        We need to keep only the essential fields and methods that fully describe each category, ensuring that each class is distinct and its functionality is clear.
+        We need to keep only the essential fields and methods that fully describe each category, 
+			ensuring that each class is distinct and its functionality is clear.
 
         Fields and methods that don’t provide unique or useful information for distinguishing the class can be removed.
 
     Decide Which Fields to Keep:
 
-        The fields should be essential to the core definition of each category. For example, the Food class may require Weight, Color, Size, and Fresh to distinguish different types of food.
+        The fields should be essential to the core definition of each category. 
+			For example, the Food class may require Weight, Color, Size, and Fresh to distinguish different types of food.
 
         Other fields that don’t add unique value, such as Amount, LongStorage, and CookingType in the Food class, may be removed.
 
-        Similarly, in the Furniture class, fields like Height, Width, and Material are important to distinguish different furniture items, but other optional fields can be removed.
+        Similarly, in the Furniture class, fields like Height, Width, 
+			and Material are important to distinguish different furniture items, but other optional fields can be removed.
 
     Remove or Keep Methods:
 
         We need to remove any methods that don’t contribute to the functionality of the class or its description.
 
-        For example, methods like Chew(), Swim(), and Freeze() in the Food category are not critical for its basic definition. We may keep only the method(s) that add significant value for distinguishing the class.
+        For example, methods like Chew(), Swim(), and Freeze() in the Food category are not critical for its basic definition. 
+			We may keep only the method(s) that add significant value for distinguishing the class.
 
-        Similarly, other methods like ManipulateSomething(), Strike(), etc., may be removed or kept based on their importance for each category.
+        Similarly, other methods like ManipulateSomething(), Strike(), etc., 
+			may be removed or kept based on their importance for each category.
 
     Justify the Fields and Methods to Keep:
 
@@ -304,11 +309,14 @@ Implementation Details
 
 Task #4
 
-Based on the created description, create a program that describes this class. All created methods must output something to the console, and all remaining fields must be used in more than one method.
+Based on the created description, create a program that describes this class. 
+All created methods must output something to the console, 
+and all remaining fields must be used in more than one method.
 
 Expected Input:
 
-All fields for the classes (Food, Furniture, Tools, etc.) are initialized via constructors when creating the objects. These fields include Weight, Color, Material, Purpose, and other relevant details.
+All fields for the classes (Food, Furniture, Tools, etc.) are initialized via constructors when creating the objects. 
+These fields include Weight, Color, Material, Purpose, and other relevant details.
 
 For example:
 
@@ -317,7 +325,8 @@ Furniture furniture = new Furniture("2m", "Wood");
 
 Expected Output:
 
-After running the program, the output will consist of various console messages for each class, showing the results of the methods executed:
+After running the program, the output will consist of various console messages for each class, 
+showing the results of the methods executed:
 
 The food weighing 2kg and colored Green is being chewed.
 The food weighing 2kg and colored Green is now frozen. Fresh: True
@@ -328,9 +337,12 @@ Furniture details - Height: 2m, Material: Wood
 
 Implementation Details:
 
-    Define the classes based on the task description. We will create a set of classes (Food, Furniture, Tools, Clothing, Electronics, Weapons, Medical, Toys, Fish, and Miscellaneous). These classes will have fields initialized through their constructors and will contain methods that output to the console.
+    Define the classes based on the task description. 
+	We will create a set of classes (Food, Furniture, Tools, Clothing, Electronics, Weapons, Medical, Toys, Fish, and Miscellaneous). 
+	These classes will have fields initialized through their constructors and will contain methods that output to the console.
 
-    Each class will have at least two fields, and each method will interact with these fields. All fields will be used in more than one method to fulfill the requirement.
+    Each class will have at least two fields, and each method will interact with these fields. 
+	All fields will be used in more than one method to fulfill the requirement.
 
     Create methods inside each class:
 
@@ -338,15 +350,19 @@ Implementation Details:
 
         Add a descriptive method for each class to print the values of the fields.
 
-        Example: In the Food class, the Chew method outputs a message including the Weight and Color, and the Freeze method will also use these fields.
+        Example: In the Food class, the Chew method outputs a message including the Weight and Color, 
+			and the Freeze method will also use these fields.
 
     In the Main method, create objects of each class, initialize them using their constructors, and then call the methods to display the output.
+
+
 
 Difficulty level - HARD
 
 Task #5
 
-You need to develop a system for managing colonies on different planets. The system should handle resource management, buildings, colonists, and their needs.
+You need to develop a system for managing colonies on different planets. 
+The system should handle resource management, buildings, colonists, and their needs.
 
 Requirements:
 
