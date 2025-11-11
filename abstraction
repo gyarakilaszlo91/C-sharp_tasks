@@ -1,26 +1,44 @@
 
 Briefing
 
-Returning to the ship, Captain Freeman whistled contentedly, smiling more than usual. When he saw you and the sergeant keeping watch at the airlock, his smile widened and began to resemble that of a well-fed and contented shark.
+Returning to the ship, Captain Freeman whistled contentedly, smiling more than usual. 
+When he saw you and the sergeant keeping watch at the airlock,
+his smile widened and began to resemble that of a well-fed and contented shark.
 
-    Trainee, I entrust you, as the senior and only member of the watch, with sorting out the purchases that I collected for the ship and crew.
+    Trainee, I entrust you, as the senior and only member of the watch,
+with sorting out the purchases that I collected for the ship and crew.
 
-And whistling something brave, the captain retreated into the depths of the ship. You turned your gaze to where the sergeant should have been to clarify the order of actions with the senior rank, but he was not there. Apparently, the sergeant, accustomed to the captain’s sudden ideas and orders, had disappeared. Robots continued to enter the airlock and pile up the captain’s purchases into an ever-growing heap.
+And whistling something brave, the captain retreated into the depths of the ship. 
+You turned your gaze to where the sergeant should have been to clarify 
+the order of actions with the senior rank, but he was not there. 
+Apparently, the sergeant, accustomed to the captain’s sudden ideas and orders,had disappeared.
+Robots continued to enter the airlock and pile up the captain’s purchases into an ever-growing heap.
 
-You decide that you first need to understand what the captain bought and go to explore the stack of boxes. You decide to write a program for the robots to help you distribute the purchases to the correct places.
+You decide that you first need to understand what the captain bought and go to explore the stack of boxes.
+You decide to write a program for the robots to help you distribute the purchases to the correct places.
+
+
 Difficulty level - EASY
 
 Task #1
 
-First, you need to identify the categories, or in other words, the classes to which the purchases belong. Each team chooses one category to work on for the following tasks.
+First, you need to identify the categories, or in other words, the classes to which the purchases belong.
+Each team chooses one category to work on for the following tasks.
 
-In the pile of purchases, you see: oranges, apples, tables, chairs, plums, grapes, lentils, screwdrivers, hammers, pliers, several dozen coils of cable, sheathing sheets, door handles, mice, keyboards, holoscreens, games, poultry, salmon, pike, herring, potatoes, rice, frying pans, pots, gunpowder, charges for guns, a couple of torpedoes, about three dozen first aid kits, about forty boxes, a mountain of shoes, a whole container of naval uniforms of various types, androids, and probably a wagon of containers with unigel.
+In the pile of purchases, you see: 
+oranges, apples, tables, chairs, plums, grapes, lentils, screwdrivers, 
+hammers, pliers, several dozen coils of cable, sheathing sheets, door handles,
+mice, keyboards, holoscreens, games, poultry, salmon, pike, herring, potatoes, rice, 
+frying pans, pots, gunpowder, charges for guns, a couple of torpedoes, 
+about three dozen first aid kits, about forty boxes, a mountain of shoes,
+a whole container of naval uniforms of various types, androids, and probably a wagon of containers with unigel.
 
 The answer to the task should be given in the form of class names describing purchase groups.
 
 Expected Input:
 
-There is no direct input for this task. Instead, we are categorizing the items directly within the Main method. These items are part of the program as hardcoded categories.
+There is no direct input for this task. Instead, we are categorizing the items directly within the Main method. 
+These items are part of the program as hardcoded categories.
 
 Expected Output:
 
@@ -40,11 +58,15 @@ Miscellaneous: Containers with Unigel, Boxes, etc.
 
 Implementation Details
 
-To solve this task, we will define several classes that represent different categories of purchases. Each class will describe a distinct group of items from the list provided in the prompt. Since no properties or abstract classes are allowed, we will simply create class names and organize the items logically. We will assign each category of items into an appropriate class, based on their type.
+To solve this task, we will define several classes that represent different categories of purchases.
+Each class will describe a distinct group of items from the list provided in the prompt. 
+Since no properties or abstract classes are allowed, we will simply create class names and organize the items logically.
+We will assign each category of items into an appropriate class, based on their type.
 
     Define categories for purchases: We will group the items into categories such as Food, Furniture, Tools, Clothing, Electronics, Weapons, Medical, Toys, Fish, and Miscellaneous.
 
-    Create simple classes: Each class will be an empty class representing a category. We will only use the class names for categorization, as there will be no need for properties or methods in this task.
+    Create simple classes: Each class will be an empty class representing a category. 
+	We will only use the class names for categorization, as there will be no need for properties or methods in this task.
 
     Organize items into classes: Based on the items in the list, we will decide which class they belong to. For example:
 
@@ -66,284 +88,61 @@ To solve this task, we will define several classes that represent different cate
 
 Task #2
 
-Having identified the classes from this mountain of purchases, you need to understand what characterizes them and distinguishes them from others. For each class selected in the previous task, select the maximum number of fields and methods from the table below.
+Having identified the classes from this mountain of purchases, 
+you need to understand what characterizes them and distinguishes them from others. 
+For each class selected in the previous task, select the maximum number of fields and methods from the table below.
 
-Length        Bite()            Paint()     Size              Strike()               Number of handles
+Length        			Bite()            			Paint()    		 			Size              		Strike()                Number of handles
 	
-Width         Chew grass()      Spin()      Quantity          Number of eyes         Explode()
+Width         			Chew grass()      			Spin()      				Quantity         		Number of eyes          Explode()
 
-Height        Swim()            Chew()      Amount            Number of grains       Hit target()
+Height        			Swim()            			Chew()      				Amount           		Number of grains        Hit target()
 
-Weight        Orange            Unscrew()   TNT equivalent    Number of carcasses    Fire()
+Weight        			Orange            			Unscrew()   				TNT equivalent    		Number of carcasses     Fire()
 
-Weight        Color             Curl()      Treat()          Quantity                Availability of fillet
+Weight        			Color             			Curl()      				Treat()          		Quantity                Availability of fillet
 	
+Color		  			Blue			  		 	Protect()	  				To give first aid()		Warhead weight			Foot size
 
+Number of fins			Red				 			Number of keys				Hit the nail()			Type of explosive		Chest size
 
+Run()					White			 		 	Volume						Beat()					Number of handles		Height
 
+Hip girth				Leg length		  		 	Purpose						Functional				Walk()					Run()
 
-Color
-	
-
-Blue
-	
-
-Protect()
-	
-
-To give first aid()
-	
-
-Warhead weight
-	
-
-Foot size
-
-Number of fins
-	
-
-Red
-	
-
-Number of keys
-	
-
-Hit the nail()
-	
-
-Type of explosive
-	
-
-Chest size
-
-Run()
-	
-
-White
-	
-
-Volume
-	
-
-Beat()
-	
-
-Number of handles
-	
-
-Height
-
-Hip girth
-	
-
-Leg length
-	
-
-Purpose
-	
-
-Functional
-	
-
-Walk()
-	
-
-Run()
-
-Display image()
-	
-
-Manipulate something()
-	
-
-Left Click()
-	
-
-Right Click()
-	
-
-Ride()
-	
-
-Slide()
-
-Container volume
-	
-
-Weight without container
-	
-
-Volume without packaging
-	
-
-Top color
-	
-
-Bottom color
-	
-
-Rank marks
-
-Number of boxes
-	
-
-Number of bays
-	
-
-Cable type
-	
-
-Metal
-	
-
-Armor type
-	
-
-Kosher
+Display image()			Manipulate something()	 	Left Click()				Right Click()			Ride()					Slide()
 
-Number of containers
-	
-
-Number of bags
-	
-
-Wear()
-	
-
-Own()
-	
-
-Green
-	
-
-Water
-
-Habitat
-	
-
-Air
-	
-
-Left
-	
-
-Right
-	
-
-Sole type
-	
-
-Wear()
-
-Material
-	
-
-Fastener type
-	
-
-zip()
-	
-
-Dress()
-	
-
-Laces
-	
-
-Leather
-
-Plastics
-	
-
-Plastic
-	
-
-Rubber
-	
+Container volume		Weight without container 	Volume without packaging	Top color				Bottom color			Rank marks
 
-Synthetic fabric
-	
-
-Nylon
-	
-
-Capron
-
-Caliber
-	
-
-Damage range
-	
-
-Scattering
-	
-
-engine’s type
-	
-
-Fly()
-	
-
-Explode()
-
-Live
-	
-
-Dead
-	
+Number of boxes			Number of bays				Cable type					Metal					Armor type				Kosher
 
-Frozen
-	
-
-Fresh
-	
-
-Long storage
-	
-
-Cooking type
-
-Necessary tool
-	
-
-Necessary consumables
-	
+Number of containers	Number of bags				Wear()						Own()					Green					Water
 
-Place of application
-	
-
-Destination compartment
-	
+Habitat					Air							Left						Right					Sole type				Wear()
 
-Kitchen
-	
+Material				Fastener type				zip()						Dress()					Laces					Leather
 
-Engineering
+Plastics				Plastic						Rubber						Synthetic fabric		Nylon					Capron
 
-Pantry
-	
+Caliber					Damage range				Scattering					engine’s type			Fly()					Explode()
 
-Chopping
-	
+Live					Dead						Frozen						Fresh					Long storage			Cooking type
 
-Bridge
-	
+Necessary tool			Necessary consumables		Place of application		Destination compartment	Kitchen					Engineering
 
-Sickbay
-	
+Pantry					Chopping					Bridge						Sickbay					Hold					Conning tower
 
-Hold
 	
-
-Conning tower
-
 Expected Input:
 
-There is no direct input in the program. Instead, we are categorizing and associating items with the fields and methods in the Main method. The categories were set earlier based on the items in the purchase pile.
+There is no direct input in the program. 
+Instead, we are categorizing and associating items with the fields and methods in the Main method. 
+The categories were set earlier based on the items in the purchase pile.
 
 Expected Output:
 
-The expected output would describe the categories and the fields and methods associated with them. It might look something like this:
+The expected output would describe the categories and the fields and methods associated with them. 
+It might look something like this:
 
 Food Category:
 Fields: Weight, Color, Quantity, Amount, Size, Fresh, Long storage, Cooking type
@@ -393,13 +192,19 @@ For each category class (created in the previous task), we will:
 
     Select the most appropriate fields and methods from the list of available options to describe each category.
 
-    Associate fields that describe specific properties (like Weight, Quantity, etc.), and methods that describe actions (like Explode(), Swim(), etc.).
+    Associate fields that describe specific properties (like Weight, Quantity, etc.),
+		and methods that describe actions (like Explode(), Swim(), etc.).
+
 
 Difficulty level - MEDIUM
 
 Task #3
 
-Consider the classes created in the last task and remove everything unnecessary, leaving the minimum required set of methods and fields. This set must fully describe the class so that it can be distinguished from any other. For all remaining and deleted fields and methods,prepare an explanation of why each was kept or removed. If necessary, add missing fields and methods and justify their inclusion.
+Consider the classes created in the last task and remove everything unnecessary, 
+leaving the minimum required set of methods and fields. 
+This set must fully describe the class so that it can be distinguished from any other. 
+For all remaining and deleted fields and methods,prepare an explanation of why each was kept or removed.
+If necessary, add missing fields and methods and justify their inclusion.
 
 Expected Input:
 
