@@ -316,3 +316,128 @@ class Program
 
 }
 ////////////////////////////////////////////////////////////
+
+Medium 
+
+Task 3
+////////////////////////////////////////////////////////////
+using System;
+
+public class Food
+{
+    public string Amount;
+    public bool Fresh;
+
+    public void Store() { }
+}
+
+public class Furniture
+{
+    public int Length;
+    public int Width;
+    public int Height;
+    public int Weight;
+    public string Color;
+    public string Material;
+
+    public void assemble() { }
+}
+
+public class Tools
+{
+    public string Type;
+
+    public void Use() { }
+}
+
+public class Clothing
+{
+    public string Color;
+    public int Size;
+    public string RankMarks;
+    public bool Material;
+
+    public void Wear() { }
+}
+
+public class Electronics
+{
+    public string Name;
+
+    public void Run() { }
+}
+
+public class Weapons
+{
+    public int Caliber;
+    public int Quantity;
+
+    public void Fire() { }
+}
+
+public class Medical
+{
+    public string Type;
+
+    public void Treat() { }
+}
+
+public class Toys
+{
+    public string Name;
+
+    public void Run() { }
+}
+
+public class Fish
+{
+    public int Weight;
+    public int NumberOfFins;
+    public bool Live;
+    public void Swim() { }
+}
+
+public class Miscellaneous
+{
+    public int Weight;
+
+    public void Move() { }
+
+}
+
+class Program
+{
+    static void Main()
+    {
+
+        List<string> Food = new List<string> { "Oranges", "Apples", "Plums", "Grapes", "Lentils", "Poultry", "Potatoes", "Rice" };
+
+        List<string> Furniture = new List<string> { "Tables", "Chairs" };
+
+        List<string> Tools = new List<string> { "Screwdrivers", "Hammers", "Pliers" };
+
+        List<string> Clothing = new List<string> { "Shoes", "Naval uniforms" };
+
+        List<string> Electronics = new List<string> { "Mice", "Keyboars", "Holoscreens" };
+
+        List<string> Weapons = new List<string> { "Gunpowder", "Charges for guns", "Torpedoes" };
+
+        List<string> Medical = new List<string> { "First aid kits" };
+
+        List<string> Toys = new List<string> { "Games" };
+
+        List<string> Fish = new List<string> { "Salmon", "Pike", "Herring" };
+
+        List<string> Miscellaneous = new List<string> { "Coils of cables", "Sheathing sheets", "Door handles", "Frying pans", "Pots", "Boxes", "Androids", "Containers with unigel" };
+
+
+        Console.ReadKey();
+    }
+
+}
+////////////////////////////////////////////////////////////
+
+Task 4
+////////////////////////////////////////////////////////////
+
+////////////////////////////////////////////////////////////
