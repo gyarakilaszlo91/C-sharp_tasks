@@ -83,3 +83,236 @@ class Program
 
 }
 ////////////////////////////////////////////////////////////
+
+Task 2
+////////////////////////////////////////////////////////////
+using System;
+
+public class Food
+{
+    public bool Pantry;
+    public int Orange;
+    public int WeightWithoutContainer;
+    public int NumberOfBags;
+    public bool NecessaryConsumables;
+    public bool Chopping;
+    public int VolumeWithoutPackaging;
+    public bool Frozen;
+    public string Amount;
+    public bool Fresh;
+    public int NumberOfGrains;
+    public bool LongStorage;
+    public bool Kitchen;
+    public bool Kosher;
+    public string CookingType;
+
+    public void Chew() { }
+}
+
+public class Furniture
+{
+    public int Length;
+    public int Width;
+    public int Height;
+    public int Weight;
+    public string Color;
+    public string Material;
+    public string FastenerType;
+    public bool Plastic;
+    public bool Metal;
+    public int NumberOfHandles;
+
+}
+
+public class Tools
+{
+    public bool NecessaryTool;
+    public bool Air;
+    public string Purpose;
+    public bool Scattering;
+    public string DestinationCompartment;
+    public string Hold;
+
+    public void Paint() { }
+    public void Unscrew() { }
+    public void Curl() { }
+    public void HitTheNail() { }
+    public void Beat() { }
+}
+
+public class Clothing
+{
+    public int HipGirth;
+    public string Color;
+    public bool Blue;
+    public bool Red;
+    public bool White;
+    public int LegLength;
+    public bool Left;
+    public bool Rubber;
+    public int Size;
+    public string TopColor;
+    public bool Right;
+    public bool SyntheticFabric;
+    public int Quantity;
+    public string BottomColor;
+    public int ArmorType;
+    public bool Green;
+    public string SoleType;
+    public bool Laces;
+    public bool Nylon;
+    public int FootSize;
+    public int ChestSize;
+    public int Height;
+    public string RankMarks;
+    public bool Leather;
+
+    public void Wear() { }
+    public void Zip() { }
+    public void Dress() { }
+}
+
+public class Electronics
+{
+    public int NumberOfKeys;
+    public int Volume;
+    public string CableType;
+    public string Bridge;
+    public bool Functional;
+    public string Engineering;
+    public void DisplayImage() { }
+    public void ManipulateSomething() { }
+    public void LeftClick() { }
+    public void RightClick() { }
+    public void Run() { }
+}
+
+public class Weapons
+{
+    public int Caliber;
+    public int DamageRange;
+    public int Quantity;
+    public string TNTEquivalent;
+    public int WarheadWeight;
+    public string TypeOfExplosive;
+
+    public void Protect() { }
+    public void Strike() { }
+    public void HitTarget() { }
+    public void Fire() { }
+    public void Explode() { }
+}
+
+public class Medical
+{
+    public string PlaceOfApplication;
+    public bool Sickbay;
+
+    public void Treat() { }
+    public void ToGiveFirstAid() { }
+
+}
+
+public class Toys
+{
+    public bool Plastics;
+    public int NumberOfHandles;
+
+    public void Run() { }
+    public void Spin() { }
+    public void Own() { }
+    public void Ride() { }
+    public void Fly() { }
+    public void Slide() { }
+}
+
+public class Fish
+{
+    public int Weight;
+    public int NumberOfFins;
+    public string Habitat;
+    public bool Live;
+    public int NumberOfBays;
+    public bool Dead;
+    public int NumberOfEyes;
+    public int NumberOfCarcasses;
+    public int AvailabilityOfFillet;
+    public bool Water;
+
+    public void Bite() { }
+    public void Swim() { }
+}
+
+public class Miscellaneous
+{
+    public int ContainerVolume;
+    public int NumberOfBoxes;
+    public int NumberOfContainers;
+    public string EngineType;
+    public string Capron;
+    public string ConningTower;
+
+    public void ChewGrass() { }
+    public void Walk() { }
+    public void Wear() { }
+}
+
+class Program
+{
+    static void Main()
+    {
+
+        List<string> Food = new List<string> { "Oranges", "Apples", "Plums", "Grapes", "Lentils", "Poultry", "Potatoes", "Rice" };
+
+        List<string> Furniture = new List<string> { "Tables", "Chairs" };
+
+        List<string> Tools = new List<string> { "Screwdrivers", "Hammers", "Pliers" };
+
+        List<string> Clothing = new List<string> { "Shoes", "Naval uniforms" };
+
+        List<string> Electronics = new List<string> { "Mice", "Keyboars", "Holoscreens" };
+
+        List<string> Weapons = new List<string> { "Gunpowder", "Charges for guns", "Torpedoes" };
+
+        List<string> Medical = new List<string> { "First aid kits" };
+
+        List<string> Toys = new List<string> { "Games" };
+
+        List<string> Fish = new List<string> { "Salmon", "Pike", "Herring" };
+
+        List<string> Miscellaneous = new List<string> { "Coils of cables", "Sheathing sheets", "Door handles", "Frying pans", "Pots", "Boxes", "Androids", "Containers with unigel" };
+
+        Console.WriteLine("The categories of purchases are as follows:");
+        WriteNames(Food, "Food");
+        WriteNames(Furniture, "Furniture");
+        WriteNames(Tools, "Tools");
+        WriteNames(Clothing, "Clothing");
+        WriteNames(Electronics, "Electronics");
+        WriteNames(Weapons, "Weapons");
+        WriteNames(Medical, "Medical");
+        WriteNames(Toys, "Toys");
+        WriteNames(Fish, "Fish");
+        WriteNames(Miscellaneous, "Miscellaneous");
+
+        Console.ReadKey();
+    }
+
+    public static void WriteNames(List<string> list, string name)
+    {
+        Console.Write($"{name}: ");
+
+        foreach(string item in list)
+        {
+            if (list.IndexOf(item) == list.Count - 1)
+            {
+                Console.WriteLine($"{item}.");
+            }
+            else
+            {
+                Console.Write($"{item}, ");
+            }
+        }
+    }
+
+}
+////////////////////////////////////////////////////////////
