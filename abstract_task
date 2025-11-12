@@ -1,0 +1,85 @@
+Easy
+
+Task 1
+////////////////////////////////////////////////////////////
+using System;
+
+public class Food { }
+
+public class Furniture { }
+
+public class Tools { }
+
+public class Clothing { }
+
+public class Electronics { }
+
+public class Weapons { }
+
+public class Medical { }
+
+public class Toys { }
+
+public class Fish { }
+
+public class Miscellaneous { }
+
+class Program
+{
+    static void Main()
+    {
+
+        List<string> Food = new List<string> { "Oranges", "Apples", "Plums", "Grapes", "Lentils", "Poultry", "Potatoes", "Rice" };
+
+        List<string> Furniture = new List<string> { "Tables", "Chairs" };
+
+        List<string> Tools = new List<string> { "Screwdrivers", "Hammers", "Pliers" };
+
+        List<string> Clothing = new List<string> { "Shoes", "Naval uniforms" };
+
+        List<string> Electronics = new List<string> { "Mice", "Keyboars", "Holoscreens" };
+
+        List<string> Weapons = new List<string> { "Gunpowder", "Charges for guns", "Torpedoes" };
+
+        List<string> Medical = new List<string> { "First aid kits" };
+
+        List<string> Toys = new List<string> { "Games" };
+
+        List<string> Fish = new List<string> { "Salmon", "Pike", "Herring" };
+
+        List<string> Miscellaneous = new List<string> { "Coils of cables", "Sheathing sheets", "Door handles", "Frying pans", "Pots", "Boxes", "Androids", "Containers with unigel" };
+
+        Console.WriteLine("The categories of purchases are as follows:");
+        WriteNames(Food, "Food");
+        WriteNames(Furniture, "Furniture");
+        WriteNames(Tools, "Tools");
+        WriteNames(Clothing, "Clothing");
+        WriteNames(Electronics, "Electronics");
+        WriteNames(Weapons, "Weapons");
+        WriteNames(Medical, "Medical");
+        WriteNames(Toys, "Toys");
+        WriteNames(Fish, "Fish");
+        WriteNames(Miscellaneous, "Miscellaneous");
+
+        Console.ReadKey();
+    }
+
+    public static void WriteNames(List<string> list, string name)
+    {
+        Console.Write($"{name}: ");
+
+        foreach(string item in list)
+        {
+            if (list.IndexOf(item) == list.Count - 1)
+            {
+                Console.WriteLine($"{item}.");
+            }
+            else
+            {
+                Console.Write($"{item}, ");
+            }
+        }
+    }
+
+}
+////////////////////////////////////////////////////////////
