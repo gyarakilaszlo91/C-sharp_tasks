@@ -439,5 +439,383 @@ class Program
 
 Task 4
 ////////////////////////////////////////////////////////////
+using System;
+
+public class Food
+{
+    public string Name;
+    public int Weight;
+    public bool Fresh;
+
+    public Food(string name, int weight, bool fresh)
+    {
+        Name = name;
+        Weight = weight;
+        Fresh = fresh;
+    }
+
+    public void Details()
+    {
+        Console.WriteLine($"Details for the Food: {Name}");
+        Console.WriteLine($"Weight: {Weight} kg");
+        string condition = Fresh ? "fresh" : "rotten";
+        Console.WriteLine($"The food is {condition}");
+    }
+
+    public void Eat(string name)
+    {
+        Console.WriteLine($"{name} started eating {Name}.");
+    }
+}
+
+public class Furniture
+{
+    public string Type;
+    public int Weight;
+    public int Height;
+    public int Length;
+    public int Width;
+    public string Color;
+
+    public Furniture(string type, int weight, int height, int length, int width, string color)
+    {
+        Type = type;
+        Weight = weight;
+        Height = height;
+        Length = length;
+        Width = width;
+        Color = color;
+    }
+
+    public void Assemble(string name)
+    {
+        Console.WriteLine($"{name} started to assemble the {Color} {Type} furniture.");
+        Console.WriteLine($"The furniture sizes are, Width: {Width} cm, Height: {Height} cm, Length: {Length} cm");
+    }
+
+    public void UseFurniture(string name)
+    {
+        Console.WriteLine($"{name} started using the {Type}");
+    }
+}
+
+public class Tools
+{
+    public string Type;
+    public int Quantity;
+    public bool InItsPlace;
+
+    public Tools(string type, int quantity, bool inItsPlace)
+    {
+        Type = type;
+        Quantity = quantity;
+        InItsPlace = inItsPlace;
+    }
+
+    public void Stored()
+    {
+        if ( InItsPlace )
+        {
+            Console.WriteLine($"The {Type} tool is in it's place");
+        }
+        else
+        {
+            Console.WriteLine($"The {Type} tool is used by someone");
+        }
+    }
+
+    public void UseTool(string name)
+    {
+        Console.WriteLine($"{name} started using the tool");
+        InItsPlace = false;
+    }
+
+    public void StoreTool(string name)
+    {
+        Console.WriteLine($"{name} put the tool back to it's place");
+        InItsPlace = true;
+    }
+}
+
+public class Electronics
+{
+    string Type;
+    string Name;
+    int Serial;
+
+    public Electronics(string type, string name, int serial = -1)
+    {
+        Type = type;
+        Name = name;
+        Serial = serial;
+    }
+    public void CheckSerial()
+    {
+        if (Serial == -1)
+        {
+            Console.WriteLine($"The serial number for {Name} is missing");
+        }
+        else
+        {
+            Console.WriteLine($"The serial number for {Name} is {Serial}");
+        }
+    }
+
+    public void TypeOfElectronic()
+    {
+        Console.WriteLine($"The type of {Name} is {Type}");
+    }
+}
+
+public class Weapons
+{
+    public int Caliber;
+    public bool Explosive;
+    public bool Ranged;
+    public string Name;
+
+    public Weapons(string name, bool ranged, int caliber, bool explosive)
+    {
+        Caliber = caliber;
+        Explosive = explosive;
+        Name = name;
+        Ranged = ranged;
+    }
+
+    public void CheckExplosive()
+    {
+        string message = Explosive ? "explosive" : "not explosive";
+        Console.WriteLine($"{Name} is {message}");
+    }
+
+    public void Info()
+    {
+        Console.WriteLine($"Info of {Name}");
+        Console.WriteLine($"Ranged - {Ranged}");
+        Console.WriteLine($"Caliber - {Caliber}");
+        Console.WriteLine($"Explosive - {Explosive}");
+    }
+}
+
+public class Medical
+{
+    public string Name;
+    public int Amount;
+    public Medical(string name, int amount)
+    {
+        Name = name;
+        Amount = amount;
+
+    }
+    public void ProvideFirstAid(string name, string to)
+    {
+        if(Amount > 0)
+        {
+            Console.WriteLine($"{name} providec first aid to {to}");
+            Amount--;
+        }
+        else
+        {
+            Console.WriteLine("No first aid kit left");
+        }
+    }
+
+    public void CheckAmount()
+    {
+        Console.WriteLine($"From {Name} there is {Amount} left");
+    }
+}
+
+public class Toys
+{
+    public string Name;
+    public int MinAge;
+    public int MaxAge;
+    public string Material;
+
+    public Toys(string name, string material, int minAge, int maxAge)
+    {
+        Name = name;
+        Material = material;
+        MinAge = minAge;
+        MaxAge = maxAge;
+    }
+
+    public int CheckAge(int age)
+    {
+        if (age > MinAge && age < MaxAge)
+        {
+            Console.WriteLine($"{Name} can be used.");
+            return 1;
+        }
+        else
+        {
+            Console.WriteLine("Users age does not meet the requirements.");
+            return -1;
+        }
+    }
+
+    public void UseToy(string name, int age)
+    {
+        if (CheckAge(age) == 1)
+        {
+            Console.WriteLine($"{name} started using {Name}");
+        }
+        else
+        {
+            Console.WriteLine($"{name} can't use the toy.");
+        }
+    }
+}
+
+public class Fish
+{
+    public string Type;
+    public int Weight;
+    public bool Alive;
+    public List<string> FishTank = new List<string>();
+    bool InTank = false;
+
+    public Fish(string type, int weight, bool alive)
+    {
+        Type = type;
+        Weight = weight;
+        Alive = alive;
+    }
+
+    public void CheckFish()
+    {
+        string alive = Alive ? "alive" : "dead";
+        Console.WriteLine($"{Type} fish weight {Weight} kg, and it is {alive}");
+    }
+
+    public void AddFishToTank()
+    {
+        if(!InTank && Alive )
+        {
+            Console.WriteLine($"{Type} added to the Aquarium");
+            InTank = true;
+            FishTank.Add(Type);
+        }
+        else if (!Alive)
+        {
+            Console.WriteLine("The fish is dead, can't add it to the Aquarium.");
+        }
+        else if (InTank) 
+        {
+            Console.WriteLine("The fish is already in the Aquarium.");
+        }
+    }
+
+    public void RemoveFishFromTank()
+    {
+        if (InTank)
+        {
+            Console.WriteLine($"{Type} is removed from the Aquariaum");
+            InTank = false;
+            FishTank.Remove(Type);
+        }
+        else
+        {
+            Console.WriteLine("The fish is not in the Aquariuam.");
+        }
+    }
+
+}
+
+public class Miscellaneous
+{
+    public int Quantity;
+    public string Name;
+    public string Category;
+
+    public Miscellaneous(string name, string category, int quantity)
+    {
+        Name = name;
+        Category = category;
+        Quantity = quantity;
+    }
+
+    public void Description()
+    {
+        Console.WriteLine($"{Name} is in category {Category}, and we have {Quantity} amount.");
+    }
+
+    public void Add(int amount)
+    {
+        Quantity += amount;
+        Console.WriteLine($"{amount} is added to {Name}, updated quantity: {Quantity}");
+    }
+
+}
+
+class Program
+{
+
+    static void Main()
+    {
+
+        Food orange = new Food("Orange", 2, true);
+        orange.Details();
+        orange.Eat("Captain");
+
+        Console.WriteLine();
+
+        Furniture stool = new Furniture("Stool", 5, 200, 300, 200, "brown");
+        stool.Assemble("Captain");
+        stool.UseFurniture("Captain");
+
+        Console.WriteLine();
+
+        Tools screwdriver = new Tools("Screwdriver", 3, true);
+        screwdriver.Stored();
+        screwdriver.UseTool("Captain");
+
+        Console.WriteLine();
+
+        Electronics keyboard = new Electronics("Keyboard", "Asus");
+        keyboard.TypeOfElectronic();
+        keyboard.CheckSerial();
+
+        Console.WriteLine();
+
+        Weapons gun = new Weapons("Eagle", true, 45, false);
+        gun.CheckExplosive();
+        gun.Info();
+
+        Console.WriteLine();
+
+        Medical firstaidkit = new Medical("Firs-aid kit", 20);
+        firstaidkit.ProvideFirstAid("Captain", "Colonel");
+        firstaidkit.CheckAmount();
+
+        Console.WriteLine();
+
+        Toys gamecube = new Toys("Gamecube", "Plastic", 15, 99);
+        gamecube.UseToy("Captain", 50);
+        gamecube.CheckAge(40);
+
+        Console.WriteLine();
+
+        Fish sunfish = new Fish("Sunfish", 4, true);
+        sunfish.CheckFish();
+        sunfish.AddFishToTank();
+        sunfish.RemoveFishFromTank();
+
+        Console.WriteLine();
+
+        Miscellaneous box = new Miscellaneous("Box", "Container", 5);
+        box.Description();
+        box.Add(2);
+
+        Console.ReadKey();
+    }
+}
+////////////////////////////////////////////////////////////
+
+Hard
+
+Task 5
+////////////////////////////////////////////////////////////
 
 ////////////////////////////////////////////////////////////
