@@ -817,5 +817,337 @@ Hard
 
 Task 5
 ////////////////////////////////////////////////////////////
+using System;
+using System.Collections.Generic;
 
+public class Colony
+{
+    public int Id;
+    public string Name;
+    public Planet Planet;
+    public int Population;
+    public List<Resource> Resources;
+    public List<Building> Buildings;
+
+    public Colony(int id, string name, Planet planet)
+    {
+        Id = id;
+        Name = name;
+        Planet = planet;
+        Population = 0;
+        Resources = new List<Resource>();
+        Buildings = new List<Building>();
+    }
+
+    public Colony(int id, string name, Planet planet, int population)
+    {
+        Id = id;
+        Name = name;
+        Planet = planet;
+        Population = population;
+        Resources = new List<Resource>();
+        Buildings = new List<Building>();
+    }
+
+    public void AddBuilding(Building building)
+    {
+        Buildings.Add(building);
+    }
+
+    public void AllocateResources(Resource resource)
+    {
+        Resources.Add(resource);
+    }
+
+    public void UpdatePopulation(int amount)
+    {
+        Population += amount;
+    }
+
+    public string GetColonyInfo()
+    {
+        string message = $"Id: {Id}, Name: {Name}, Population: {Population}, Available resources: ";
+        
+        foreach (Resource resource in Resources)
+        {
+            message += $"- {resource.GetResourceInfo()} - ";
+        }
+
+        return message;
+    }
+}
+
+public class Building
+{
+    public int Id;
+    public string Name;
+    public string Type;
+    public int Capacity;
+    public List<Resource> ConstructionCost;
+
+    public Building(int id, string name, string type, int capacity, Resource constructionCost)
+    {
+        Id = id;
+        Name = name;
+        Type = type;
+        Capacity = capacity;
+        ConstructionCost = new List<Resource>();
+        ConstructionCost.Add(constructionCost);
+    }
+
+    public Building(int id, string name, string type, int capacity, Resource[] constructionCost)
+    {
+        Id = id;
+        Name = name;
+        Type = type;
+        Capacity = capacity;
+        ConstructionCost = new List<Resource>();
+        foreach (Resource resource in constructionCost)
+        {
+            ConstructionCost.Add(resource);
+        }
+    }
+
+    public Building(int id, string name, string type, int capacity, List<Resource> constructionCost)
+    {
+        Id = id;
+        Name = name;
+        Type = type;
+        Capacity = capacity;
+        ConstructionCost = new List<Resource>();
+        foreach (Resource resource in constructionCost)
+        {
+            ConstructionCost.Add(resource);
+        }
+    }
+
+    public void Construct()
+    {
+        Console.WriteLine($"Needed resources to construct the building: ");
+
+        string message = "";
+        foreach(Resource resource in ConstructionCost)
+        {
+            message += $"- {resource.GetResourceInfo()} - ";
+        }
+        Console.WriteLine(message);
+
+        Console.WriteLine("Starting the construction of the building...");
+    }
+
+    public string GetBuildingInfo()
+    {
+        return $"Id: {Id}, Name: {Name}, Type: {Type}, Capacity: {Capacity}";
+    }
+}
+
+public class Resource
+{
+    public string Name;
+    public int Quantity;
+
+    public Resource(string name, int quantity)
+    {
+        Name = name;
+        Quantity = quantity;
+    }
+
+    public string GetResourceInfo()
+    {
+        return $"{Name} / {Quantity}";
+    }
+}
+
+public class Planet
+{
+    public string Name;
+
+    public Planet(string name)
+    {
+        Name = name;
+    }
+}
+
+public class Colonist
+{
+    public int Id;
+    public string Name;
+    public string Role;
+    public int Health;
+    public Colony Currentcolony;
+
+    public Colonist(int id, string name, string role)
+    {
+        Id = id;
+        Name = name;
+        Role = role;
+        Health = 100;
+    }
+    public Colonist(int id, string name, string role, int health)
+    {
+        Id = id;
+        Name = name;
+        Role = role;
+        Health = health;
+    }
+
+    public Colonist(int id, string name, string role, int health, Colony currentColony)
+    {
+        Id = id;
+        Name = name;
+        Role = role;
+        Health = health;
+        AssignToColony(currentColony);
+    }
+
+    public void AssignToColony(Colony colony)
+    {
+        Console.WriteLine($"Colonist allocated to the colony #{colony.Id}");
+        Currentcolony = colony;
+    }
+
+    public void UpdateHealth(int amount)
+    {
+        Health += amount;
+    }
+
+    public string GetColonistInfo()
+    {
+        return $"Id: {Id}, Name: {Name}, Role: {Role}, Health: {Health}";
+    }
+}
+
+public class ColonyManager
+{
+    public List<Colony>   Galaxy;
+    public List<Building> Buildings;
+    public List<Resource> Resources;
+    public List<Colonist> Colonists;
+
+    public ColonyManager()
+    {
+        Galaxy = new List<Colony>();
+        Buildings = new List<Building>();
+        Resources = new List<Resource>();
+        Colonists = new List<Colonist>();
+    }
+
+    public void CreateColony(Colony colony)
+    {
+        Console.WriteLine($"{colony.Name} colony added to the Galaxy");
+        Galaxy.Add(colony);
+    }
+
+    public void BuildBuilding(int colonyId, Building building)
+    {
+        foreach (Colony colony in Galaxy)
+        {
+            if (colony.Id == colonyId)
+            {
+                Console.WriteLine($"New building in Colony #{colonyId}");
+                building.Construct();
+                colony.AddBuilding(building);
+            }
+        }
+    }
+
+    public void ManageResources(int colonyId, string resourceName, int amount)
+    {
+        foreach (Colony colony in Galaxy)
+        {
+            if (colony.Id == colonyId)
+            {
+                
+                if (colony.Resources.Count == 0)
+                {
+                    if (amount > 0)
+                    {
+                        colony.AllocateResources(new Resource(resourceName, amount));
+                        Console.WriteLine($"Resource {resourceName} stored with {amount} of quantity.");
+                        break;
+                    }
+                    else
+                    {
+                        Console.WriteLine($"Resource {resourceName} not found");
+                        break;
+                    }
+                }
+
+
+                foreach(Resource resource in colony.Resources)
+                {
+                    Console.WriteLine($"{resource.Name}, {resourceName}");
+                    if (resource.Name == resourceName)
+                    {
+                        if (resource.Quantity + amount < 0)
+                        {
+                            int resourceLeft = amount - resource.Quantity;
+                            resource.Quantity = 0;
+                            Console.WriteLine($"Not enough resource for {resourceName}, {resourceLeft} allocated to the project");
+                            break;
+                        }
+                        else
+                        {
+                            Console.WriteLine($"From {resourceName} {amount} allocated");
+                            resource.Quantity += amount;
+                            break;
+                        }
+                    }
+                    else
+                    {
+                        if (amount > 0)
+                        {
+                            colony.AllocateResources(new Resource(resourceName, amount));
+                            Console.WriteLine($"Resource {resourceName} stored with {amount} of quantity.");
+                            break;
+                        }
+                        else
+                        {
+                            Console.WriteLine("Resource not found");
+                            break;
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    public void AddColonistToColony(int colonyId, Colonist colonist)
+    {
+        foreach (Colony colony in Galaxy)
+        {
+            if (colony.Id == colonyId)
+            {
+                colonist.AssignToColony(colony);
+                colony.UpdatePopulation(1);
+            }
+        }
+    }
+}
+
+
+class Program
+{
+
+
+    static void Main()
+    {
+
+        Planet arkania = new Planet("Arkania");
+        Colony firstColony = new Colony(1, "Arkania", arkania);
+        Colonist tarkos = new Colonist(1, "Tarkos", "Hunter");
+
+        ColonyManager galaxy = new ColonyManager();
+
+        galaxy.CreateColony(firstColony);
+        galaxy.AddColonistToColony(1, tarkos);
+        galaxy.ManageResources(1, "led", 21);
+        galaxy.ManageResources(1, "iron", 11);
+        galaxy.ManageResources(1, "iron", -3);
+
+
+
+        Console.ReadKey();
+    }
+}
 ////////////////////////////////////////////////////////////
