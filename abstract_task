@@ -1057,57 +1057,77 @@ public class ColonyManager
         {
             if (colony.Id == colonyId)
             {
-                
+                // if the list is empty adding the first resource to it
                 if (colony.Resources.Count == 0)
                 {
                     if (amount > 0)
                     {
                         colony.AllocateResources(new Resource(resourceName, amount));
                         Console.WriteLine($"Resource {resourceName} stored with {amount} of quantity.");
-                        break;
+                        // breaking out of the method
+                        return;
                     }
                     else
                     {
                         Console.WriteLine($"Resource {resourceName} not found");
-                        break;
+                        // breaking out of the method
+                        return;
                     }
                 }
 
-
+                // helper to check if resource found or not
+                bool finished = false;
+                // going through the resources and adding/allocating if resource exists
                 foreach(Resource resource in colony.Resources)
                 {
-                    Console.WriteLine($"{resource.Name}, {resourceName}");
                     if (resource.Name == resourceName)
                     {
-                        if (resource.Quantity + amount < 0)
+                        if(amount < 0)
                         {
-                            int resourceLeft = amount - resource.Quantity;
-                            resource.Quantity = 0;
-                            Console.WriteLine($"Not enough resource for {resourceName}, {resourceLeft} allocated to the project");
-                            break;
+                            if (resource.Quantity + amount < 0)
+                            {
+                                int resourceLeft = amount - resource.Quantity;
+                                resource.Quantity = 0;
+                                Console.WriteLine($"Not enough resource for {resourceName}, {resourceLeft} allocated to the project");
+
+                            }
+                            else
+                            {
+                                Console.WriteLine($"From {resourceName} { Math.Abs(amount)} allocated");
+                                resource.Quantity += amount;
+
+                            }
                         }
                         else
                         {
-                            Console.WriteLine($"From {resourceName} {amount} allocated");
                             resource.Quantity += amount;
-                            break;
+                            Console.WriteLine($"{amount} added to resource {resource.Name}");
+
                         }
-                    }
-                    else
-                    {
-                        if (amount > 0)
-                        {
-                            colony.AllocateResources(new Resource(resourceName, amount));
-                            Console.WriteLine($"Resource {resourceName} stored with {amount} of quantity.");
-                            break;
-                        }
-                        else
-                        {
-                            Console.WriteLine("Resource not found");
-                            break;
-                        }
+                        // changing the helper to true, if resource was found
+                        finished = true; ;
                     }
                 }
+
+
+                 // if resource was not found we check if resource if positive or negative
+                 if (!finished)
+                 {
+                     // if resoure is positive we add it to the resources list
+                     if (amount > 0)
+                     {
+                         colony.AllocateResources(new Resource(resourceName, amount));
+                         Console.WriteLine($"Resource {resourceName} stored with {amount} of quantity.");
+                         
+                     }
+                     else
+                     {
+                         Console.WriteLine($"Resource {resourceName} not found, can't allocate from non existing resource");
+                         
+                     }
+                 }
+                    
+                    
             }
         }
     }
@@ -1144,6 +1164,8 @@ class Program
         galaxy.ManageResources(1, "led", 21);
         galaxy.ManageResources(1, "iron", 11);
         galaxy.ManageResources(1, "iron", -3);
+        galaxy.ManageResources(1, "iron", 5);
+        galaxy.ManageResources(1, "coal", -10);
 
 
 
