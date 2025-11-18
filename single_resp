@@ -1,0 +1,174 @@
+Easy
+
+Task 1
+
+////////////////////////////////////////////////////////////////
+using System;
+
+public class ShipEngine
+{
+    public int x;
+    public int y;
+
+    public ShipEngine(int startX = 5, int startY = 5)
+    {
+        this.x = startX;
+        this.y = startY;
+    }
+
+    public void Move(string direction, AsteroidField field)
+    {
+        int currentX = this.x;
+        int currentY = this.y;
+
+            switch (direction)
+            {
+                case "W":
+                    this.y -= 1;
+                    break;
+                case "S":
+                    this.y += 1;
+                    break;
+                case "D":
+                    this.x += 1;
+                    break;
+                case "A":
+                    this.x -= 1;
+                    break;
+                default:
+                    break;
+            }
+
+        if (!field.IsValidMove(x, y))
+        {
+            Console.WriteLine("Movement blocked! Asteroid detected.");
+            this.x = currentX;
+            this.y = currentY;
+        }
+
+    }
+}
+
+public class AsteroidField
+{
+    Random random = new Random();
+    int[,] field = new int[10,10];
+
+    public AsteroidField()
+    {
+        for (int i = 0; i < field.GetLength(0); i++)
+        {
+            for (int j = 0; j < field.GetLength(1); j++)
+            {
+                if( random.Next(1, 10) == 1)
+                {
+                    field[i, j] = 1;
+                }
+                else
+                {
+                    field[i, j] = 0;
+                }
+            }
+        }
+    }
+
+    public void PrintField(ShipEngine ship)
+    {
+        for (int i = 0; i < field.GetLength(0); i++)
+        {
+            for (int j = 0; j < field.GetLength(1); j++)
+            {
+                if (i == ship.y && j == ship.x)
+                {
+                    Console.Write("S ");
+                }
+                else if (field[i, j] == 0)
+                {
+                    Console.Write(". ");
+                }
+                else
+                {
+                    Console.Write("X ");
+                }
+            }
+            Console.WriteLine();
+        }
+    }
+
+    public bool IsValidMove(int x, int y)
+    {
+        if (field[y, x] == 0)
+        {
+            return true;
+        }
+        else
+        {
+            return false;
+        }
+    }
+
+    public bool IsAtEdge(int x, int y)
+    {
+        if (x == 0 || x == field.GetLength(1)-1 || y == 0 || y == field.GetLength(0)-1)
+        {
+            Console.WriteLine("The ship has reached the edge of the asteroid field!");
+            return true;
+        }
+        else
+        {
+            return false;
+        }
+    }
+
+}
+
+public class GameEngine
+{
+    ShipEngine ship;
+    AsteroidField grid;
+    string input;
+
+    public GameEngine()
+    {
+        ship = new ShipEngine();
+        grid = new AsteroidField();
+
+        Console.Clear();
+        while (true)
+        {
+            Console.WriteLine();
+            grid.PrintField(ship);
+
+            if (grid.IsAtEdge(ship.x, ship.y)) break;
+            
+            Console.Write("Enter the direction, q/Q to quit: ");
+            input = Console.ReadLine().Trim().ToUpper();
+
+            if (input == "Q") break;
+
+            ship.Move(input, grid);
+
+        }
+    }
+
+
+}
+
+
+class Program
+{
+
+    static void Main()
+    {
+
+        GameEngine game = new GameEngine();
+
+        Console.ReadKey();
+    }
+}
+////////////////////////////////////////////////////////////////
+
+Task 2
+////////////////////////////////////////////////////////////////
+
+////////////////////////////////////////////////////////////////
