@@ -16,7 +16,7 @@ public class ShipEngine
         this.y = startY;
     }
 
-    public void Move(string direction, AsteroidField field)
+    public int Move(string direction, AsteroidField field)
     {
         int currentX = this.x;
         int currentY = this.y;
@@ -44,7 +44,10 @@ public class ShipEngine
             Console.WriteLine("Movement blocked! Asteroid detected.");
             this.x = currentX;
             this.y = currentY;
+            return -1;
         }
+
+        return 0;
 
     }
 }
@@ -127,11 +130,13 @@ public class GameEngine
     ShipEngine ship;
     AsteroidField grid;
     string input;
+    int availableMoves;
 
     public GameEngine()
     {
         ship = new ShipEngine();
         grid = new AsteroidField();
+        availableMoves = 10;
 
         Console.Clear();
         while (true)
@@ -141,12 +146,21 @@ public class GameEngine
 
             if (grid.IsAtEdge(ship.x, ship.y)) break;
             
-            Console.Write("Enter the direction, q/Q to quit: ");
+            Console.Write("Enter the direction \"WASD\", q/Q to quit: ");
             input = Console.ReadLine().Trim().ToUpper();
 
             if (input == "Q") break;
 
-            ship.Move(input, grid);
+            if (ship.Move(input, grid) == 0)
+            {
+                availableMoves -= 1;
+            }
+
+            if (availableMoves == 0)
+            {
+                Console.WriteLine("Out of moves, Game over.");
+                break;
+            }
 
         }
     }
