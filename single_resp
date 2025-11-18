@@ -151,14 +151,11 @@ public class GameEngine
 
             if (input == "Q") break;
 
-            if (ship.Move(input, grid) == 0)
-            {
-                availableMoves -= 1;
-            }
+            if (ship.Move(input, grid) == 0) availableMoves -= 1;
 
             if (availableMoves == 0)
             {
-                Console.WriteLine("Out of moves, Game over.");
+                Console.WriteLine("The ship could not reach the edge of the asteroid field.");
                 break;
             }
 
