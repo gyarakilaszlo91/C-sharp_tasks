@@ -21,27 +21,26 @@ public class ShipEngine
         int currentX = this.x;
         int currentY = this.y;
 
-            switch (direction)
-            {
-                case "W":
-                    this.y -= 1;
-                    break;
-                case "S":
-                    this.y += 1;
-                    break;
-                case "D":
-                    this.x += 1;
-                    break;
-                case "A":
-                    this.x -= 1;
-                    break;
-                default:
-                    break;
-            }
+        switch (direction)
+        {
+            case "W":
+                this.y -= 1;
+                break;
+            case "S":
+                this.y += 1;
+                break;
+            case "D":
+                this.x += 1;
+                break;
+            case "A":
+                this.x -= 1;
+                break;
+            default:
+                break;
+        }
 
         if (!field.IsValidMove(x, y))
         {
-            Console.WriteLine("Movement blocked! Asteroid detected.");
             this.x = currentX;
             this.y = currentY;
             return -1;
@@ -55,7 +54,7 @@ public class ShipEngine
 public class AsteroidField
 {
     Random random = new Random();
-    int[,] field = new int[10,10];
+    int[,] field = new int[10, 10];
 
     public AsteroidField()
     {
@@ -63,7 +62,7 @@ public class AsteroidField
         {
             for (int j = 0; j < field.GetLength(1); j++)
             {
-                if( random.Next(1, 10) == 1)
+                if (random.Next(1, 10) == 1)
                 {
                     field[i, j] = 1;
                 }
@@ -112,7 +111,7 @@ public class AsteroidField
 
     public bool IsAtEdge(int x, int y)
     {
-        if (x == 0 || x == field.GetLength(1)-1 || y == 0 || y == field.GetLength(0)-1)
+        if (x == 0 || x == field.GetLength(1) - 1 || y == 0 || y == field.GetLength(0) - 1)
         {
             Console.WriteLine("The ship has reached the edge of the asteroid field!");
             return true;
@@ -145,13 +144,22 @@ public class GameEngine
             grid.PrintField(ship);
 
             if (grid.IsAtEdge(ship.x, ship.y)) break;
-            
+
             Console.Write("Enter the direction \"WASD\", q/Q to quit: ");
             input = Console.ReadLine().Trim().ToUpper();
 
             if (input == "Q") break;
 
-            if (ship.Move(input, grid) == 0) availableMoves -= 1;
+            if (ship.Move(input, grid) == 0)
+            {
+                availableMoves -= 1;
+                Console.Clear();
+            }
+            else
+            {
+                Console.Clear();
+                Console.WriteLine("Movement blocked! Asteroid detected.");
+            }
 
             if (availableMoves == 0)
             {
@@ -199,43 +207,42 @@ public class ShipEngine
         int currentX = this.x;
         int currentY = this.y;
 
-            switch (direction)
-            {
-                case "W":
-                    this.y -= 1;
-                    break;
-                case "S":
-                    this.y += 1;
-                    break;
-                case "D":
-                    this.x += 1;
-                    break;
-                case "A":
-                    this.x -= 1;
-                    break;
-                case "Q":
-                    this.x -= 1;
-                    this.y -= 1;
-                    break;
-                case "E":
-                    this.x += 1;
-                    this.y -= 1;
-                    break;
-                case "Z":
-                    this.x -= 1;
-                    this.y += 1;
-                    break;
-                case "C":
-                    this.x += 1;
-                    this.y += 1;
-                    break;
-                default:
-                    break;
-            }
+        switch (direction)
+        {
+            case "W":
+                this.y -= 1;
+                break;
+            case "S":
+                this.y += 1;
+                break;
+            case "D":
+                this.x += 1;
+                break;
+            case "A":
+                this.x -= 1;
+                break;
+            case "Q":
+                this.x -= 1;
+                this.y -= 1;
+                break;
+            case "E":
+                this.x += 1;
+                this.y -= 1;
+                break;
+            case "Z":
+                this.x -= 1;
+                this.y += 1;
+                break;
+            case "C":
+                this.x += 1;
+                this.y += 1;
+                break;
+            default:
+                break;
+        }
 
         if (!field.IsValidMove(x, y))
         {
-            Console.WriteLine("Movement blocked! Asteroid detected.");
             this.x = currentX;
             this.y = currentY;
             return -1;
@@ -249,7 +256,7 @@ public class ShipEngine
 public class AsteroidField
 {
     Random random = new Random();
-    int[,] field = new int[10,10];
+    int[,] field = new int[10, 10];
 
     public AsteroidField()
     {
@@ -257,7 +264,7 @@ public class AsteroidField
         {
             for (int j = 0; j < field.GetLength(1); j++)
             {
-                if( random.Next(1, 15) == 1)
+                if (random.Next(1, 15) == 1)
                 {
                     field[i, j] = 1;
                 }
@@ -306,7 +313,7 @@ public class AsteroidField
 
     public bool IsAtEdge(int x, int y)
     {
-        if (x == 0 || x == field.GetLength(1)-1 || y == 0 || y == field.GetLength(0)-1)
+        if (x == 0 || x == field.GetLength(1) - 1 || y == 0 || y == field.GetLength(0) - 1)
         {
             Console.WriteLine("The ship has reached the edge of the asteroid field!");
             return true;
@@ -339,13 +346,22 @@ public class GameEngine
             grid.PrintField(ship);
 
             if (grid.IsAtEdge(ship.x, ship.y)) break;
-            
+
             Console.Write("\nEnter the direction \"WASD\" for linear, or \"QEZC\" for diagonal movement, x/X to quit: ");
             input = Console.ReadLine().Trim().ToUpper();
 
             if (input == "X") break;
 
-            if (ship.Move(input, grid) == 0) availableMoves -= 1;
+            if (ship.Move(input, grid) == 0)
+            {
+                availableMoves -= 1;
+                Console.Clear();
+            }
+            else
+            {
+                Console.Clear();
+                Console.WriteLine("Movement blocked! Asteroid detected.");
+            }
 
             if (availableMoves == 0)
             {
