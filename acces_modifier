@@ -81,5 +81,157 @@ class Program
 
 Task 2
 //////////////////////////////////////////////////////////////////////////////////////////////
+using System;
+
+
+class Cadet
+{
+    public readonly string FullName;
+    private int Age;
+    private string HomeStateroom;
+    private string ClearanceLevel;
+
+    public Cadet(string name, int age=18, string room="A00", string accesLevel="Level 1")
+    {
+        FullName = name;
+        Age = age;
+        HomeStateroom = room;
+        ClearanceLevel = accesLevel;
+    }
+
+    public int GetAge()
+    {
+        return Age;
+    }
+
+    public void SetAge(int age)
+    {
+        Age = age;
+    }
+
+    public string GetRoom()
+    {
+        return HomeStateroom;
+    }
+
+    public void SetRoom(string room)
+    {
+        HomeStateroom = room;
+    }
+
+    public string GetAccesLevel()
+    {
+        return ClearanceLevel;
+    }
+
+    public void SetAccesLevel(string accesLevel)
+    {
+        ClearanceLevel = accesLevel;
+    }
+
+    public void Greet()
+    {
+        Console.WriteLine($"Hello, I am Cadet {FullName}, {Age} years old. Welcome aboard!");
+    }
+}
+
+class FutureCadet : Cadet
+{
+    public string ClearenceLevel;
+    public FutureCadet(string name, int age = 18, string room = "A00", string accesLevel = "Level 1") : base(name, age, room, accesLevel)
+    {
+        ClearenceLevel = accesLevel;
+    }
+
+}
+
+class Door
+{
+    private List<string> AllowedClearenceLevels;
+
+    public Door(List<string> allowedClearenceLevels)
+    {
+        AllowedClearenceLevels = new List<string>();
+
+        if (allowedClearenceLevels != null )
+        {
+            foreach (string level in allowedClearenceLevels)
+            {
+                AllowedClearenceLevels.Add(level);
+            }
+        }
+    }
+
+    public Door()
+    {
+        AllowedClearenceLevels = new List<string>();
+    }
+
+
+    public bool CanPass(Cadet cadet)
+    {
+        bool canPass = false;
+
+        if (AllowedClearenceLevels.Count > 0)
+        {
+            foreach (string level in AllowedClearenceLevels)
+            {
+                if (cadet.GetType() != typeof(FutureCadet))
+                {
+                    if (cadet.GetAccesLevel() == level)
+                    {
+                        canPass = true;
+                    }
+                }
+            }
+        }
+        else
+        {
+                canPass = true;
+        }
+
+            return canPass;
+    }
+
+    public void ChangeAllowedClearences(List<string> allowedClearenceLevels)
+    {
+        AllowedClearenceLevels.Clear();
+
+        foreach (string level in allowedClearenceLevels)
+        {
+            AllowedClearenceLevels.Add(level);
+        }
+    }
+}
+
+
+
+
+class Program
+{
+
+
+    static void Main()
+    {
+        Door door1 = new Door();
+        Door door2 = new Door(new List<string>() {"Level 2", "Level 3"});
+        FutureCadet cadet1 = new FutureCadet("John");
+        FutureCadet cadet2 = new FutureCadet("Yoda");
+
+        Console.WriteLine($"Can {cadet1.FullName} pass the first door ? {door1.CanPass(cadet1)}");
+        Console.WriteLine($"Can {cadet2.FullName} pass the first door ? {door1.CanPass(cadet2)}");
+        Console.WriteLine();
+        Console.WriteLine($"Can {cadet1.FullName} pass the second door ? {door2.CanPass(cadet1)}");
+        Console.WriteLine($"Can {cadet2.FullName} pass the second door ? {door2.CanPass(cadet2)}");
+
+        Console.ReadKey();
+    }
+}
+//////////////////////////////////////////////////////////////////////////////////////////////
+
+Medium
+
+Task 3
+//////////////////////////////////////////////////////////////////////////////////////////////
 
 //////////////////////////////////////////////////////////////////////////////////////////////
