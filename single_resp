@@ -864,86 +864,88 @@ public class AsteroidField
 
         for (int i = 5; i > 0; i--)
         {
-            int counter = 100;
-            int possibleMoves = 10;
-
-            int prevCoordX = startX;
-            int prevCoordY = startY;
-
-            int coordX = startX;
-            int coordY = startY;
-
-            while (counter > 0)
+            if (!canReachEdge)
             {
-                int direction = random.Next(0, 8);
+                int counter = 100;
+                int possibleMoves = 10;
 
-                switch (direction)
-                {
-                    case 0:
-                        coordY -= 1;
-                        break;
-                    case 1:
-                        coordY += 1;
-                        break;
-                    case 2:
-                        coordX += 1;
-                        break;
-                    case 3:
-                        coordX -= 1;
-                        break;
-                    case 4:
-                        coordX -= 1;
-                        coordY -= 1;
-                        break;
-                    case 5:
-                        coordX += 1;
-                        coordY -= 1;
-                        break;
-                    case 6:
-                        coordX -= 1;
-                        coordY += 1;
-                        break;
-                    case 7:
-                        coordX += 1;
-                        coordY += 1;
-                        break;
-                    default:
-                        break;
+                int prevCoordX = startX;
+                int prevCoordY = startY;
+
+                int coordX = startX;
+                int coordY = startY;
+
+                    while (counter > 0)
+                    {
+                        int direction = random.Next(0, 8);
+
+                        switch (direction)
+                        {
+                            case 0:
+                                coordY -= 1;
+                                break;
+                            case 1:
+                                coordY += 1;
+                                break;
+                            case 2:
+                                coordX += 1;
+                                break;
+                            case 3:
+                                coordX -= 1;
+                                break;
+                            case 4:
+                                coordX -= 1;
+                                coordY -= 1;
+                                break;
+                            case 5:
+                                coordX += 1;
+                                coordY -= 1;
+                                break;
+                            case 6:
+                                coordX -= 1;
+                                coordY += 1;
+                                break;
+                            case 7:
+                                coordX += 1;
+                                coordY += 1;
+                                break;
+                            default:
+                                break;
+                        }
+
+
+                        if (IsValidMove(coordX, coordY))
+                        {
+                            possibleMoves--;
+                            prevCoordX = coordX;
+                            prevCoordY = coordY;
+                        }
+                        else
+                        {
+                            coordX = prevCoordX;
+                            coordY = prevCoordY;
+                        }
+
+                        counter--;
+
+                        if (IsAtEdge(coordX, coordY))
+                        {
+                            canReachEdge = true;
+                            break;
+                        }
+
+                        if (possibleMoves == 0)
+                        {
+                            break;
+                        }
                 }
-
-
-                if (IsValidMove(coordX, coordY))
-                {
-                    possibleMoves--;
-                    prevCoordX = coordX;
-                    prevCoordY = coordY;
-                }
-                else
-                {
-                    coordX = prevCoordX;
-                    coordY = prevCoordY;
-                }
-
-                counter--;
-
-                if (IsAtEdge(coordX, coordY))
-                {
-                    canReachEdge = true;
-                    break;
-                }
-
-                if (possibleMoves == 0)
-                {
-                    break;
-                }
-
             }
         }
 
         if (canReachEdge)
         {
             Console.Clear();
-            Console.WriteLine("The ship can reach an edge of the asteroid field!");
+            Console.WriteLine("The ship can reach the edge of the asteroid field!");
         }
         else
         {
