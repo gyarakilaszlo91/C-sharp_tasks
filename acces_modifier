@@ -1041,5 +1041,373 @@ class Program
 
 Task 6
 //////////////////////////////////////////////////////////////////////////////////////////////
+using System;
+using System.Xml.Linq;
+
+
+class Cadet
+{
+    public readonly string FullName;
+    private int Age;
+    private string HomeStateroom;
+    private string ClearanceLevel;
+    private string Clearence;
+
+    public Cadet(string name, int age=18, string room="A00", string accesLevel="Level 1", string clearence = " ")
+    {
+        FullName = name;
+        Age = age;
+        HomeStateroom = room;
+        ClearanceLevel = accesLevel;
+        Clearence = clearence;
+    }
+
+    public int GetAge()
+    {
+        return Age;
+    }
+
+    public void SetAge(int age)
+    {
+        Age = age;
+    }
+
+    public string GetRoom()
+    {
+        return HomeStateroom;
+    }
+
+    public void SetRoom(string room)
+    {
+        HomeStateroom = room;
+    }
+
+    public string GetAccesLevel()
+    {
+        return ClearanceLevel;
+    }
+
+    public void SetAccesLevel(string accesLevel)
+    {
+        ClearanceLevel = accesLevel;
+    }
+
+    public void Greet()
+    {
+        Console.WriteLine($"Hello, I am Cadet {FullName}, {Age} years old. Welcome aboard!");
+    }
+
+    public string GetEngineerClearence()
+    {
+        return Clearence;
+    }
+}
+
+class FutureCadet : Cadet
+{
+    public string ClearenceLevel;
+    public FutureCadet(string name, int age = 18, string room = "A00", string accesLevel = "Level 1", string clearence = " ") : base(name, age, room, accesLevel, clearence)
+    {
+        ClearenceLevel = accesLevel;
+    }
+
+}
+
+class Door
+{
+    private List<string> AllowedClearenceLevels;
+    private bool IsOpen = false;
+    static private bool anyDoorOpen = false;
+    private static List<(string, string)> Log = new List<(string, string)>();
+
+    public Door(List<string> allowedClearenceLevels)
+    {
+        AllowedClearenceLevels = new List<string>();
+
+        if (allowedClearenceLevels != null )
+        {
+            foreach (string level in allowedClearenceLevels)
+            {
+                AllowedClearenceLevels.Add(level);
+            }
+        }
+    }
+
+    public Door()
+    {
+        AllowedClearenceLevels = new List<string>();
+    }
+
+
+    public bool CanPass(Cadet cadet)
+    {
+        bool canPass = false;
+
+        if (AllowedClearenceLevels.Count > 0)
+        {
+            foreach (string level in AllowedClearenceLevels)
+            {
+                if (cadet.GetType() != typeof(FutureCadet))
+                {
+                    if (cadet.GetAccesLevel() == level)
+                    {
+                        canPass = true;
+                    }
+                }
+            }
+        }
+        else
+        {
+                canPass = true;
+        }
+
+            return canPass;
+    }
+
+    public void ChangeAllowedClearences(List<string> allowedClearenceLevels)
+    {
+        AllowedClearenceLevels.Clear();
+
+        foreach (string level in allowedClearenceLevels)
+        {
+            AllowedClearenceLevels.Add(level);
+        }
+    }
+
+    public void Open(string name, string acceslevel)
+    {
+
+        if (Door.anyDoorOpen)
+        {
+            Console.WriteLine("Previous door is currently open, closing it...");
+            Door.anyDoorOpen = false;
+        }
+
+        if (!Door.anyDoorOpen)
+        {
+            if (acceslevel == "captain" || acceslevel == "engineer" || acceslevel == "chief engineer")
+            {
+                Console.WriteLine($"{name} opened the door: Succes");
+                Door.anyDoorOpen = true;
+                Log.Add((name, "succes" ));
+            }
+            else
+            {
+                Console.WriteLine($"Acces Denied: {name} is not authorized to open this door.");
+                Log.Add((name, "failure" ));
+            }
+        }
+    }
+
+    public void LogAttempts()
+    {
+        foreach ((string, string) attempt in Log)
+        {
+            Console.WriteLine($"{attempt.Item1} tried to open the door, with {attempt.Item2}");
+        }
+    }
+
+}
+
+class Engineer
+{
+    private readonly string Name;
+    private int Age;
+    private string Departement;
+    private string ClearenceLevel;
+    private bool IsIntruder = false;
+
+    public Engineer(string name, int age, string departement, string clearenceLevel = "engineer")
+    {
+        Name = name;
+        Age = age;
+        Departement = departement;
+        ClearenceLevel = clearenceLevel;
+        CheckIntruder();
+    }
+
+    public string GetName()
+    {
+        return Name;
+    }
+    
+    public int GetAge()
+    {
+        return Age;
+    }
+    public void SetAge(int age)
+    {
+        Age = age;
+    }
+    public string GetDepartement()
+    {
+        return Departement;
+    }
+    public void SetDepartement(string departement)
+    {
+        Departement = departement;
+    }
+    public string GetClearenceLevel()
+    {
+        return ClearenceLevel;
+    }
+    public void SetClearenceLevel(string clearenceLevel)
+    {
+        ClearenceLevel= clearenceLevel;
+    }
+    public void Greet()
+    {
+        Console.WriteLine($"Engineer {Name} greets you!");
+    }
+    public void ConfigureDoorAccesLevel(List<string> clearenceLevels, Door door)
+    {
+        Console.WriteLine($"Engineer {Name} is changing the Clearence level for the door");
+        door.ChangeAllowedClearences(clearenceLevels);
+    }
+    private void CheckIntruder()
+    {
+        if (Departement == " ")
+        {
+            IsIntruder = true;
+        }
+    }
+    public bool Intruder()
+    {
+        return IsIntruder;
+    }
+
+}
+
+class NavigationTable
+{
+    private readonly List<(string, string)> AccesLog = new List<(string, string)>();
+
+    public void Move(string name, string accesLevel)
+    {
+        if (CheckAcces(name, accesLevel))
+        {
+            Console.WriteLine($"{name} navigates the ship");
+        }
+        else
+        {
+            Console.WriteLine("Acces Denied: Only  the captain can acces the navigation table.");
+        }
+    }
+
+    private bool CheckAcces(string name, string accesLevel)
+    {
+        if(accesLevel == "captain")
+        {
+            AccesLog.Add((name, "succes"));
+            return true;
+        }
+        else
+        {
+            AccesLog.Add((name, "failure"));
+            return false;
+        }
+    }
+
+    public void CheckLog(string acceslevel)
+    {
+        if (acceslevel == "captain")
+        {
+            foreach((string, string) log in AccesLog)
+            {
+                Console.WriteLine($"{log.Item1} tried to acces the navigation with {log.Item2}");
+            }
+        }
+    }
+}
+
+class ChiefEngineer : Engineer
+{
+    public ChiefEngineer(string name, int age, string departement, string clearenceLevel = "chief engineer") : base( name,  age,  departement,  clearenceLevel)
+    {
+
+    }
+}
+
+class Captain
+{
+    public readonly string Name;
+    private int Age;
+    private string ClearenceLevel;
+
+    public Captain(string name, int age, string clearenceLevel = "captain")
+    {
+        Name = name;
+        Age = age;
+        ClearenceLevel = clearenceLevel;
+    }
+
+    public int GetAge()
+    {
+        return Age;
+    }
+    public void SetAge(int age)
+    {
+        Age = age;
+    }
+    public string GetClearenceLevel()
+    {
+        return ClearenceLevel;
+    }
+}
+class Program
+{
+
+
+    static void Main()
+    {
+        List<Door> doors = new List<Door>() { new Door(), new Door(), new Door(), new Door(), new Door()};
+        NavigationTable navigation = new NavigationTable();
+
+        FutureCadet cadet = new FutureCadet("John", clearence: "Cadet");
+        Engineer engineer = new Engineer("Mike", 35, "Maintenance");
+        ChiefEngineer chiefEngineer = new ChiefEngineer("Bob", 25, "Navigation");
+        Captain captain = new Captain("Han", 34);
+
+
+        GoTroughDoor(doors, cadet);
+        GoTroughDoor(doors, engineer);
+        GoTroughDoor(doors, chiefEngineer);
+        GoTroughDoor(doors, captain);
+        Console.WriteLine();
+        navigation.Move(cadet.FullName, cadet.GetAccesLevel());
+        navigation.Move(engineer.GetName(), engineer.GetClearenceLevel());
+        navigation.Move(chiefEngineer.GetName(), chiefEngineer.GetClearenceLevel());
+        navigation.Move(captain.Name, captain.GetClearenceLevel());
+
+        Console.ReadKey();
+    }
+
+    public static void GoTroughDoor(List<Door> doors, Cadet cadet)
+    {
+        foreach (Door door in doors)
+        {
+            door.Open(cadet.FullName, cadet.GetAccesLevel());
+        }
+    }
+    public static void GoTroughDoor(List<Door> doors, Engineer engineer)
+    {
+        foreach (Door door in doors)
+        {
+            door.Open(engineer.GetName(), engineer.GetClearenceLevel());
+        }
+    }
+    public static void GoTroughDoor(List<Door> doors, Captain captain)
+    {
+        foreach (Door door in doors)
+        {
+            door.Open(captain.Name, captain.GetClearenceLevel());
+        }
+    }
+
+}
+//////////////////////////////////////////////////////////////////////////////////////////////
+
+Task 7
+//////////////////////////////////////////////////////////////////////////////////////////////
 
 //////////////////////////////////////////////////////////////////////////////////////////////
