@@ -438,5 +438,270 @@ class Program
 
 Task 4
 //////////////////////////////////////////////////////////////////////////////////////////////
+using System;
+
+
+class Cadet
+{
+    public readonly string FullName;
+    private int Age;
+    private string HomeStateroom;
+    private string ClearanceLevel;
+
+    public Cadet(string name, int age=18, string room="A00", string accesLevel="Level 1")
+    {
+        FullName = name;
+        Age = age;
+        HomeStateroom = room;
+        ClearanceLevel = accesLevel;
+    }
+
+    public int GetAge()
+    {
+        return Age;
+    }
+
+    public void SetAge(int age)
+    {
+        Age = age;
+    }
+
+    public string GetRoom()
+    {
+        return HomeStateroom;
+    }
+
+    public void SetRoom(string room)
+    {
+        HomeStateroom = room;
+    }
+
+    public string GetAccesLevel()
+    {
+        return ClearanceLevel;
+    }
+
+    public void SetAccesLevel(string accesLevel)
+    {
+        ClearanceLevel = accesLevel;
+    }
+
+    public void Greet()
+    {
+        Console.WriteLine($"Hello, I am Cadet {FullName}, {Age} years old. Welcome aboard!");
+    }
+}
+
+class FutureCadet : Cadet
+{
+    public string ClearenceLevel;
+    public FutureCadet(string name, int age = 18, string room = "A00", string accesLevel = "Level 1") : base(name, age, room, accesLevel)
+    {
+        ClearenceLevel = accesLevel;
+    }
+
+}
+
+class Door
+{
+    private List<string> AllowedClearenceLevels;
+    private bool IsOpen = false;
+    static private bool anyDoorOpen = false;
+    private static List<string> intruders = new List<string>();
+
+    public Door(List<string> allowedClearenceLevels)
+    {
+        AllowedClearenceLevels = new List<string>();
+
+        if (allowedClearenceLevels != null )
+        {
+            foreach (string level in allowedClearenceLevels)
+            {
+                AllowedClearenceLevels.Add(level);
+            }
+        }
+    }
+
+    public Door()
+    {
+        AllowedClearenceLevels = new List<string>();
+    }
+
+
+    public bool CanPass(Cadet cadet)
+    {
+        bool canPass = false;
+
+        if (AllowedClearenceLevels.Count > 0)
+        {
+            foreach (string level in AllowedClearenceLevels)
+            {
+                if (cadet.GetType() != typeof(FutureCadet))
+                {
+                    if (cadet.GetAccesLevel() == level)
+                    {
+                        canPass = true;
+                    }
+                }
+            }
+        }
+        else
+        {
+                canPass = true;
+        }
+
+            return canPass;
+    }
+
+    public void ChangeAllowedClearences(List<string> allowedClearenceLevels)
+    {
+        AllowedClearenceLevels.Clear();
+
+        foreach (string level in allowedClearenceLevels)
+        {
+            AllowedClearenceLevels.Add(level);
+        }
+    }
+
+    public void Open(Engineer engineer)
+    {
+        if (!Door.anyDoorOpen)
+        {
+            IsOpen = true;
+            Console.WriteLine($"{engineer.GetName()} Opens the door");
+            Door.anyDoorOpen = true;
+        }
+        else
+        {
+            LockAllDoors(engineer);
+        }
+    }
+
+    private void LockAllDoors(Engineer engineer)
+    {
+        if (engineer.Intruder())
+        {
+            Console.Write("All doors locked. Intruders detected: ");
+            intruders.Add(engineer.GetName());
+            for (int i = 0; i < intruders.Count; i++)
+            {
+                if (i == intruders.Count - 1)
+                {
+                    Console.Write($"{intruders[i]}");
+                }
+                else
+                {
+                    Console.Write($"{intruders[i]}, ");
+                }
+            }
+            Console.WriteLine();
+        }
+    }
+
+}
+
+class Engineer
+{
+    private readonly string Name;
+    private int Age;
+    private string Departement;
+    private string ClearenceLevel;
+    private bool IsIntruder = false;
+
+    public Engineer(string name, int age, string departement, string clearenceLevel)
+    {
+        Name = name;
+        Age = age;
+        Departement = departement;
+        ClearenceLevel = clearenceLevel;
+        CheckIntruder();
+    }
+
+    public string GetName()
+    {
+        return Name;
+    }
+    
+    public int GetAge()
+    {
+        return Age;
+    }
+    public void SetAge(int age)
+    {
+        Age = age;
+    }
+    public string GetDepartement()
+    {
+        return Departement;
+    }
+    public void SetDepartement(string departement)
+    {
+        Departement = departement;
+    }
+    public string GetClearenceLevel()
+    {
+        return ClearenceLevel;
+    }
+    public void SetClearenceLevel(string clearenceLevel)
+    {
+        ClearenceLevel= clearenceLevel;
+    }
+    public void Greet()
+    {
+        Console.WriteLine($"Engineer {Name} greets you!");
+    }
+    public void ConfigureDoorAccesLevel(List<string> clearenceLevels, Door door)
+    {
+        Console.WriteLine($"Engineer {Name} is changing the Clearence level for the door");
+        door.ChangeAllowedClearences(clearenceLevels);
+    }
+    private void CheckIntruder()
+    {
+        if (Departement == " ")
+        {
+            IsIntruder = true;
+        }
+    }
+    public bool Intruder()
+    {
+        return IsIntruder;
+    }
+
+}
+
+
+class Program
+{
+
+
+    static void Main()
+    {
+        Door door1 = new Door();
+        Door door2 = new Door();
+        Door door3 = new Door();
+        Door door4 = new Door();
+        Door door5 = new Door();
+        FutureCadet cadet1 = new FutureCadet("John");
+        FutureCadet cadet2 = new FutureCadet("Yoda");
+        Engineer engineer = new Engineer("Mike", 35, "Maintenance", "Level 6");
+
+        Engineer fakeEngineer1 = new Engineer(cadet1.FullName, cadet1.GetAge(), " ", cadet1.GetAccesLevel());
+        Engineer fakeEngineer2 = new Engineer(cadet2.FullName, cadet2.GetAge(), " ", cadet2.GetAccesLevel());
+
+        fakeEngineer1.Greet();
+        door1.Open(fakeEngineer1);
+        door2.Open(fakeEngineer1);
+        door1.Open(fakeEngineer2);
+
+
+
+        Console.ReadKey();
+    }
+}
+//////////////////////////////////////////////////////////////////////////////////////////////
+
+Hard
+Task 5
+//////////////////////////////////////////////////////////////////////////////////////////////
 
 //////////////////////////////////////////////////////////////////////////////////////////////
