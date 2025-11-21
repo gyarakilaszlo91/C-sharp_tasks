@@ -2,5 +2,78 @@ Easy
 
 Task 1
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////
+using System;
+
+
+class Captain
+{
+    Random random = new Random();
+    public readonly string Name;
+    private Navigator _navigator;
+
+    public Captain(string name, Navigator navigator)
+    {
+        Name = name;
+        _navigator = navigator;
+    }
+    private string _generateCoordinates()
+    {
+        string coordinate = "";
+        for (int i = 0; i < 3; i++)
+        {
+            if ( i == 2)
+            {
+                coordinate += random.Next(1, 50);
+            }
+            else
+            {
+                coordinate += random.Next(1, 50) + ", ";
+            }
+        }
+
+        return coordinate;
+    }
+
+    public void GiveOrder()
+    {
+        string coord = _generateCoordinates();
+        Console.WriteLine($"Captain: Move to coordinates ({coord})");
+        _navigator.CheckMovement(coord);
+    }
+}
+
+
+class Navigator
+{
+    Random random = new Random();
+    private bool _canMove(string coordinates)
+    {
+        return random.Next(0, 2) == 0 ? true : false;
+    }
+
+    public void CheckMovement(string coordinates)
+    {
+        string canMove = _canMove(coordinates) == true ? "possible" : "not possible";
+        Console.WriteLine($"Navigator: Movement to ({coordinates}) is {canMove}");
+    }
+
+}
+class Program
+{
+
+    static void Main()
+    {
+        Navigator navigator = new Navigator();
+        Captain captain = new Captain("Captain", navigator);
+
+        captain.GiveOrder();
+
+        Console.ReadKey();
+    }
+}
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+Task 2
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////
