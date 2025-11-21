@@ -23,11 +23,11 @@ class Captain
         {
             if ( i == 2)
             {
-                coordinate += random.Next(1, 50);
+                coordinate += random.Next(-50, 51);
             }
             else
             {
-                coordinate += random.Next(1, 50) + ", ";
+                coordinate += random.Next(-50, 51) + ", ";
             }
         }
 
@@ -74,6 +74,86 @@ class Program
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 Task 2
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////
+using System;
+
+
+class Captain
+{
+    public readonly string Name;
+    private Navigator _navigator;
+
+    public Captain(string name, Navigator navigator)
+    {
+        Name = name;
+        _navigator = navigator;
+    }
+
+    public void GiveOrder()
+    {
+        Coordinates coordinates = new Coordinates();
+
+        Console.WriteLine($"Captain: Move to coordinates ({coordinates.ToString()})");
+        _navigator.CheckMovement(coordinates);
+    }
+}
+
+
+class Navigator
+{
+    Random random = new Random();
+    private bool _canMove(Coordinates coordinates)
+    {
+        return random.Next(0, 2) == 0 ? true : false;
+    }
+
+    public void CheckMovement(Coordinates coordinates)
+    {
+        string canMove = _canMove(coordinates) == true ? "possible" : "not possible";
+        Console.WriteLine($"Navigator: Movement to ({coordinates.ToString()}) is {canMove}");
+    }
+
+}
+
+class Coordinates
+{
+    Random random = new Random();
+    private int _x;
+    private int _y;
+    private int _z;
+
+    public Coordinates()
+    {
+        _x = random.Next(-50, 51);
+        _y = random.Next(-50, 51);
+        _z = random.Next(-50, 50);
+    }
+
+    public string ToString()
+    {
+        return $"{_x}, {_y}, {_z}";
+    }
+
+}
+
+class Program
+{
+
+    static void Main()
+    {
+        Navigator navigator = new Navigator();
+        Captain captain = new Captain("Captain", navigator);
+
+        captain.GiveOrder();
+
+        Console.ReadKey();
+    }
+}
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+Medium
+
+Task 3
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////
