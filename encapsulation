@@ -155,5 +155,132 @@ Medium
 
 Task 3
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////
+using System;
+
+
+class Captain
+{
+    public readonly string Name;
+    private Navigator _navigator;
+
+    public Captain(string name, Navigator navigator)
+    {
+        Name = name;
+        _navigator = navigator;
+    }
+
+    public void GiveOrder()
+    {
+        Coordinates coordinates = new Coordinates();
+
+        Console.WriteLine($"Captain: Move to coordinates ({coordinates.ToString()})");
+        _navigator.CheckMovement(coordinates);
+    }
+}
+
+
+class Navigator
+{
+    Random random = new Random();
+    private NavigationTable _navigationTable;
+
+    public Navigator(NavigationTable navigationTable)
+    {
+        _navigationTable = navigationTable;
+    }
+    private bool _canMove(Coordinates coordinates)
+    {
+        return random.Next(0, 2) == 0 ? true : false;
+    }
+
+    public void CheckMovement(Coordinates coordinates)
+    {
+        string currentCoordinates = _navigationTable.GetCurrentCoordinates();
+        int requiredRotation = _navigationTable.GetRequiredRotation(coordinates);
+
+        string canMove = _canMove(coordinates) == true ? "possible" : "not possible";
+        Console.WriteLine($"Navigator: Current position is ({_navigationTable.GetCurrentCoordinates()})");
+        Console.WriteLine($"Navigator: Required rotation angle: {requiredRotation} degrees");
+        Console.WriteLine($"Navigator: Movement to ({coordinates.ToString()}) is {canMove}");
+    }
+
+}
+
+class Coordinates
+{
+    Random random = new Random();
+    private int _x;
+    private int _y;
+    private int _z;
+
+    public Coordinates()
+    {
+        _x = random.Next(-50, 51);
+        _y = random.Next(-50, 51);
+        _z = random.Next(-50, 50);
+    }
+
+    public string ToString()
+    {
+        return $"{_x}, {_y}, {_z}";
+    }
+
+}
+
+class NavigationTable
+{
+    Random random = new Random();
+    private string _currentCoordinates;
+    private int _currentDirection;
+
+    public NavigationTable()
+    {
+        string coord = "";
+
+        for (int i = 0; i < 3; i++)
+        {
+            if (i == 2)
+            {
+                coord += random.Next(-50, 51);
+            }
+            else
+            {
+                coord += random.Next(-50, 51) + ", ";
+            }
+        }
+
+        _currentCoordinates = coord;
+    }
+    public string GetCurrentCoordinates()
+    {
+        return _currentCoordinates;
+    }
+
+    public int GetRequiredRotation(Coordinates target)
+    {
+        _currentDirection = random.Next(1, 361);
+        return _currentDirection;
+    }
+
+}
+
+class Program
+{
+
+    static void Main()
+    {
+        NavigationTable navigationTable = new NavigationTable();
+        Navigator navigator = new Navigator(navigationTable);
+        Captain captain = new Captain("Captain", navigator);
+
+        captain.GiveOrder();
+
+        Console.ReadKey();
+    }
+}
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+Task 4
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////
