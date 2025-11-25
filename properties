@@ -5,7 +5,7 @@ Task 1
 using System;
 
 
-class Fuel
+public class Fuel
 {
     private string name;
     private int toxicity;
@@ -25,7 +25,7 @@ class Fuel
         get { return toxicity; }
     }
 }
-class Program
+public class Program
 {
 
 
