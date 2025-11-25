@@ -1,0 +1,56 @@
+Easy 
+
+Task 1 
+////////////////////////////////////////////////////////////////////////////////////////
+using System;
+
+
+class Fuel
+{
+    private string name;
+    private int toxicity;
+
+    public Fuel(string name, int toxicity)
+    {
+        this.name = name;
+        this.toxicity = toxicity;
+    }
+    public string Name
+    {
+        get { return name; }
+    }
+
+    public int Toxicity
+    {
+        get { return toxicity; }
+    }
+}
+class Program
+{
+
+
+    static void Main()
+    {
+        Fuel diesel = new Fuel("Diesel", 2);
+        Fuel gasoline = new Fuel("Gasoline", 1);
+        Fuel ethanol = new Fuel("Ethanol", 3);
+        Fuel biodiesel = new Fuel("Biodiesel", 8);
+        Fuel hydrogen = new Fuel("Hydrogen", 2);
+
+        Console.WriteLine($"Fuel: {diesel.Name}, Toxicity: {diesel.Toxicity}");
+        Console.WriteLine($"Fuel: {gasoline.Name}, Toxicity: {gasoline.Toxicity}");
+        Console.WriteLine($"Fuel: {ethanol.Name}, Toxicity: {ethanol.Toxicity}");
+        Console.WriteLine($"Fuel: {biodiesel.Name}, Toxicity: {biodiesel.Toxicity}");
+        Console.WriteLine($"Fuel: {hydrogen.Name}, Toxicity: {hydrogen.Toxicity}");
+
+        //diesel.Toxicity = 3;
+
+        Console.ReadKey();
+    }
+}
+////////////////////////////////////////////////////////////////////////////////////////
+
+Task 2
+////////////////////////////////////////////////////////////////////////////////////////
+
+////////////////////////////////////////////////////////////////////////////////////////
