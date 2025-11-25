@@ -355,5 +355,229 @@ public class Progam
 
 Task 4
 ////////////////////////////////////////////////////////////////////////////////////////
+using System;
+using System.Security;
+
+public class Fuel
+{
+    private string name;
+    private int toxicity;
+
+    public Fuel(string name, int toxicity)
+    {
+        this.name = name;
+        this.toxicity = toxicity;
+    }
+
+    public string Name {  get { return name; } }
+    public int Toxicity { get { return toxicity; } }
+}
+
+public class FuelBarrel
+{
+    Random random = new Random();
+    private string name;
+    private int toxicity;
+    private int capacity;
+    private int currentVolume;
+
+    public FuelBarrel(string name, int toxicity, int capacity, int currentVolume)
+    {
+        this.name = name;
+        this.toxicity= toxicity;
+        this.capacity = capacity;
+        this.currentVolume = currentVolume;
+    }
+
+    public FuelBarrel(string name)
+    {
+        this.name = name;
+        this.toxicity = random.Next(1, 11);
+        this.capacity = random.Next(80, 151);
+        this.currentVolume = random.Next(0, 71);
+    }
+
+    public int CurrentVolume { get { return currentVolume; } }
+    public double FullnessPercentage { 
+        get 
+        {
+            double value = Convert.ToDouble(CurrentVolume) / Convert.ToDouble(capacity) * 100;
+            return (Math.Round(value, 2));
+        }
+    }
+
+    public string Name
+    {
+        get { return name; }
+    }
+
+    public void TryFillBarrel(Fuel fuel, int amount)
+    {
+        
+        if( fuel.Name == name)
+        {
+            if (currentVolume+amount < capacity)
+            {
+                Console.WriteLine($"[SUCCES] {amount}L of {fuel.Name} added to the barrel. Current fullnes: {FullnessPercentage}%");
+            }
+            else if (currentVolume == capacity)
+            {
+                Console.WriteLine("[ALERT] Barrel is full, can not add any more. Filling aborted.");
+            }
+            else
+            {
+                Console.WriteLine($"[ALERT] Sensor detected incorrect amount of fuel");
+                Console.WriteLine($"{capacity - CurrentVolume}L added to the Barrel, {amount - (capacity - CurrentVolume)}L remaining");
+                currentVolume = capacity;
+            }
+        }
+        else
+        {
+            Console.WriteLine($"[ALERT] Sensor detected incorrect fuel ({fuel.Name}) in {name} barrel. Filling aborted.");
+        }
+    }
+
+    public void ExtractFuel(int amount)
+    {
+        if (currentVolume < amount)
+        {
+            currentVolume -= amount;
+        }
+        else
+        {
+            Console.WriteLine($"[ALERT] Not enough fuel in barrel, {currentVolume} amount removed from the barrel.");
+            currentVolume = 0;
+        }
+    }
+}
+
+public class FuelTank
+{
+    public readonly string fuelName;
+    public int capacity;
+    private int currentVolume;
+    public FuelTank(string fuelName)
+    {
+        this.fuelName = fuelName;
+        this.capacity = 10000;
+    }
+
+    public int CurrentVolume
+    {
+        get { return currentVolume; }
+    }
+
+    public void TryFillFromBarrel(FuelBarrel barrel, int amount)
+    {
+        if (barrel.Name == fuelName)
+        {
+            if(amount+CurrentVolume > capacity)
+            {
+                Console.WriteLine($"[ALERT] Too much {barrel.Name} fuel in barrel. Fueltank filled to max");
+                Console.WriteLine($"[ALERT] {amount-(capacity-CurrentVolume)}L {barrel.Name} remaining.");
+                currentVolume = capacity;
+                DrawTank();
+            }
+            else
+            {
+                currentVolume += amount;
+                Console.WriteLine($"[SUCCES] {amount}L of {barrel.Name} added to the {fuelName} tank. Current volume: {CurrentVolume}L");
+                DrawTank();
+            }
+
+        }
+        else
+        {
+            Console.WriteLine($"[ALERT] Incompatible fuel detected! Cannot add {barrel.Name} to {fuelName} tank.");
+        }
+    }
+
+    private void DrawTank()
+    {
+        double percentage = (double)CurrentVolume / capacity * 100;
+        FuelDisplay.Display(percentage);
+    }
+}
+
+public class Ship
+{
+    private FuelTank _tank1;
+    private FuelTank _tank2;
+
+    public Ship(FuelTank tank1, FuelTank tank2)
+    {
+        _tank1 = tank1;
+        _tank2 = tank2;
+    }
+
+    public void FillTanks(FuelBarrel barrel, int amount)
+    {
+        _tank1.TryFillFromBarrel(barrel, amount);
+        _tank2.TryFillFromBarrel(barrel, amount);
+    }
+}
+
+public class FuelDisplay
+{
+    public static void Display(double percentage)
+    {
+        string topBorder = "|----------|";
+        string empty = "|          |";
+        string filled = "|0000000000|";
+        string bottomBorder = "|__________|";
+        int levels = 3;
+
+        Console.WriteLine(topBorder);
+        for (int i = 0; i < levels; i++)
+        {
+            if (i == 0 && percentage > 60) Console.WriteLine(filled);
+            if (i == 0 && percentage < 60) Console.WriteLine(empty);
+
+            if (i == 1 && percentage > 30) Console.WriteLine(filled);
+            if (i == 1 && percentage < 30) Console.WriteLine(empty);
+
+            if (i == 2 && percentage > 0) Console.WriteLine(filled);
+            if (i == 2 && percentage == 0) Console.WriteLine(empty);
+        }
+        Console.WriteLine(bottomBorder);
+
+    }
+}
+
+public class Progam
+{
+
+
+    public static void Main()
+    {
+        FuelBarrel[] barrels = new FuelBarrel[] { new FuelBarrel("Diesel"), new FuelBarrel("Gasoline"), new FuelBarrel("Ethanol"), new FuelBarrel("LPG") };
+        Ship ship = new Ship(new FuelTank("Ethanol"), new FuelTank("LPG"));
+
+        Test(barrels, ship);
+        Console.WriteLine();
+        Test(barrels, ship);
+
+        Console.ReadKey();
+    }
+
+    public static void Test(FuelBarrel[] barrels, Ship ship)
+    {
+        Random random = new Random();
+
+        Console.WriteLine("=== STARTING FUEL TRANSFER ===\n");
+        for (int i = 0; i < barrels.Length; i++)
+        {
+            ship.FillTanks(barrels[i], random.Next(4000, 6001));
+            Console.WriteLine();
+        }
+        Console.WriteLine("=== FUEL TRANSFER COMPLETED ===");
+    }
+}
+////////////////////////////////////////////////////////////////////////////////////////
+
+Hard 
+
+Task 5
+////////////////////////////////////////////////////////////////////////////////////////
 
 ////////////////////////////////////////////////////////////////////////////////////////
