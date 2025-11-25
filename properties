@@ -853,5 +853,289 @@ public class Program
 
 Task 6
 ////////////////////////////////////////////////////////////////////////////////////////
+using System;
 
+public class Fuel
+{
+    private string fuelType;
+
+    public Fuel(string fuelType)
+    {
+        this.fuelType = fuelType;
+    }
+
+    public string FuelType
+    {
+        get { return fuelType; }
+    }
+}
+
+public class FuelBarrel
+{
+    private string name;
+    private int capacity;
+    private int currentVolume;
+
+    public FuelBarrel(string name)
+    {
+        this.name = name;
+        capacity = 200;
+        currentVolume = 200;
+    }
+
+    public string Name
+    {
+        get { return name; }
+    }
+    public int Capacity
+    {
+        get { return capacity; }
+    }
+    public int CurrentVolume
+    {
+        get { return currentVolume; }
+    }
+
+    public int ExtractFuel(int amount)
+    {
+        if (amount <= 0)
+        {
+            return 0;
+        }
+        else if (amount > CurrentVolume)
+        {
+            int currently = CurrentVolume;
+            currentVolume = 0;
+            return currently;
+        }
+        else
+        {
+            int currently = CurrentVolume;
+            currentVolume -= amount;
+            return currently;
+        }
+    }
+}
+
+public class FuelTank
+{
+    private string fuelName;
+    private int capacity;
+    private int currentVolume;
+    private bool isFull;
+    private int barrelsUsed;
+
+    public FuelTank(string fuelName)
+    {
+        this.fuelName = fuelName;
+        capacity = 10000;
+        currentVolume = 0;
+        isFull = false;
+        barrelsUsed = 0;
+    }
+
+    public string FuelName
+    {
+        get { return fuelName; }
+    }
+    public int Capacity
+    {
+        get { return capacity; }
+    }
+    public int CurrentVolume
+    {
+        get { return currentVolume; }
+    }
+    public bool IsFull
+    {
+        get { return isFull; }
+    }
+    public int BarrelsUsed
+    {
+        get { return barrelsUsed; }
+    }
+
+    public void TryFillFromBarrel(FuelBarrel barrel)
+    {
+        if (isFull)
+        {
+            return;
+        }
+
+        if(barrel.Name == fuelName)
+        {
+            Console.WriteLine($"[ATTEMPT] Filling from {barrel.Name} barrel...");
+            int amount = barrel.ExtractFuel(barrel.Capacity);
+
+            if (amount+CurrentVolume > capacity)
+            {
+                Console.WriteLine($"[FULL] {fuelName} tank is almost full.");
+                Console.WriteLine($"{amount - (capacity - currentVolume)}L remaining in the barrel.");
+                if (amount - (capacity - currentVolume) != 200) barrelsUsed++;
+                currentVolume = capacity;
+                isFull = true;
+            }
+            else
+            {
+                currentVolume += amount;
+                Console.WriteLine($"[SUCCES] {amount}L of {barrel.Name} added to {fuelName} tank. Current: {CurrentVolume}L.");
+                barrelsUsed++;
+                if (CurrentVolume == capacity) isFull = true;
+            }
+
+        }
+        else
+        {
+            Console.WriteLine($"[WARNING] Cannot add {barrel.Name} to {fuelName} tank.");
+        }
+    }
+
+    public void DrawTank(int currentCapacity, int capacity)
+    {
+        FuelDisplay.Draw(currentCapacity, capacity);
+    }
+}
+
+public class FuelDisplay
+{
+    public static void Draw(int currentCapacity, int capacity)
+    {
+        double percentage = 0;
+
+        if (currentCapacity != 0)
+        {
+            percentage = (double) currentCapacity / capacity * 100;
+        }
+
+
+        string topBorder = "|----------|";
+        string empty = "|          |";
+        string filled = "|0000000000|";
+        string bottomBorder = "|__________|";
+        int levels = 3;
+
+        Console.WriteLine(topBorder);
+        for (int i = 0; i < levels; i++)
+        {
+            if (i == 0 && percentage == 100) Console.WriteLine(filled);
+            if (i == 0 && percentage < 100) Console.WriteLine(empty);
+
+            if (i == 1 && percentage > 30) Console.WriteLine(filled);
+            if (i == 1 && percentage < 30) Console.WriteLine(empty);
+
+            if (i == 2 && percentage > 0) Console.WriteLine(filled);
+            if (i == 2 && percentage == 0) Console.WriteLine(empty);
+        }
+        Console.WriteLine(bottomBorder);
+
+    }
+}
+
+public class TankStatus
+{
+    FuelTank oxidizer;
+    FuelTank fuel;
+
+    public TankStatus(FuelTank tank1, FuelTank tank2)
+    {
+        this.oxidizer = tank1;
+        this.fuel = tank2;
+    }
+
+    public bool OxidizerFull
+    {
+        get { return oxidizer.IsFull; }
+    }
+    public bool FuelFull
+    {
+        get { return fuel.IsFull; }
+    }
+
+    public int CheckFullnes()
+    {
+        if(OxidizerFull && FuelFull)
+        {
+            Console.WriteLine("Tanks are Full");
+            Console.WriteLine();
+            Console.WriteLine(oxidizer.FuelName);
+            Console.WriteLine();
+            oxidizer.DrawTank(oxidizer.CurrentVolume, oxidizer.Capacity);
+            Console.WriteLine();
+            Console.WriteLine(fuel.FuelName);
+            fuel.DrawTank(fuel.CurrentVolume, fuel.Capacity);
+            Console.WriteLine();
+            Console.WriteLine("** Total barrels used:**");
+            Console.WriteLine($"Liquid Oxygen tank -> **{oxidizer.BarrelsUsed} barrels**");
+            Console.WriteLine($"RP-1 tank -> **{fuel.BarrelsUsed} barrels**");
+            return 0;
+        }
+        else
+        {
+            Console.WriteLine("Tanks are not full yet.");
+            Console.WriteLine();
+            Console.WriteLine(oxidizer.FuelName);
+            Console.WriteLine();
+            oxidizer.DrawTank(oxidizer.CurrentVolume, oxidizer.Capacity);
+            Console.WriteLine();
+            Console.WriteLine(fuel.FuelName);
+            fuel.DrawTank(fuel.CurrentVolume, fuel.Capacity);
+            Console.WriteLine($"Liquid Oxygen tank: {oxidizer.BarrelsUsed} barrels used");
+            Console.WriteLine($"RP-1 tank: {fuel.BarrelsUsed} barrels used");
+            return -1;
+        }
+    }
+}
+
+public class Ship
+{
+    FuelTank oxidizerTank;
+    FuelTank fuelTank;
+    TankStatus status;
+
+    public Ship(FuelTank oxidizer, FuelTank fuel, TankStatus status)
+    {
+        oxidizerTank = oxidizer;
+        fuelTank = fuel;
+        this.status = status;
+    }
+
+    public void TryFillTanks(List<FuelBarrel> barrels)
+    {
+        Console.WriteLine("=== STARTING FUEL TRANSFER ===\n");
+        foreach(FuelBarrel barrel in barrels)
+        {
+            oxidizerTank.TryFillFromBarrel(barrel);
+            fuelTank.TryFillFromBarrel(barrel);
+
+            if (status.CheckFullnes() == 0)
+            {
+                Console.WriteLine("\n=== FUEL TRANSFER COMPLETED ===");
+                return;
+            }
+        }
+    }
+}
+
+public class Program
+{
+
+
+    public static void Main()
+    {
+        List<FuelBarrel> barrels = new List<FuelBarrel>();
+        for (int i = 0; i < 100; i++)
+        {
+            barrels.Add(new FuelBarrel(i % 2 == 0 ? "Liquid Oxygen" : "RP-1"));
+        }
+
+        FuelTank oxidizer = new FuelTank("Liquid Oxygen");
+        FuelTank fuel = new FuelTank("RP-1");
+
+        Ship ship = new Ship(oxidizer, fuel, new TankStatus(oxidizer, fuel));
+
+        ship.TryFillTanks(barrels);
+
+        Console.ReadKey();
+    }
+}
 ////////////////////////////////////////////////////////////////////////////////////////
