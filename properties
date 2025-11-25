@@ -813,11 +813,16 @@ public class Ship
 
     public void TryFillTanks(List<FuelBarrel> barrels)
     {
+        Console.WriteLine("=== STARTING FUEL TRANSFER ===\n");
         foreach(FuelBarrel barrel in barrels)
         {
             oxidizerTank.TryFillFromBarrel(barrel);
             fuelTank.TryFillFromBarrel(barrel);
-            if (status.CheckFullnes() == 0) return;
+            if (status.CheckFullnes() == 0)
+            {
+                Console.WriteLine("\n=== FUEL TRANSFER COMPLETED ===");
+                return;
+            }
         }
     }
 }
