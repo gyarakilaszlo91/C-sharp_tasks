@@ -52,5 +52,121 @@ public class Program
 
 Task 2
 ////////////////////////////////////////////////////////////////////////////////////////
+using System;
+using System.Security;
+
+public class Fuel
+{
+    private string name;
+    private int toxicity;
+
+    public Fuel(string name, int toxicity)
+    {
+        this.name = name;
+        this.toxicity = toxicity;
+    }
+
+    public string Name {  get { return name; } }
+    public int Toxicity { get { return toxicity; } }
+}
+
+public class FuelBarrel
+{
+    Random random = new Random();
+    private string name;
+    private int toxicity;
+    private int capacity;
+    private int currentVolume;
+
+    public FuelBarrel(string name, int toxicity, int capacity, int currentVolume)
+    {
+        this.name = name;
+        this.toxicity= toxicity;
+        this.capacity = capacity;
+        this.currentVolume = currentVolume;
+    }
+
+    public FuelBarrel(string name)
+    {
+        this.name = name;
+        this.toxicity = random.Next(1, 11);
+        this.capacity = random.Next(80, 151);
+        this.currentVolume = random.Next(0, 71);
+    }
+
+    public int CurrentVolume { get { return currentVolume; } }
+    public double FullnessPercentage { 
+        get 
+        {
+            double value = Convert.ToDouble(CurrentVolume) / Convert.ToDouble(capacity) * 100;
+            return (Math.Round(value, 2));
+        }
+    }
+
+    public void TryFillBarrel(Fuel fuel, int amount)
+    {
+        
+        if( fuel.Name == name)
+        {
+            if (currentVolume+amount < capacity)
+            {
+                Console.WriteLine($"[SUCCES] {amount}L of {fuel.Name} added to the barrel. Current fullnes: {FullnessPercentage}%");
+            }
+            else if (currentVolume == capacity)
+            {
+                Console.WriteLine("[ALERT] Barrel is full, can not add any more. Filling aborted.");
+            }
+            else
+            {
+                Console.WriteLine($"[ALERT] Sensor detected incorrect amount of fuel");
+                Console.WriteLine($"{capacity - CurrentVolume}L added to the Barrel, {amount - (capacity - CurrentVolume)}L remaining");
+                currentVolume = capacity;
+            }
+        }
+        else
+        {
+            Console.WriteLine($"[ALERT] Sensor detected incorrect fuel ({fuel.Name}) in {name} barrel. Filling aborted.");
+        }
+    }
+}
+
+public class Progam
+{
+
+
+    public static void Main()
+    {
+        FuelBarrel[] barrels = new FuelBarrel[] { new FuelBarrel("Diesel"), new FuelBarrel("Gasoline"), new FuelBarrel("Ethanol"), new FuelBarrel("LPG"), new FuelBarrel("Hydrogen"), new FuelBarrel("Petrol"), new FuelBarrel("Biodiesel") };
+        Fuel[] fuels = new Fuel[] { new Fuel("Gasoline", 1), new Fuel("Petrol", 3), new Fuel("Ethanol", 3) };
+
+        Test(barrels, fuels);
+
+        Console.ReadKey();
+    }
+
+    public static void Test(FuelBarrel[] barrels, Fuel[] fuels)
+    {
+        Random random = new Random();
+
+        Console.WriteLine("=== STARTING FUEL TEST ===\n");
+        for (int i = 0; i < barrels.Length; i++)
+        {
+            foreach(Fuel fuel in fuels)
+            {
+                int amount = random.Next(10, 51);
+                Console.WriteLine($"[TEST] Trying to fill Barrel-{i} with {fuel.Name} ({amount})L");
+                barrels[i].TryFillBarrel(fuel, amount);
+                Console.WriteLine();
+            }
+        }
+        Console.WriteLine("=== FUEL TEST COMPLETED ===");
+    }
+}
+////////////////////////////////////////////////////////////////////////////////////////
+
+Medium
+
+Task 3
+////////////////////////////////////////////////////////////////////////////////////////
 
 ////////////////////////////////////////////////////////////////////////////////////////
