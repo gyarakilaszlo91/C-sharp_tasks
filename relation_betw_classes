@@ -298,5 +298,257 @@ Medium
 
 Task 3
 //////////////////////////////////////////////////////////////////////////////////////////
+using System;
+
+public class InteriorSpace
+{
+    private string interiorName;
+    private bool isHidden;
+
+    public InteriorSpace(string interiorName, bool isHidden = false)
+    {
+        this.interiorName = interiorName;
+        this.isHidden = isHidden;
+    }
+
+    public string Name
+    {
+        get { return interiorName; }
+    }
+    public bool IsHidden
+    {
+        get { return isHidden; }
+    }
+}
+
+public class Base
+{
+    Random random = new Random();
+    private string name;
+    private List<InteriorSpace> interiors;
+
+    public Base(InteriorSpace[] interiors, string name)
+    {
+        this.interiors = new List<InteriorSpace>();
+
+        foreach (InteriorSpace interior in interiors)
+        {
+            this.interiors.Add(interior);
+        }
+
+        this.name = name;
+    }
+
+    public string Name
+    {
+        get { return name; }
+        set { name = value; }
+    }
+
+    public void ListInteriors()
+    {
+        foreach (InteriorSpace interior in interiors)
+        {
+            if (interior.IsHidden)
+            {
+                if (random.Next(0, 3) == 0)
+                {
+                    Console.WriteLine($"- {interior.Name}");
+                }
+            }
+            else
+            {
+                Console.WriteLine($"- {interior.Name}");
+            }
+        }
+    }
+}
+
+public class Ship : Base
+{
+    private List<string> engines;
+    private int fuelCapacity;
+    private string holdSize;
+    private Station station;
+
+    public Ship(InteriorSpace[] interiors ,string name, List<string> engines, int fuelCapacity, string holdSize, Station station) : base(interiors, name)
+    {
+        this.engines = engines ?? new List<string>();
+        this.fuelCapacity = fuelCapacity;
+        this.holdSize = holdSize;
+        this.station = station;
+    }
+
+    public List<string> Engines
+    {
+        get { return engines; }
+        set { engines = value; }
+    }
+    public int FuelCapacity
+    {
+        get { return fuelCapacity; }
+        set { fuelCapacity = value; }
+    }
+    public string HoldSize
+    {
+        get { return holdSize; }
+        set { holdSize = value; }
+    }
+
+    public virtual void Transponder()
+    {
+        Console.WriteLine($"I am {Name}, a {this.GetType()} type ship");
+        Console.WriteLine($"Ship '{Name}' is assigned to: {station.Name}");
+    }
+}
+
+public class Corvette : Ship
+{
+    private string weapons;
+    public Corvette(InteriorSpace[] interiors, string name, List<string> engines, int fuelCapacity, string holdSize, string weapons, Station station) : base (interiors, name, engines, fuelCapacity, holdSize, station) 
+    {
+        this.weapons = weapons;
+    }
+
+    public string Weapons
+    {
+        get { return weapons; }
+        set { weapons = value; }
+    }
+
+    public void RequestTranspond(Ship ship)
+    {
+        Console.WriteLine($"Corvette asks ship for identification.");
+        ship.Transponder();
+    }
+
+    public void QueryInteriors(Base ship)
+    {
+        Console.WriteLine($"Corvette ask for a list of {ship.Name}'s interiors");
+        ship.ListInteriors();
+    }
+}
+
+public class Merchant : Ship
+{
+    private string engine;
+    public Merchant(InteriorSpace[] interiors, string name, string engine, int fuelCapacity, string holdSize, Station station) : base(interiors, name, new List<string>(), fuelCapacity, holdSize, station)
+    {
+        this.engine = engine;
+    }
+
+    public string Engine
+    {
+        get { return engine; }
+        set { engine = value; }
+    }
+
+    public override void Transponder()
+    {
+        base.Transponder();
+        Console.WriteLine($"I have no weapons, one {Engine}, and a {HoldSize} hold.");
+    }
+}
+
+public class Smuggler : Merchant
+{
+    private bool hiddenHold;
+    public Smuggler(InteriorSpace[] interiors, string name, string engine, int fuelCapacity, string holdSize, bool hiddenHold, Station station) : base(interiors, name, engine, fuelCapacity, holdSize, station)
+    {
+        this.hiddenHold = hiddenHold;
+    }
+
+    public bool HiddenHold
+    {
+        get { return hiddenHold; }
+    }
+
+    public override void Transponder()
+    {
+        Console.WriteLine($"I am {Name}, a {this.GetType()} type ship");
+        Console.WriteLine($"Ship '{Name}' is assigned to: Unknown station");
+        Console.WriteLine($"I have no weapons, one {Engine}, and no hold.");
+
+    }
+}
+
+public class Station : Base
+{
+    private List<Ship> ships;
+
+    public Station(InteriorSpace[] interiors, string name) : base(interiors, name)
+    {
+        ships = new List<Ship>();
+    }
+
+    public void Add(Ship ship)
+    {
+        ships.Add(ship);
+    }
+
+    public void ListShips()
+    {
+        Console.WriteLine($"Ships assigned to {Name} station: ");
+        foreach (Ship ship in ships)
+        {
+            Console.WriteLine($"- {ship.Name}");
+        }
+    }
+
+}
+public class Program
+{
+    static void Main()
+    {
+        InteriorSpace[] interiorsStation = new InteriorSpace[]
+        {
+            new InteriorSpace("Cabin 1"),
+            new InteriorSpace("Cabin 2"),
+            new InteriorSpace("Cabin 3"),
+            new InteriorSpace("Engine Room"),
+            new InteriorSpace("Dock"),
+        };
+        InteriorSpace[] interiorsShip = new InteriorSpace[]
+        {
+            new InteriorSpace("Cabin 1"),
+            new InteriorSpace("Cabin 2"),
+            new InteriorSpace("Engine Room"),
+            new InteriorSpace("Holding room"),
+        };
+        InteriorSpace[] interiorsSmuggler = new InteriorSpace[]
+        {
+            new InteriorSpace("Cabin 1"),
+            new InteriorSpace("Engine Room"),
+            new InteriorSpace("Holding room", true),
+        };
+
+
+        List<string> engines = new List<string>() { "Large engine 1", "Large engine 2" };
+        Station omega = new Station(interiorsStation, "Omega station");
+        Corvette corvette = new Corvette(interiorsShip, "Corvette", engines, 50000, "Small", "Laser", omega);
+        omega.Add(corvette);
+        Merchant merchant = new Merchant(interiorsShip, "Merchant", "Cheap Engine", 30000, "Large", omega);
+        omega.Add(merchant);
+        Smuggler smuggler = new Smuggler(interiorsSmuggler, "Smuggler", "Cheap Engine", 30000, "None", true, omega);
+        omega.Add(smuggler);
+
+        corvette.RequestTranspond(merchant);
+        Console.WriteLine();
+        corvette.QueryInteriors(merchant);
+        Console.WriteLine();
+        corvette.RequestTranspond(smuggler);
+        Console.WriteLine();
+        corvette.QueryInteriors(smuggler);
+
+
+
+        Console.ReadKey();
+
+    }
+}
+//////////////////////////////////////////////////////////////////////////////////////////
+
+Task 4
+//////////////////////////////////////////////////////////////////////////////////////////
 
 //////////////////////////////////////////////////////////////////////////////////////////
