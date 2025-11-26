@@ -1,0 +1,132 @@
+Easy
+
+Task 1
+//////////////////////////////////////////////////////////////////////////////////////////
+using System;
+
+public class Ship
+{
+    private string name;
+    private List<string> engines;
+    private int fuelCapacity;
+    private string holdSize;
+
+    public Ship(string name, List<string> engines, int fuelCapacity, string holdSize)
+    {
+        this.name = name;
+        this.engines = engines ?? new List<string>();
+        this.fuelCapacity = fuelCapacity;
+        this.holdSize = holdSize;
+    }
+
+    public string Name
+    {
+        get { return name; }
+        set { name = value; }
+    }
+    public List<string> Engines
+    {
+        get { return engines; }
+        set { engines = value; }
+    }
+    public int FuelCapacity
+    {
+        get { return fuelCapacity; }
+        set { fuelCapacity = value; }
+    }
+    public string HoldSize
+    {
+        get { return holdSize; }
+        set { holdSize = value; }
+    }
+
+    public virtual void Transponder()
+    {
+        Console.WriteLine($"I am {name}, a {this.GetType()} type ship");
+    }
+}
+
+public class Corvette : Ship
+{
+    private string weapons;
+    public Corvette(string name, List<string> engines, int fuelCapacity, string holdSize, string weapons) : base (name, engines, fuelCapacity, holdSize) 
+    {
+        this.weapons = weapons;
+    }
+
+    public string Weapons
+    {
+        get { return weapons; }
+        set { weapons = value; }
+    }
+
+    public void RequestTranspond(Ship ship)
+    {
+        Console.WriteLine($"Corvette asks ship for identification.");
+        ship.Transponder();
+    }
+}
+
+public class Merchant : Ship
+{
+    private string engine;
+    public Merchant(string name, string engine, int fuelCapacity, string holdSize) : base(name, new List<string>(), fuelCapacity, holdSize)
+    {
+        this.engine = engine;
+    }
+
+    public string Engine
+    {
+        get { return engine; }
+        set { engine = value; }
+    }
+
+    public override void Transponder()
+    {
+        base.Transponder();
+        Console.WriteLine($"I have no weapons, one {Engine}, and a {HoldSize} hold.");
+    }
+}
+
+public class Smuggler : Merchant
+{
+    private bool hiddenHold;
+    public Smuggler(string name, string engine, int fuelCapacity, string holdSize, bool hiddenHold) : base(name, engine, fuelCapacity, holdSize)
+    {
+        this.hiddenHold = hiddenHold;
+    }
+
+    public bool HiddenHold
+    {
+        get { return hiddenHold; }
+    }
+
+    public override void Transponder()
+    {
+        Console.WriteLine($"I am {Name}, a {this.GetType()} type ship");
+        Console.WriteLine($"I have no weapons, one {Engine}, and no hold.");
+
+    }
+}
+public class Program
+{
+    static void Main()
+    {
+        List<string> engines = new List<string>() { "Large engine 1", "Large engine 2" };
+        Corvette corvette = new Corvette("Corvette", engines, 50000, "Small", "Laser");
+        Merchant merchant = new Merchant("Merchant", "Cheap Engine", 30000, "Large");
+        Smuggler smuggler = new Smuggler("Smuggler", "Cheap Engine", 30000, "None", true);
+
+        corvette.RequestTranspond(merchant);
+        corvette.RequestTranspond(smuggler);
+
+        Console.ReadKey();
+
+    }
+}
+//////////////////////////////////////////////////////////////////////////////////////////
+
+Task 2
+//////////////////////////////////////////////////////////////////////////////////////////
+
+//////////////////////////////////////////////////////////////////////////////////////////
