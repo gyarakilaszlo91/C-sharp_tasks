@@ -446,7 +446,7 @@ public class Program
         FillUpRobots(crewMembers);
 
 
-        //TrophyInfo(trophies);
+        TrophyInfo(trophies);
 
         int totalCredit = (int) Math.Floor(Trophy.SumOfPrices);
         int totalSellableCredit = (int) Math.Floor(Trophy.SumOfSellablePrices);
@@ -475,7 +475,7 @@ public class Program
     {
         foreach (Trophy t in trophys)
         {
-            t.DisplayInfo();
+            //t.DisplayInfo();
             Trophy.SumOfPrices += t.CalculateCost();
 
             if(t is SellableTrophy)
