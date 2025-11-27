@@ -1,0 +1,92 @@
+Easy
+
+Task 1
+/////////////////////////////////////////////////////////////////////////////////////////////////////
+using System;
+
+public class Trophy
+{
+    Random random = new Random();
+    public int Length { get; set; }
+    public int Height { get; set; }
+    public int Width { get; set; }
+    public int Mass { get; set; }
+    public string Type { get; set; }
+
+    public Trophy(int length, int height, int width, int mass, string type)
+    {
+        Length = length;
+        Height = height;
+        Width = width;
+        Mass = mass;
+        Type = type;
+    }
+
+    private int CalculateVolume()
+    {
+        return Length * Height * Width;
+    }
+    private int CalculateCost()
+    {
+        return Mass * CalculateVolume() * random.Next(1, 11);
+    }
+    public void DisplayInfo()
+    {
+        Console.WriteLine($"Trophy: {Type}");
+        Console.WriteLine($"Mass: {Mass} kg");
+        Console.WriteLine($"Volume: {CalculateVolume()} cubic unit");
+        Console.WriteLine($"Cost: {CalculateCost()} credits");
+        Console.WriteLine($"Trade Allowed: {(IsTradeAllowed() ? "Yes" : "No") }\n");
+    }
+    public virtual bool IsTradeAllowed()
+    {
+        return false;
+    }
+}
+
+public class SellableTrophy : Trophy
+{
+
+    public SellableTrophy(int length, int height, int width, int mass, string type) : base(length, height, width, mass, type) { }
+
+    public override bool IsTradeAllowed()
+    {
+        return true;
+    }
+}
+
+public class ProhibitedTrophy : Trophy
+{
+    public ProhibitedTrophy(int length, int height, int width, int mass, string type) : base(length, height, width, mass, type) { }
+
+    public override bool IsTradeAllowed()
+    {
+        return false;
+    }
+}
+
+
+
+public class Program
+{
+    static void Main()
+    {
+        Trophy cheese = new SellableTrophy(2, 3, 5, 21, "Cheese");
+        Trophy phone = new SellableTrophy(2, 5, 2, 11, "Phone");
+        Trophy calculator = new SellableTrophy(4, 6, 2, 21, "Calculator");
+        Trophy bomb = new ProhibitedTrophy(3, 3, 3, 10, "Bomb");
+        Trophy timemachine = new ProhibitedTrophy(20, 13, 50, 130, "Timemachine");
+        Trophy gun = new ProhibitedTrophy(7, 4, 3, 20, "Gun");
+
+        cheese.DisplayInfo();
+        phone.DisplayInfo();
+        calculator.DisplayInfo();
+
+        bomb.DisplayInfo();
+        timemachine.DisplayInfo();
+        gun.DisplayInfo();
+
+        Console.ReadKey();
+    }
+}
+/////////////////////////////////////////////////////////////////////////////////////////////////////
