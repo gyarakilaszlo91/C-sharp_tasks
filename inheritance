@@ -1204,28 +1204,19 @@ public class Program
         TrophyStorage OriginalStorage = new TrophyStorage();
         GenerateTrophies(OriginalStorage);
         // creating copys of the storage for comparison
-        TrophyStorage storage1 = new TrophyStorage();
-        storage1.trophies.AddRange(OriginalStorage.trophies);
-        TrophyStorage storage2 = new TrophyStorage();
-        storage2.trophies.AddRange(OriginalStorage.trophies);
-        TrophyStorage storage3 = new TrophyStorage();
-        storage3.trophies.AddRange(OriginalStorage.trophies);
-        TrophyStorage storage4 = new TrophyStorage();
-        storage4.trophies.AddRange(OriginalStorage.trophies);
-        TrophyStorage storage5 = new TrophyStorage();
-        storage5.trophies.AddRange(OriginalStorage.trophies);
+        TrophyStorage[] storages =  CreateStorages(OriginalStorage);
 
 
 
-        CalculateLoop(storage1, crewMembers, captain, merchant1, quartermaster);
+        CalculateLoop(storages[0], crewMembers, captain, merchant1, quartermaster);
         Console.WriteLine();
-        CalculateLoop(storage2, crewMembers, captain, merchant2, quartermaster);
+        CalculateLoop(storages[1], crewMembers, captain, merchant2, quartermaster);
         Console.WriteLine();
-        CalculateLoop(storage3, crewMembers, captain, merchant3, quartermaster);
+        CalculateLoop(storages[2], crewMembers, captain, merchant3, quartermaster);
         Console.WriteLine();
-        CalculateLoop(storage4, crewMembers, captain, merchant4, quartermaster);
+        CalculateLoop(storages[3], crewMembers, captain, merchant4, quartermaster);
         Console.WriteLine();
-        CalculateLoop(storage5, crewMembers, captain, merchant5, quartermaster);
+        CalculateLoop(storages[4], crewMembers, captain, merchant5, quartermaster);
 
 
 
@@ -1303,7 +1294,6 @@ public class Program
         CalculateTotal(captain, merchant);
         CalculateShares(members);
     }
-
     public static Merchant CreateMerchant(string name, int age)
     {
         Random random = new Random();
@@ -1327,5 +1317,22 @@ public class Program
         return new Merchant(name, age, accepted);
     }
 
+    public static TrophyStorage[] CreateStorages(TrophyStorage originalStorage)
+    {
+        TrophyStorage[] storages = new TrophyStorage[5];
+
+        for(int i = 0; i < 5; i++)
+        {
+            storages[i] = new TrophyStorage();
+            storages[i].trophies.AddRange(originalStorage.trophies);
+        }
+
+        return storages;
+    }
 };
+/////////////////////////////////////////////////////////////////////////////////////////////////////
+
+Task 6
+/////////////////////////////////////////////////////////////////////////////////////////////////////
+
 /////////////////////////////////////////////////////////////////////////////////////////////////////
