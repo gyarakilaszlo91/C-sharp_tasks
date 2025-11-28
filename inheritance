@@ -515,5 +515,344 @@ public class Program
 
 Task 4
 /////////////////////////////////////////////////////////////////////////////////////////////////////
+using System;
+
+public class Trophy
+{
+    Random random = new Random();
+    public int Length { get; set; }
+    public int Height { get; set; }
+    public int Width { get; set; }
+    public int Mass { get; set; }
+    public string Type { get; set; }
+    public static double SumOfPrices { get; set; }
+    public static double SumOfSellablePrices { get; set; }
+
+
+    public Trophy(int length, int height, int width, int mass, string type)
+    {
+        Length = length;
+        Height = height;
+        Width = width;
+        Mass = mass;
+        Type = type;
+    }
+
+    public int CalculateVolume()
+    {
+        return Length * Height * Width;
+    }
+    public virtual double CalculateCost()
+    {
+        return Mass * CalculateVolume() * random.Next(1, 11);
+    }
+    public void DisplayInfo()
+    {
+        Console.WriteLine($"Trophy: {Type}");
+        Console.WriteLine($"Mass: {Mass} kg");
+        Console.WriteLine($"Volume: {CalculateVolume()} cubic unit");
+        Console.WriteLine($"Cost: {CalculateCost()} credits");
+        Console.WriteLine($"Trade Allowed: {(IsTradeAllowed() ? "Yes" : "No") }\n");
+    }
+    public virtual bool IsTradeAllowed()
+    {
+        return false;
+    }
+}
+
+public class SellableTrophy : Trophy
+{
+
+    public SellableTrophy(int length, int height, int width, int mass, string type) : base(length, height, width, mass, type) { }
+
+    public override bool IsTradeAllowed()
+    {
+        return true;
+    }
+    public override double CalculateCost()
+    {
+        return Math.Round((double)Mass * CalculateVolume() * 0.8, 2);
+    }
+}
+
+public class ProhibitedTrophy : Trophy
+{
+    public ProhibitedTrophy(int length, int height, int width, int mass, string type) : base(length, height, width, mass, type) { }
+
+    public override bool IsTradeAllowed()
+    {
+        return false;
+    }
+    public override double CalculateCost()
+    {
+        return Math.Round((double)Mass * CalculateVolume() * 3, 2);
+    }
+}
+
+public class CrewMember
+{
+    public static double TotalShareValue {  get; set; }
+    public static int CrewShare { get; set; }
+    public string Name { get; }
+    public string Position { get; set; }
+    public double BaseShares { get; set; }
+
+    public CrewMember(string name)
+    {
+        Name = name;
+        Position = "Crewmember";
+        BaseShares = 1;
+    }
+
+    public virtual double CalculateTotalShares()
+    {
+        return 0;
+    }
+}
+public class Captain : CrewMember
+{
+    public int AdditionalEarningpercentage { get; }
+    public int AdditionalShare { get; set; }
+    public Captain(string name) : base(name)
+    {
+        Position = "Captain";
+        BaseShares = 5;
+        AdditionalEarningpercentage = 20;
+    }
+
+    public override double CalculateTotalShares()
+    {
+        double earning = Math.Floor(CrewShare / TotalShareValue * BaseShares);
+        return earning;
+    }
+
+}
+public class HeadOfBoardingParty : CrewMember
+{
+    public HeadOfBoardingParty(string name) : base(name)
+    {
+        Position = "Head of Boarding Party";
+        BaseShares = 4;
+    }
+
+    public override double CalculateTotalShares()
+    {
+        double earning = Math.Floor(CrewShare / TotalShareValue * BaseShares);
+
+        return earning;
+    }
+}
+public class ChiefEngineer : CrewMember
+{
+    public ChiefEngineer(string name) : base(name)
+    {
+        Position = "Chief Engineer";
+        BaseShares = 4;
+    }
+
+    public override double CalculateTotalShares()
+    {
+        double earning = Math.Floor(CrewShare / TotalShareValue * BaseShares);
+
+        return earning;
+    }
+}
+public class Navigator : CrewMember
+{
+    public Navigator(string name) : base(name)
+    {
+        Position = "Navigator";
+        BaseShares = 3;
+    }
+
+    public override double CalculateTotalShares()
+    {
+        double earning = Math.Floor(CrewShare / TotalShareValue * BaseShares);
+
+        return earning;
+    }
+}
+public class Engineer : CrewMember
+{
+    public Engineer(string name) : base(name)
+    {
+        Position = "Engineer";
+        BaseShares = 2;
+    }
+
+    public override double CalculateTotalShares()
+    {
+        double earning = Math.Floor(CrewShare / TotalShareValue * BaseShares);
+
+        return earning;
+    }
+}
+public class Trainee : CrewMember
+{
+    public Trainee(string name) : base(name)
+    {
+        Position = "Trainee";
+        BaseShares = 1.5;
+    }
+
+    public override double CalculateTotalShares()
+    {
+        double earning = Math.Floor(CrewShare / TotalShareValue * BaseShares);
+
+        return earning;
+    }
+}
+public class RobotCrewMember : CrewMember
+{
+    public RobotCrewMember(string name) : base(name)
+    {
+        Position = "Robot Crew Member";
+        BaseShares = 0;
+    }
+
+    public override double CalculateTotalShares()
+    {
+        double earning = Math.Floor(CrewShare / TotalShareValue * BaseShares);
+
+        return earning;
+    }
+}
+public class TrophyStorage
+{
+    public List<Trophy> trophies { get; }
+
+    public TrophyStorage()
+    {
+        trophies = new List<Trophy>();
+    }
+
+    public void AddTrophy(Trophy trophy)
+    {
+        trophies.Add(trophy);
+    }
+}
+
+public class Program
+{
+    static void Main()
+    {
+        Captain captain = new Captain("Captain");
+
+        List<CrewMember> crewMembers = new List<CrewMember>()
+        {
+            captain,
+            new HeadOfBoardingParty("Head Of Boarding Party"),
+            new ChiefEngineer("Chief Engineer"),
+            new Navigator("Navigator"),
+            new Engineer("Engineer"),
+            new Trainee("Trainee")
+        };
+
+        FillUpRobots(crewMembers);
+
+        TrophyStorage trophyStorage = new TrophyStorage();
+        GenerateTrophies(trophyStorage);
+
+        TrophyInfo(trophyStorage);
+
+        CalculateTotal(captain);
+
+        CalculateShares(crewMembers);
+
+
+
+
+        Console.ReadKey();
+    }
+
+    public static void GenerateTrophies( TrophyStorage trophyStorage)
+    {
+        Random random = new Random();
+
+        for (int i = 0; i < 100; i++)
+        {
+            if (i < 20)
+            {
+                trophyStorage.trophies.Add(new ProhibitedTrophy(random.Next(1, 6), random.Next(1, 6), random.Next(1, 6), random.Next(5, 21), $"Trophy #{i}"));
+            }
+            else
+            {
+                trophyStorage.trophies.Add(new SellableTrophy(random.Next(1, 6), random.Next(1, 6), random.Next(1, 6), random.Next(5, 21), $"Trophy #{i}"));
+            }
+        }
+    }
+
+    public static void TrophyInfo(TrophyStorage trophyStorage)
+    {
+        foreach (Trophy t in trophyStorage.trophies)
+        {
+            //t.DisplayInfo();
+            Trophy.SumOfPrices += t.CalculateCost();
+
+            if(t is SellableTrophy)
+            {
+                Trophy.SumOfSellablePrices += t.CalculateCost();
+            }
+        }
+    }
+
+    public static void FillUpRobots(List<CrewMember> members)
+    {
+        for (int i = 0; i < 20; i++)
+        {
+            members.Add(new RobotCrewMember($"Robot #{i+1}"));
+        }
+    }
+
+    public static void CalculateShares(List<CrewMember> members)
+    {
+        foreach(CrewMember member in members)
+        {
+            CrewMember.TotalShareValue += member.BaseShares;
+        }
+
+        Console.WriteLine("Crew Shares:");
+
+        foreach(CrewMember member in members)
+        {
+            if (member is Captain)
+            {
+                Console.Write($"{member.Name}: {member.CalculateTotalShares() - 1000} credits ");
+                Console.WriteLine($"({Math.Floor(member.CalculateTotalShares() / CrewMember.CrewShare * 100)}%)");
+            }
+            else
+            {
+                Console.Write($"{member.Name}: {member.CalculateTotalShares()} ");
+                Console.WriteLine($"({Math.Floor(member.CalculateTotalShares() / CrewMember.CrewShare * 100)}%)");
+            }
+        }
+
+        Console.WriteLine("\nCaptain paid 1000 credits for repairs and medical expenses.");
+    }
+
+    public static void CalculateTotal(Captain captain)
+    {
+        int totalCredit = (int)Math.Floor(Trophy.SumOfPrices);
+        int totalSellableCredit = (int)Math.Floor(Trophy.SumOfSellablePrices);
+        CrewMember.CrewShare = totalSellableCredit / 2;
+
+        Console.WriteLine($"Total Loot Value: {totalCredit} credits");
+        Console.WriteLine($"Total Sellable Loot Value: {totalSellableCredit} credits");
+        Console.WriteLine($"Total Crew Earnings : {CrewMember.CrewShare} credits");
+
+        captain.AdditionalShare = (int)Math.Floor(CrewMember.CrewShare * 0.2);
+        Console.WriteLine($"Captains extra share for the ship expenses: {captain.AdditionalShare} credits");
+
+        CrewMember.CrewShare = (int)Math.Floor(CrewMember.CrewShare - CrewMember.CrewShare * 0.2);
+        Console.WriteLine($"Total Crew Earnings after Captain {captain.AdditionalEarningpercentage}% share : {CrewMember.CrewShare} credits");
+        Console.WriteLine();
+    }
+};
+/////////////////////////////////////////////////////////////////////////////////////////////////////
+
+Hard
+
+Tak 5
+/////////////////////////////////////////////////////////////////////////////////////////////////////
 
 /////////////////////////////////////////////////////////////////////////////////////////////////////
