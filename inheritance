@@ -1334,5 +1334,577 @@ public class Program
 
 Task 6
 /////////////////////////////////////////////////////////////////////////////////////////////////////
+using System;
 
+public class Trophy
+{
+    Random random = new Random();
+    public int Length { get; set; }
+    public int Height { get; set; }
+    public int Width { get; set; }
+    public int Mass { get; set; }
+    public string Type { get; set; }
+    public static double MerchantRevenue { get; set; }
+    public static double QuartermasterRevenue { get; set; }
+
+
+    public Trophy(int length, int height, int width, int mass, string type)
+    {
+        Length = length;
+        Height = height;
+        Width = width;
+        Mass = mass;
+        Type = type;
+    }
+
+    public int CalculateVolume()
+    {
+        return Length * Height * Width;
+    }
+    public virtual double CalculateCost()
+    {
+        return Mass * CalculateVolume() * random.Next(1, 11);
+    }
+    public void DisplayInfo()
+    {
+        Console.WriteLine($"Trophy: {Type}");
+        Console.WriteLine($"Mass: {Mass} kg");
+        Console.WriteLine($"Volume: {CalculateVolume()} cubic unit");
+        Console.WriteLine($"Cost: {CalculateCost()} credits");
+        Console.WriteLine($"Trade Allowed: {(IsTradeAllowed() ? "Yes" : "No") }\n");
+    }
+    public virtual bool IsTradeAllowed()
+    {
+        return false;
+    }
+}
+public class SellableTrophy : Trophy
+{
+
+    public SellableTrophy(int length, int height, int width, int mass, string type) : base(length, height, width, mass, type) { }
+
+    public override bool IsTradeAllowed()
+    {
+        return true;
+    }
+    public override double CalculateCost()
+    {
+        return Math.Round((double)Mass * CalculateVolume() * 0.8, 2);
+    }
+}
+public class ProhibitedTrophy : Trophy
+{
+    public ProhibitedTrophy(int length, int height, int width, int mass, string type) : base(length, height, width, mass, type) { }
+
+    public override bool IsTradeAllowed()
+    {
+        return false;
+    }
+    public override double CalculateCost()
+    {
+        return Math.Round((double)Mass * CalculateVolume() * 3, 2);
+    }
+}
+
+public class Reasonable
+{
+    public string Name { get; set; }
+    public int Age { get; set; }
+
+    public Reasonable(string name, int age)
+    {
+        Name = name;
+        Age = age;
+    }
+
+    public virtual void DisplayInfo() { }
+}
+public class CrewMember : Reasonable
+{
+    public static double TotalShareValue {  get; set; }
+    public static int CrewShare { get; set; }
+    public string Position { get; set; }
+    public double BaseShares { get; set; }
+
+    public CrewMember(string name, int age) : base(name, age)
+    {
+        Position = "Crewmember";
+        BaseShares = 1;
+    }
+
+    public virtual double CalculateTotalShares()
+    {
+        return 0;
+    }
+}
+public class Captain : CrewMember
+{
+    public int AdditionalEarningpercentage { get; }
+    public int AdditionalShare { get; set; }
+    public Captain(string name, int age) : base(name, age)
+    {
+        Position = "Captain";
+        BaseShares = 5;
+        AdditionalEarningpercentage = 20;
+    }
+
+    public override double CalculateTotalShares()
+    {
+        double earning = Math.Floor(CrewShare / TotalShareValue * BaseShares);
+        return earning;
+    }
+
+}
+public class HeadOfBoardingParty : CrewMember
+{
+    public HeadOfBoardingParty(string name, int age) : base(name, age)
+    {
+        Position = "Head of Boarding Party";
+        BaseShares = 4;
+    }
+
+    public override double CalculateTotalShares()
+    {
+        double earning = Math.Floor(CrewShare / TotalShareValue * BaseShares);
+
+        return earning;
+    }
+}
+public class ChiefEngineer : CrewMember
+{
+    public ChiefEngineer(string name, int age) : base(name, age)
+    {
+        Position = "Chief Engineer";
+        BaseShares = 4;
+    }
+
+    public override double CalculateTotalShares()
+    {
+        double earning = Math.Floor(CrewShare / TotalShareValue * BaseShares);
+
+        return earning;
+    }
+}
+public class Navigator : CrewMember
+{
+    public Navigator(string name, int age) : base(name, age)
+    {
+        Position = "Navigator";
+        BaseShares = 3;
+    }
+
+    public override double CalculateTotalShares()
+    {
+        double earning = Math.Floor(CrewShare / TotalShareValue * BaseShares);
+
+        return earning;
+    }
+}
+public class Engineer : CrewMember
+{
+    public Engineer(string name, int age) : base(name, age)
+    {
+        Position = "Engineer";
+        BaseShares = 2;
+    }
+
+    public override double CalculateTotalShares()
+    {
+        double earning = Math.Floor(CrewShare / TotalShareValue * BaseShares);
+
+        return earning;
+    }
+}
+public class Trainee : CrewMember
+{
+    public Trainee(string name, int age) : base(name, age)
+    {
+        Position = "Trainee";
+        BaseShares = 1.5;
+    }
+
+    public override double CalculateTotalShares()
+    {
+        double earning = Math.Floor(CrewShare / TotalShareValue * BaseShares);
+
+        return earning;
+    }
+}
+public class RobotCrewMember : CrewMember
+{
+    public RobotCrewMember(string name) : base(name, 0)
+    {
+        Position = "Robot Crew Member";
+        BaseShares = 0;
+    }
+
+    public override double CalculateTotalShares()
+    {
+        double earning = Math.Floor(CrewShare / TotalShareValue * BaseShares);
+
+        return earning;
+    }
+}
+public class TrophyStorage
+{
+    public List<Trophy> trophies { get; }
+
+    public TrophyStorage()
+    {
+        trophies = new List<Trophy>();
+    }
+
+    public void AddTrophy(Trophy trophy)
+    {
+        trophies.Add(trophy);
+    }
+    public void RemoveTrophy(Trophy trophy)
+    {
+        trophies.Remove(trophy);
+    }
+}
+
+public class Merchant
+{
+    Random random = new Random();
+    public string Name { get; set; }
+    public int Age { get; set; }
+    public List<string> AcceptedTrophyTypes { get; }
+    public double AllowedCoefficient { get; }
+    public double ProhibitedCoefficient { get; }
+    public double BuyPrice { get; set; }
+    public bool EligibleMerchant { get; set; }
+
+    public Merchant(string name, int age, string[] acceptedTrophys)
+    {
+        Name = name;
+        Age = age;
+        AcceptedTrophyTypes = new List<string>();
+        AllowedCoefficient = random.NextDouble() * (1.1 - 0.85) + 0.85;
+        ProhibitedCoefficient = random.Next(4, 9);
+
+        foreach (string trophy in acceptedTrophys)
+        {
+            AcceptedTrophyTypes.Add(trophy);
+        }
+    }
+
+    private double CalculatePurchasePrice(Trophy trophy)
+    {
+        double credits = 0;
+
+        if (AcceptedTrophyTypes.Contains(trophy.Type))
+        {
+            if (trophy is SellableTrophy)
+            {
+                credits += trophy.CalculateCost() * AllowedCoefficient;
+            }
+            else
+            {
+                credits += trophy.CalculateCost() * ProhibitedCoefficient;
+            }
+        }
+
+        return credits;
+    }
+    public void HandleTrophys(TrophyStorage storage)
+    {
+        double credits = 0;
+
+        for (int i = storage.trophies.Count - 1; i >= 0; i--)
+        {
+            if (CalculatePurchasePrice(storage.trophies[i]) != 0)
+            {
+                credits += CalculatePurchasePrice(storage.trophies[i]);
+                storage.trophies.Remove(storage.trophies[i]);
+            }
+        }
+
+        BuyPrice = credits;
+    }
+}
+
+public class QuarterMaster
+{
+    public string Name { get; }
+    public double SellableRate { get; }
+    public double ProhibitedRate { get; }
+
+    public QuarterMaster()
+    {
+        Name = "Quartermaster";
+        SellableRate = 0.5;
+        ProhibitedRate = 2;
+    }
+
+    public void CalculateTotalPrice(TrophyStorage storage)
+    {
+        double credits = 0;
+        for (int i = storage.trophies.Count-1; i >= 0; i--)
+        {
+            if (storage.trophies[i] is SellableTrophy)
+            {
+                credits += storage.trophies[i].CalculateCost() * SellableRate;
+            }
+            else
+            {
+                credits += storage.trophies[i].CalculateCost() * ProhibitedRate;
+            }
+            storage.trophies.Remove(storage.trophies[i]);
+        }
+        Trophy.QuartermasterRevenue = credits;
+    }
+}
+
+public class RewardOptimizer
+{
+    private List<Merchant> _merchants;
+    private TrophyStorage _storage;
+    private List<double> _prices;
+    public Merchant BestMerchant { get; set; }
+
+    public RewardOptimizer(List<Merchant> merchants, TrophyStorage storage)
+    {
+        _merchants = merchants;
+        _storage = storage;
+        _prices = new List<double>();
+    }
+
+    private void CalculateMerchantPrices()
+    {
+        // goind through the merchants and addig their prices to the list
+        foreach (Merchant merchant in _merchants)
+        {
+            // counters for the remaining trophies
+            int trophyCount = 0;
+            int prohibitedCount = 0;
+
+            // generating helpers of the storage, since the merchants removing the selled trophies
+            TrophyStorage trophieStorageHelper = new TrophyStorage();
+            trophieStorageHelper.trophies.AddRange(_storage.trophies);
+            // calling the merchants HandleTrophys method to get the price
+            merchant.HandleTrophys(trophieStorageHelper);
+
+            // adding the price of the current merchant to the List
+            _prices.Add(merchant.BuyPrice);
+
+            // getting the trophyCount
+            foreach (Trophy trophy in trophieStorageHelper.trophies)
+            {
+                trophyCount++;
+
+                if (trophy is ProhibitedTrophy)
+                {
+                    prohibitedCount++;
+                }
+            }
+            // checking if the remaining trophies makes the merchant eligible for the trade or ont
+            if(trophyCount >= 20 && prohibitedCount >= 2)
+            {
+                merchant.EligibleMerchant = true;
+            }
+            else
+            {
+                merchant.EligibleMerchant = false;
+            }
+
+        }
+    }
+
+    public void GetBestMerchant()
+    {
+        // getting the prices and updating the merchants eligible status
+        CalculateMerchantPrices();
+
+        // creating a helper list of merchants, so i can remove the non eligible ones
+        List<Merchant> merchantList = new List<Merchant>();
+        merchantList.AddRange(_merchants);
+
+        bool found = false;
+
+        // loop while the best eligible merchnat is found, or we don't have more merchant in the list
+        while (!found)
+        {
+            // getting the index of the merchant with highest price
+            int indexOfBestMerchant = _prices.IndexOf(_prices.Max());
+
+            // checking if merchant is eligible or not
+            if (merchantList[indexOfBestMerchant].EligibleMerchant == false )
+            {
+                // removing the merchant from the helper list, if not eligible
+                merchantList.Remove(merchantList[indexOfBestMerchant]);
+            }
+            else
+            {
+                // going trhrough the original merchant list to select the best merchant
+                foreach(Merchant merchant in _merchants)
+                {
+                    // if we found the merchant with the same name setting the BestMerchant property to the merchant
+                    if (merchant.Name == merchantList[indexOfBestMerchant].Name)
+                    {
+                        BestMerchant = merchant;
+                    }
+                }
+                // setting the found to true, so the loop will stop
+                found = true;
+            }
+
+            // if there is no more merchant in the helper list, the loop will end
+            if (merchantList.Count == 0)
+            {
+                Console.WriteLine("There was no eligible merchant");
+                return ;
+            }
+        }
+
+
+    }
+
+}
+
+
+
+public class Program
+{
+    static void Main()
+    {
+        // creating the captain
+        Captain captain = new Captain("Captain", 35);
+        // creating the list of crewmembers
+        List<CrewMember> crewMembers = new List<CrewMember>()
+        {
+            captain,
+            new HeadOfBoardingParty("Head Of Boarding Party", 46),
+            new ChiefEngineer("Chief Engineer", 55),
+            new Navigator("Navigator", 48),
+            new Engineer("Engineer", 28),
+            new Trainee("Trainee", 23)
+        };
+        // filling up the list with robots
+        FillUpRobots(crewMembers);
+        // creating a list of merchants
+        List<Merchant> merchants = new List<Merchant>()
+        {
+            CreateMerchant("Trader A", 24),
+            CreateMerchant("Trader B", 35),
+            CreateMerchant("Trader C", 81),
+            CreateMerchant("Trader D", 52),
+            CreateMerchant("Trader E", 36)
+        };
+        // creating the quartermaster
+        QuarterMaster quartermaster = new QuarterMaster();
+        // creating the storage
+        TrophyStorage trophiStorage = new TrophyStorage();
+        // genearting random trophies
+        GenerateTrophies(trophiStorage);
+        // creating the optimizer object
+        RewardOptimizer optimizer = new RewardOptimizer(merchants, trophiStorage);
+        // calling the GetBestMerchant method of optimizer
+        optimizer.GetBestMerchant();
+        // checking if there was az eligible merchant or no
+        if(optimizer.BestMerchant != null)
+        {
+            // calling the modified Calculateloop
+            CalculateLoop(trophiStorage, crewMembers, captain, optimizer.BestMerchant, quartermaster);
+        }
+        Console.ReadKey();
+    }
+
+    public static void GenerateTrophies( TrophyStorage trophyStorage)
+    {
+        Random random = new Random();
+
+        for (int i = 0; i < 100; i++)
+        {
+            if (i < 20)
+            {
+                trophyStorage.trophies.Add(new ProhibitedTrophy(random.Next(1, 6), random.Next(1, 6), random.Next(1, 6), random.Next(5, 21), $"Trophy #{i}"));
+            }
+            else
+            {
+                trophyStorage.trophies.Add(new SellableTrophy(random.Next(1, 6), random.Next(1, 6), random.Next(1, 6), random.Next(5, 21), $"Trophy #{i}"));
+            }
+        }
+    }
+    public static void FillUpRobots(List<CrewMember> members)
+    {
+        for (int i = 0; i < 20; i++)
+        {
+            members.Add(new RobotCrewMember($"Robot #{i+1}"));
+        }
+    }
+    public static void CalculateShares(List<CrewMember> members)
+    {
+        foreach(CrewMember member in members)
+        {
+            CrewMember.TotalShareValue += member.BaseShares;
+        }
+
+        Console.WriteLine("Crew Shares:");
+
+        foreach(CrewMember member in members)
+        {
+            if (member is Captain)
+            {
+                Console.Write($"{member.Name}: {member.CalculateTotalShares() - 1000} credits ");
+                Console.WriteLine($"({Math.Floor(member.CalculateTotalShares() / CrewMember.CrewShare * 100)}%)");
+            }
+            else
+            {
+                Console.Write($"{member.Name}: {member.CalculateTotalShares()} ");
+                Console.WriteLine($"({Math.Floor(member.CalculateTotalShares() / CrewMember.CrewShare * 100)}%)");
+            }
+        }
+
+        Console.WriteLine("\nCaptain paid 1000 credits for repairs and medical expenses.");
+    }
+    public static void CalculateTotal(Captain captain, Merchant merchant)
+    {
+        int totalCredit = (int)Math.Floor(Trophy.MerchantRevenue) + (int)Math.Floor(Trophy.QuartermasterRevenue);
+        CrewMember.CrewShare = totalCredit / 2;
+
+        Console.Write($"{merchant.Name} - Merchant Revenue: {Math.Floor(Math.Round(Trophy.MerchantRevenue, 2))}, ");
+        Console.Write($"Quartermaster Revenue: {Math.Floor(Math.Round(Trophy.QuartermasterRevenue, 2))}, ");
+        Console.WriteLine($"Crew Earnings: {CrewMember.CrewShare}");
+
+        captain.AdditionalShare = (int)Math.Floor(CrewMember.CrewShare * 0.2);
+        Console.WriteLine($"Captains extra share for the ship expenses: {captain.AdditionalShare} credits");
+
+        CrewMember.CrewShare = (int)Math.Floor(CrewMember.CrewShare - CrewMember.CrewShare * 0.2);
+        Console.WriteLine($"Total Crew Earnings after Captain {captain.AdditionalEarningpercentage}% share : {CrewMember.CrewShare} credits");
+        Console.WriteLine();
+    }
+    public static void CalculateLoop(TrophyStorage storage, List<CrewMember> members, Captain captain, Merchant merchant, QuarterMaster quartermaster)
+    {
+        merchant.HandleTrophys(storage);
+        Trophy.MerchantRevenue = merchant.BuyPrice;
+        quartermaster.CalculateTotalPrice(storage);
+        CalculateTotal(captain, merchant);
+        CalculateShares(members);
+    }
+    public static Merchant CreateMerchant(string name, int age)
+    {
+        Random random = new Random();
+        List<int> numberHelper = new List<int>();
+
+        string[] accepted = new string[20];
+
+        for (int i = 0; i < 20; i++)
+        {
+            int number = random.Next(0, 100);
+
+            while (numberHelper.Contains(number))
+            {
+                number = random.Next(0, 100);
+            }
+            numberHelper.Add(number);
+
+            accepted[i] = $"Trophy #{number}";
+        }
+
+        return new Merchant(name, age, accepted);
+    }
+
+
+}
 /////////////////////////////////////////////////////////////////////////////////////////////////////
