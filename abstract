@@ -215,5 +215,172 @@ public class Program
 
 Task 4
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+using System;
+using System.Diagnostics.Metrics;
+using static System.Formats.Asn1.AsnWriter;
 
+public abstract class SpaceObject
+{
+    public abstract void PerformTask();
+    public abstract void DisplayType();
+}
+
+public abstract class Probes : SpaceObject
+{
+    public string Name { get; set; }
+    private static int _counter = 1;
+
+    public static int Counter
+    {
+        get { return _counter; }
+        set { _counter = value; }
+    }
+
+    public override void DisplayType()
+    {
+        Console.Write($"{Name} ");
+    }
+    public override void PerformTask()
+    {
+        Console.WriteLine("has been cleared for takeoff.");
+    }
+}
+public abstract class Robot : SpaceObject
+{
+    public string Name { get; set; }
+
+    public Robot(string name)
+    {
+        Name = name;
+    }
+
+    public override void PerformTask()
+    {
+        Console.WriteLine("greets Captain Freeman.");
+    }
+}
+
+public class Scout : Probes
+{
+    public Scout()
+    {
+        Name = $"Reconnaissance Drone #{Probes.Counter}";
+        Probes.Counter++;
+    }
+}
+public class Decoy : Probes
+{
+    public Decoy()
+    {
+        Name = $"Decoy Drone #{Probes.Counter}";
+        Probes.Counter++;
+    }
+}
+public class Hunter : Probes
+{
+    public Hunter()
+    {
+        Name = $"Hunter Drone #{Probes.Counter}";
+        Probes.Counter++;
+    }
+}
+
+public class Sintoid : Robot
+{
+    public Sintoid(string name) : base(name) { }
+
+    public override void DisplayType()
+    {
+        Console.Write($"Sintoid {Name}, class {this.GetType()}, ");
+    }
+}
+public class Android : Robot
+{
+    public Android(string name) : base(name) { }
+
+    public override void DisplayType()
+    {
+        Console.Write($"Android {Name}, class {this.GetType()}, ");
+    }
+}
+public class Humanoid : Robot
+{
+    public Humanoid(string name) : base(name) { }
+
+    public override void DisplayType()
+    {
+        Console.Write($"Humanoid {Name}, class {this.GetType()}, ");
+    }
+}
+
+public class NotDangerous : SpaceObject
+{
+    public override void DisplayType()
+    {
+        Console.Write("I am not dangerous, ");
+    }
+    public override void PerformTask()
+    {
+        Console.WriteLine("flying by without causing harm.");
+    }
+}
+public class Dangerous : SpaceObject
+{
+    public override void DisplayType()
+    {
+        Console.Write("I am dangerous, not and asteroid. ");
+    }
+    public override void PerformTask()
+    {
+        Console.WriteLine("I am flying past.");
+    }
+}
+public class Comet : SpaceObject
+{
+    public override void DisplayType()
+    {
+        Console.Write("I am a comet, ");
+    }
+    public override void PerformTask()
+    {
+        Console.WriteLine("threatening the ship with impact.");
+    }
+}
+
+public class Program
+{
+
+
+    static void Main()
+    {
+
+        Scout scout = new Scout();
+        Decoy decoy = new Decoy();
+        Hunter hunter = new Hunter();
+        DisplayHelper(scout, decoy, hunter);
+
+        Sintoid sintoid = new Sintoid("B-6NO");
+        Android android = new Android("L-4Z0");
+        Humanoid humanoid = new Humanoid("G-2ZA");
+        DisplayHelper(sintoid, android, humanoid);
+
+        NotDangerous notDangerous = new NotDangerous();
+        Dangerous dangerous = new Dangerous();
+        Comet comet = new Comet();
+        DisplayHelper(notDangerous, dangerous, comet);
+
+        Console.ReadKey();
+    }
+
+    public static void DisplayHelper(SpaceObject object1, SpaceObject object2, SpaceObject object3)
+    {
+        object1.DisplayType();
+        object1.PerformTask();
+        object2.DisplayType();
+        object2.PerformTask();
+        object3.DisplayType();
+        object3.PerformTask();
+        Console.WriteLine();
+    }
+}
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
