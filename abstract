@@ -521,5 +521,145 @@ public class Program
 
 Task 6
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+using System;
+
+public abstract class HoldElement
+{
+    public string Description { get; set; }
+
+    public HoldElement(string description)
+    {
+        Description = description;
+    }
+
+    public abstract bool Permeability();
+}
+
+public class Passable : HoldElement
+{
+    public Passable(string description) : base(description) { }
+
+    public override bool Permeability()
+    {
+        return true;
+    }
+}
+public class Impassable : HoldElement
+{
+    public Impassable(string description) : base(description) { }
+
+    public override bool Permeability()
+    {
+        return false;
+    }
+}
+
+public class Hold
+{
+    Random random = new Random();
+    public HoldElement[,] Field { get; set; }
+
+    public Hold()
+    {
+        Field = new HoldElement[15, 15];
+    }
+
+    public void InitializeGrid()
+    {
+        for (int i = 0; i < Field.GetLength(0); i++)
+        {
+            for (int j = 0; j < Field.GetLength(1); j++)
+            {
+                if (i == 0 && j == 0 || i == Field.GetLength(0) - 1 && j == Field.GetLength(1) - 1)
+                {
+                    Field[i, j] = new Passable("Door");
+                }
+                else if( i == 0 || j == 0 || i == Field.GetLength(0) - 1 || j == Field.GetLength(1) - 1)
+                {
+                    Field[i, j] = new Impassable("Wall");
+                }
+                else
+                {
+                    if (random.Next(0, 2) == 0)
+                    {
+                        Field[i, j] = new Passable("Floor tile");
+                    }
+                    else
+                    {
+                        Field[i, j] = new Impassable("Box");
+                    }
+                }
+            }
+        }
+    }
+
+    public void DisplayGrid()
+    {
+
+        for (int i = 0; i < Field.GetLength(0); i++)
+        {
+            for (int j = 0; j < Field.GetLength (1); j++)
+            {
+                if (Field[i,j] is Passable)
+                {
+                    Console.Write(" P ");
+                }
+                else
+                {
+                    Console.Write(" I ");
+                }
+            }
+            Console.WriteLine();
+        }
+    }
+
+    public void GetObjectInfo()
+    {
+            
+        int x_coordinate = -1;
+        int y_coordinate = -1;
+
+        Console.WriteLine("Please enter coordinates to get information about the object:");
+        try
+        {
+            Console.Write("Enter x-coordinate: ");
+            x_coordinate = Convert.ToInt32(Console.ReadLine());
+            Console.Write("Enter y-coordinate: ");
+            y_coordinate = Convert.ToInt32(Console.ReadLine());
+
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine(ex.Message);
+        }
+
+        if(y_coordinate != -1)
+        {
+            Console.WriteLine($"Object at ({y_coordinate}, {x_coordinate}): {Field[y_coordinate, x_coordinate].Description}");
+            string message = Field[y_coordinate, x_coordinate].Permeability() ? "Yes, you can pass here" : "No, you can't pass here";
+            Console.WriteLine($"Permeability: {message}.");
+        }
+
+    }
+}
+
+
+public class Program
+{
+    static void Main()
+    {
+        Hold grid = new Hold();
+
+        grid.InitializeGrid();
+        grid.DisplayGrid();
+        grid.GetObjectInfo();
+
+        Console.ReadKey();
+    }
+}
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+Task 7
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
