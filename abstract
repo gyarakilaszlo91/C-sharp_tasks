@@ -389,5 +389,137 @@ Hard
 
 Task 5
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+using System;
+
+public abstract class Resource
+{
+    public abstract void WhoAreYou();
+}
+
+public class Unigel : Resource
+{
+    public override void WhoAreYou()
+    {
+        Console.WriteLine("I am Unigel, the material from which everything on 'Proud' is made.");
+    }
+}
+public class Tool : Resource
+{
+    public override void WhoAreYou()
+    {
+        Console.WriteLine("I am a Tool, used for various tasks in the engineering compartment.");
+    }
+}
+public class Android : Resource
+{
+    public override void WhoAreYou()
+    {
+        Console.WriteLine("I am an Android, designed for technical work.");
+    }
+}
+
+public class Resources
+{
+    Random random = new Random();
+    public Resource[] ResourceList { get; set; }
+
+    public Resources()
+    {
+        ResourceList = new Resource[random.Next(50, 201)];
+    }
+}
+
+public class HandleResources
+{
+    private Resources _resources;
+    private List<Unigel> _unigels;
+    private List<Tool> _tools;
+    private List<Android> _androids;
+
+    public HandleResources(Resources resources, List<Unigel> unigels, List<Tool> tools, List<Android> androids)
+    {
+        _resources = resources;
+        _unigels = unigels;
+        _tools = tools;
+        _androids = androids;
+
+    }
+
+    private void FillUpResources()
+    {
+        for (int i = 0; i < _resources.ResourceList.Length; i++)
+        {
+            if (i % 3 == 0)
+            {
+                _resources.ResourceList[i] = new Unigel();
+            }
+            else if (i % 2 == 0)
+            {
+                _resources.ResourceList[i] = new Tool();
+            }
+            else
+            {
+                _resources.ResourceList[i] = new Android();
+            }
+        }
+    }
+
+    private void SortResources()
+    {
+        foreach(Resource resource in _resources.ResourceList)
+        {
+            resource.WhoAreYou();
+
+            if(resource is Unigel)
+            {
+                _unigels.Add((Unigel)resource);
+            }
+            else if(resource is Tool)
+            {
+                _tools.Add((Tool)resource);
+            }
+            else if (resource is Android)
+            {
+                _androids.Add((Android)resource);
+            }
+        }
+    }
+
+    private void GetStats()
+    {
+        Console.WriteLine($"There are {_unigels.Count} Unigel object.");
+        Console.WriteLine($"There are {_tools.Count} Tool object.");
+        Console.WriteLine($"There are {_androids.Count} Android object.");
+    }
+
+    public void HandleLogic()
+    {
+        FillUpResources();
+        SortResources();
+        GetStats();
+    }
+
+}
+
+public class Program
+{
+    static void Main()
+    {
+        Resources resources = new Resources();
+        List<Unigel> unigel = new List<Unigel>();
+        List<Tool> tool = new List<Tool>();
+        List<Android> android = new List<Android>();
+
+        HandleResources resourceHanler = new HandleResources(resources, unigel, tool, android);
+        resourceHanler.HandleLogic();
+
+
+        Console.ReadKey();
+    }
+}
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+Task 6
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
