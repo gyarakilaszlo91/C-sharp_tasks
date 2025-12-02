@@ -1,0 +1,82 @@
+Easy 
+
+Task 1
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+using System;
+
+public abstract class Probes
+{
+    public string Name { get; set; }
+    private static int _counter = 1;
+
+    public abstract void LaunchFromHangar();
+
+    public static int Counter
+    {
+        get { return _counter; }
+        set { _counter = value; }
+    }
+}
+
+public class Scout : Probes
+{
+    public Scout()
+    {
+        Name = $"Reconnaissance Drone #{Probes.Counter}";
+        Probes.Counter++;
+    }
+
+    public override void LaunchFromHangar()
+    {
+        Console.WriteLine($"{Name} has been cleared for takeoff.");
+    }
+}
+public class Decoy : Probes
+{
+    public Decoy()
+    {
+        Name = $"Decoy Drone #{Probes.Counter}";
+        Probes.Counter++;
+    }
+
+    public override void LaunchFromHangar()
+    {
+        Console.WriteLine($"{Name} has been cleared for takeoff.");
+    }
+}
+public class Hunter : Probes
+{
+    public Hunter()
+    {
+        Name = $"Hunter Drone #{Probes.Counter}";
+        Probes.Counter++;
+    }
+
+    public override void LaunchFromHangar()
+    {
+        Console.WriteLine($"{Name} has been cleared for takeoff.");
+    }
+}
+
+public class Program
+{
+
+    static void Main()
+    {
+        Scout scout = new Scout();
+        Decoy decoy = new Decoy();
+        Hunter hunter = new Hunter();
+
+        scout.LaunchFromHangar();
+        decoy.LaunchFromHangar();
+        hunter.LaunchFromHangar();
+
+        Console.ReadKey();
+    }
+}
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+Task 2
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
