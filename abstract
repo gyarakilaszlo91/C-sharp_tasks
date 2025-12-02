@@ -78,5 +78,70 @@ public class Program
 
 Task 2
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+using System;
+
+public abstract class WelcomingRobot
+{
+    public string Name { get; set; }
+
+    public WelcomingRobot(string name)
+    {
+        Name = name;
+    }
+
+    public abstract void GreetTheCaptain();
+}
+
+public class Sintoid : WelcomingRobot
+{
+    public Sintoid(string name) : base(name) { }
+
+    public override void GreetTheCaptain()
+    {
+        Console.WriteLine($"Sintoid {Name}, class {this.GetType()}, greets Captain Freeman.");
+    }
+}
+public class Android : WelcomingRobot
+{
+    public Android(string name) : base(name) { }
+
+    public override void GreetTheCaptain()
+    {
+        Console.WriteLine($"Andriod {Name}, class {this.GetType()}, greets Captain Freeman.");
+    }
+}
+public class Humanoid : WelcomingRobot
+{
+    public Humanoid(string name) : base(name) { }
+
+    public override void GreetTheCaptain()
+    {
+        Console.WriteLine($"Humanoid {Name}, class {this.GetType()}, greets Captain Freeman.");
+    }
+}
+
+public class Program
+{
+
+
+    static void Main()
+    {
+        Sintoid sintoid = new Sintoid("G-2ZA");
+        Android android = new Android("B-6NO");
+        Humanoid humanoid = new Humanoid("L-4Z0");
+
+        sintoid.GreetTheCaptain();
+        android.GreetTheCaptain();
+        humanoid.GreetTheCaptain();
+
+        Console.ReadKey();
+    }
+}
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+Medium
+
+Task 3
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
