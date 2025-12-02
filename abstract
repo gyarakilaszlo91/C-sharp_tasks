@@ -143,5 +143,77 @@ Medium
 
 Task 3
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+using System;
+
+public abstract class ObjectFromSpace
+{
+    public abstract void FlyingBy();
+    public abstract void ThreatenTheSip();
+}
+
+public class NotDangerous : ObjectFromSpace
+{
+
+    public override void FlyingBy()
+    {
+        Console.WriteLine("flying by by without causing harm.");
+    }
+    public override void ThreatenTheSip()
+    {
+        Console.Write("I am not dangerous, ");
+    }
+}
+public class Dangerous : ObjectFromSpace
+{
+
+    public override void FlyingBy()
+    {
+        Console.WriteLine("I am Flying past.");
+    }
+    public override void ThreatenTheSip()
+    {
+        Console.Write("I am dangerous, not and asteroid. ");
+    }
+}
+public class Comet : ObjectFromSpace
+{
+
+    public override void FlyingBy()
+    {
+        Console.WriteLine("threatening the ship with impact.");
+    }
+    public override void ThreatenTheSip()
+    {
+        Console.Write("I am a comet, ");
+    }
+}
+
+
+public class Program
+{
+
+
+    static void Main()
+    {
+        NotDangerous notDangerous = new NotDangerous();
+        Dangerous dangerous = new Dangerous();
+        Comet comet = new Comet();
+
+        notDangerous.ThreatenTheSip();
+        notDangerous.FlyingBy();
+
+        dangerous.ThreatenTheSip();
+        dangerous.FlyingBy();
+
+        comet.ThreatenTheSip();
+        comet.FlyingBy();
+
+        Console.ReadKey();
+    }
+}
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+Task 4
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
