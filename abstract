@@ -974,5 +974,428 @@ public class Program
 
 Task 8
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+using System;
 
+public struct Position
+{
+    public int X;
+    public int Y;
+}
+
+public abstract class HoldElement
+{
+    public string Description { get; set; }
+
+    public HoldElement(string description)
+    {
+        Description = description;
+    }
+
+    public abstract bool Permeability();
+}
+
+public class Passable : HoldElement
+{
+    public Passable(string description) : base(description) { }
+
+    public override bool Permeability()
+    {
+        return true;
+    }
+}
+public class Impassable : HoldElement
+{
+    public Impassable(string description) : base(description) { }
+
+    public override bool Permeability()
+    {
+        return false;
+    }
+}
+
+public class Hold
+{
+    Random random = new Random();
+    public HoldElement[,] Field { get; set; }
+    public Position ExitPosition {  get; }
+    public Hold()
+    {
+        Field = new HoldElement[15, 15];
+        InitializeGrid();
+        ExitPosition = new Position() { X = 13, Y = 13};
+    }
+
+    public void InitializeGrid()
+    {
+        for (int i = 0; i < Field.GetLength(0); i++)
+        {
+            for (int j = 0; j < Field.GetLength(1); j++)
+            {
+                if (i == 0 && j == 0 || i == Field.GetLength(0) - 1 && j == Field.GetLength(1) - 1)
+                {
+                    Field[i, j] = new Passable("Door");
+                }
+                else if (i == 0 && j == 14)
+                {
+                    Field[i, j] = new Passable("Door");
+                }
+                else if (i == 0 || j == 0 || i == Field.GetLength(0) - 1 || j == Field.GetLength(1) - 1)
+                {
+                    Field[i, j] = new Impassable("Wall");
+                }
+                else
+                {
+                    if (random.Next(0, 11) == 0)
+                    {
+                        Field[i, j] = new Impassable("Box");
+                    }
+                    else
+                    {
+                        Field[i, j] = new Passable("Floor tile");
+                    }
+                }
+            }
+        }
+    }
+
+    public void DisplayGrid(SergeantVasquez sergeant, Muffin follower, UserSergeant user)
+    {
+
+        for (int i = 0; i < Field.GetLength(0); i++)
+        {
+            for (int j = 0; j < Field.GetLength (1); j++)
+            {
+                if (i == sergeant.Position.X &&  j == sergeant.Position.Y)
+                {
+                    Console.Write(" S ");
+                }
+                else if (i == follower.Position.X && j == follower.Position.Y)
+                {
+                    Console.Write(" M ");
+                }
+                else if (i == user.Position.Y && j == user.Position.X)
+                {
+                    Console.Write(" U ");
+                }
+                else if (Field[i, j] is Passable)
+                {
+                    Console.Write(" P ");
+                }
+                else
+                {
+                    Console.Write(" I ");
+                }
+            }
+            Console.WriteLine();
+        }
+    }
+
+    public bool GetObjectInfo(int x, int y)
+    {
+            
+        int x_coordinate = -1;
+        int y_coordinate = -1;
+
+        try
+        {
+            x_coordinate = x;
+            y_coordinate = y;
+
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine(ex.Message);
+        }
+
+        if(y_coordinate != -1)
+        {
+            return Field[y_coordinate, x_coordinate].Permeability() ? true : false;
+        }
+        else
+        {
+            return false;
+        }
+
+    }
+}
+
+public abstract class Paratrooper
+{
+    public string Name { get; set; }
+    public Position Position { get; set; }
+
+    public Paratrooper(string name, Position position)
+    {
+        Name = name;
+        Position = position;
+    }
+
+    public abstract void Move();
+}
+
+public class Bee : Paratrooper
+{
+    public Bee(Position position) : base(" ", position)
+    {
+        Name = "Bee";
+    }
+    public override void Move()
+    {
+        Console.WriteLine("Bee is scouting ahead");
+    }
+    public new (int x, int y)[] Move(int i)
+    {
+        (int x, int y)[] scouted = { (0, 1), (0, -1), (1, 0), (-1, 0) };
+        return scouted;
+    }
+
+}
+public class SergeantVasquez : Paratrooper
+{
+    private Hold _hold;
+    private Bee _bee;
+    public SergeantVasquez(Position position, Hold field, Bee scout) : base(" ", position)
+    {
+        Name = "Sergeant Vasquez";
+        _hold = field;
+        _bee = scout;
+    }
+
+    public override void Move()
+    {
+        (int x, int y)[] possibleDirections = _bee.Move(1);
+
+
+        Position positionHelper = this.Position;
+        double currentDistance = Distance(this.Position, _hold.ExitPosition);
+
+        foreach ((int x, int y) direction in possibleDirections)
+        {
+            Position nextPosition = new Position { X=this.Position.X + direction.x, Y=this.Position.Y + direction.y};
+
+            if (_hold.GetObjectInfo(nextPosition.X, nextPosition.Y) )
+            {
+                double distance = Distance(nextPosition, _hold.ExitPosition);
+
+                if (distance < currentDistance)
+                {
+                    currentDistance = distance;
+                    positionHelper = nextPosition;
+                }
+            }
+        }
+        this.Position = positionHelper;
+        _bee.Position = positionHelper;
+    }
+
+    private double Distance(Position current, Position end)
+    {
+        return Math.Sqrt(Math.Pow(current.X - end.X, 2) + Math.Pow(current.Y - end.Y, 2));
+    }
+
+
+}
+public class Muffin : Paratrooper
+{
+    private SergeantVasquez _sergeant;
+    private Hold _hold;
+    public Muffin(Position position, SergeantVasquez sergeant, Hold hold) : base(" ", position)
+    {
+        Name = "Muffin";
+        _sergeant = sergeant;
+        _hold = hold;
+    }
+
+    public override void Move()
+    {
+        Position toFollow = _sergeant.Position;
+
+        for (int x = -1; x <= 1; x++)
+        {
+            for(int y = -1; y <= 1; y++)
+            {
+                Position nextStep = new Position { X = toFollow.X + x, Y = toFollow.Y + y };
+                if(_hold.GetObjectInfo(nextStep.X, nextStep.Y))
+                {
+                    this.Position = nextStep;
+                    return;
+                }
+            }
+        }
+    }
+}
+
+public class UserSergeant : Paratrooper
+{
+    private ScoutDrone _scout;
+    public UserSergeant(string name, Position position, ScoutDrone scout) : base(name, position)
+    {
+        _scout = scout;
+    }
+
+    public override void Move()
+    {
+        int movementCounter = 0;
+
+        while (true)
+        {
+            string nextMove;
+            Console.Write("Enter your next movement WASD, or X to skip turn: ");
+            nextMove = Console.ReadLine().Trim().ToUpper();
+
+            if (nextMove == "X") return;
+
+            Position positionHelper = this.Position;
+
+            switch (nextMove)
+            {
+                case "W": positionHelper.Y -= 1;
+                    break;
+                case "S": positionHelper.Y += 1;
+                    break;
+                case "D": positionHelper.X += 1;
+                    break;
+                case "A": positionHelper.X -= 1;
+                    break;
+                default:
+                    break;
+            }
+
+            if (_scout.Scout(positionHelper))
+            {
+                this.Position = positionHelper;
+                return;
+            }
+            Console.WriteLine("Movement blocked, try other way.");
+
+            movementCounter++;
+            if(movementCounter == 20)
+            {
+                Console.WriteLine("Too much error, this turn skipped.");
+                return;
+            }
+        }
+
+    }
+}
+
+public class ScoutDrone
+{
+    private Hold _hold;
+    public string Name { get; }
+    public Position Position { get; set; }
+
+    public ScoutDrone(Hold hold)
+    {
+        Name = "Scoutdrone";
+        _hold = hold;
+        Position = new Position() { X = 1, Y = 1}; 
+    }
+
+    public bool Scout(Position position)
+    {
+        if(_hold.GetObjectInfo(position.X, position.Y))
+        {
+            return true;
+        }
+        else
+        {
+            return false;
+        }
+    }
+
+    public void Follow(UserSergeant user)
+    {
+        this.Position = user.Position;
+    }
+
+}
+
+public class TrainingLoop
+{
+    private SergeantVasquez _sergeant;
+    private Hold _hold;
+    private Muffin _muffin;
+    private UserSergeant _user;
+    private ScoutDrone _scoutDrone;
+
+    public TrainingLoop(SergeantVasquez sergeant, Hold hold, Muffin follower, UserSergeant user, ScoutDrone scoutDrone)
+    {
+        _sergeant = sergeant;
+        _hold = hold;
+        _muffin = follower;
+        _user = user;
+        _scoutDrone = scoutDrone;
+    }
+
+
+
+    public void RunSimulation()
+    {
+        int counter = 0;
+
+        while(counter < 100)
+        {
+            if(_sergeant.Position.X == _hold.ExitPosition.X && _sergeant.Position.Y == _hold.ExitPosition.Y)
+            {
+                Console.WriteLine("Simulation succeded, Sergeant Vasquez won.");
+                return;
+            }
+
+            if (_user.Position.X == _hold.ExitPosition.X && _user.Position.Y == _hold.ExitPosition.Y)
+            {
+                Console.WriteLine("Simulation succeded, user won");
+                return;
+            }
+
+            counter++;
+
+            Console.Clear();
+
+            Console.WriteLine($"Turn #{counter}");
+            _sergeant.Move();
+            _muffin.Move();
+
+            _hold.DisplayGrid(_sergeant, _muffin, _user);
+
+            _user.Move();
+            _scoutDrone.Follow(_user);
+
+        }
+
+        if (_sergeant.Position.X == _hold.ExitPosition.X && _sergeant.Position.Y == _hold.ExitPosition.Y)
+        {
+            Console.WriteLine("Simulation succeded, Sergeant Vasquez won.");
+            return;
+        }
+        else if (_user.Position.X == _hold.ExitPosition.X && _user.Position.Y == _hold.ExitPosition.Y)
+        {
+            Console.WriteLine("Simulation succeded, user won");
+        }
+        else
+        {
+            Console.WriteLine("Simulation failed");
+        }
+    }
+}
+
+
+public class Program
+{
+    static void Main()
+    {
+        Hold trainingField = new Hold();
+        Bee bee = new Bee(new Position() {X=13, Y=1});
+        SergeantVasquez vasquez = new SergeantVasquez(new Position() {X=13, Y=1}, trainingField, bee);
+        Muffin muffin = new Muffin(new Position() {X=1, Y=1}, vasquez, trainingField);
+        ScoutDrone scoutDrone = new ScoutDrone(trainingField);
+        UserSergeant user = new UserSergeant("User", new Position() { X = 1, Y = 1 }, scoutDrone);
+
+        TrainingLoop training = new TrainingLoop(vasquez, trainingField, muffin, user, scoutDrone);
+
+        training.RunSimulation();
+
+        Console.ReadKey();
+    }
+}
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
