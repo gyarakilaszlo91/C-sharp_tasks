@@ -89,5 +89,104 @@ public class Program
 
 Task 2
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+using System;
+
+public class CrewMember
+{
+    public string Name { get; set; }
+    public int Health { get; set; }
+
+    public CrewMember(string name, int health)
+    {
+        Name = name;
+        Health = health;
+    }
+    public bool Work()
+    {
+        return true;
+    }
+}
+interface IOrganic
+{
+    void ConsumeOrganicFood();
+}
+interface IRobot
+{
+    void ConsumeRobotFood();
+}
+interface IBioRobot
+{
+    void ConsumeBioProtein();
+}
+
+public class Human : CrewMember, IOrganic
+{
+    public Human(string name, int health) : base(name, health) { }
+
+    public void ConsumeOrganicFood()
+    {
+        Console.WriteLine($"{Name} is consuming organic food.");
+    }
+}
+public class BioRobot : CrewMember, IOrganic , IRobot, IBioRobot
+{
+
+    public BioRobot(string name, int health) : base(name, health) { }
+    public void ConsumeOrganicFood()
+    {
+        Console.WriteLine($"Biorobot {Name} is consuming organic food.");
+    }
+    public void ConsumeRobotFood()
+    {
+        Console.WriteLine($"Biorobot {Name} is consuming electric food.");
+    }
+    public void ConsumeBioProtein()
+    {
+        Console.WriteLine($"Biorobot {Name} is consuming proteins in form of bone.");
+
+    }
+}
+
+public class FoodMachine
+{
+
+    public static void ServeFood(CrewMember member)
+    {
+        if (member is Human humanMember)
+        {
+            humanMember.ConsumeOrganicFood();
+        }
+        else if (member is BioRobot cyborgMember)
+        {
+            cyborgMember.ConsumeOrganicFood();
+            cyborgMember.ConsumeRobotFood();
+            cyborgMember.ConsumeBioProtein();
+        }
+    }
+}
+
+
+public class Program
+{
+
+
+
+    static void Main()
+    {
+        Human crewMember = new Human("Erik", 90);
+        BioRobot cyborgMember = new BioRobot("Mikhelson", 100);
+
+        FoodMachine.ServeFood(crewMember);
+        FoodMachine.ServeFood(cyborgMember);
+
+        Console.ReadKey();
+    }
+}
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+Medium
+
+Task 3
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////
