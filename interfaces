@@ -366,5 +366,230 @@ public class Program
 
 Task 4
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+using System;
+
+public class CrewMember
+{
+    public string Name { get; set; }
+    public int Health { get; set; }
+
+    public CrewMember(string name, int health)
+    {
+        Name = name;
+        Health = health;
+    }
+    public bool Work()
+    {
+        return true;
+    }
+}
+interface IOrganic
+{
+    void ConsumeOrganicFood();
+}
+interface IRobot
+{
+    void ConsumeRobotFood();
+}
+interface IBioRobot
+{
+    void ConsumeBioProtein();
+}
+interface IElderly
+{
+    void ExpressMelancholy();
+    void ReceiveCoffe();
+}
+public class Human : CrewMember, IOrganic
+{
+    public Human(string name, int health) : base(name, health) { }
+
+    public void ConsumeOrganicFood()
+    {
+        Console.WriteLine($"{Name} is consuming organic food.");
+    }
+}
+public class Robot : CrewMember, IRobot
+{
+    public Robot(string name, int health) : base(name, health) { }
+
+    public void ConsumeRobotFood()
+    {
+        Console.WriteLine($"Robot {Name} consumes electricity.");
+    }
+    
+}
+public class BioRobot : CrewMember, IOrganic , IRobot, IBioRobot
+{
+
+    public BioRobot(string name, int health) : base(name, health) { }
+    public void ConsumeOrganicFood()
+    {
+        Console.WriteLine($"Biorobot {Name} is consuming organic food.");
+    }
+    public void ConsumeRobotFood()
+    {
+        Console.WriteLine($"Biorobot {Name} is consuming electric food.");
+    }
+    public void ConsumeBioProtein()
+    {
+        Console.WriteLine($"Biorobot {Name} is consuming proteins in form of bone.");
+
+    }
+}
+public class Cyborg : CrewMember, IOrganic, IRobot
+{
+    public Cyborg(string name, int health) : base(name, health) { }
+    public void ConsumeOrganicFood()
+    {
+        Console.WriteLine($"Biorobot {Name} is consuming organic food.");
+    }
+    public void ConsumeRobotFood()
+    {
+        Console.WriteLine($"Biorobot {Name} is consuming electric food.");
+    }
+}
+public class ElderlyCrewMember : CrewMember, IElderly
+{
+    public ElderlyCrewMember(string name, int age) : base(name, age) { }
+
+    public void ExpressMelancholy()
+    {
+        Console.WriteLine($"{Name} sighs deeply. \"Life is unfair... I was once a mighty explorer... Now i stand in line with the rest... \" ");
+    }
+    public void ReceiveCoffe()
+    {
+        Console.WriteLine($"{Name} takes a sip of strong coffee. \"Ah... Life isn't so bad after all!\" ");
+    }
+}
+
+public class FoodMachine
+{
+
+    public static void ServeFood(CrewMember member)
+    {
+        if (member is Human humanMember)
+        {
+            humanMember.ConsumeOrganicFood();
+        }
+        else if (member is BioRobot cyborgMember)
+        {
+            cyborgMember.ConsumeOrganicFood();
+            cyborgMember.ConsumeRobotFood();
+            cyborgMember.ConsumeBioProtein();
+        }
+    }
+}
+
+public class VisitorQueue<T> where T : CrewMember
+{
+    Random random = new Random();
+    public Queue<T> queue { get; set; }
+
+    public VisitorQueue()
+    {
+        queue = new Queue<T>();
+        PopulateQueue();
+    }
+
+    private void PopulateQueue()
+    {
+        for (int i = 0; i < 40; i++)
+        {
+            int randomNumber = random.Next(0, 4);
+            switch (randomNumber)
+            {
+                case 0: queue.Enqueue((T)(object) new Human($"Human-{i}", i));
+                    break;
+                case 1: queue.Enqueue((T)(object) new Cyborg($"Cyborg-{i}", i));
+                    break;
+                case 2: queue.Enqueue((T)(object) new BioRobot($"BioRobot-{i}", i));
+                    break;
+                case 3: queue.Enqueue((T)(object)new Robot($"Robot-{i}", i));
+                    break;
+                default: queue.Enqueue((T)(object)new Human($"Human-{i}", i));
+                    break;
+            }
+        }
+    }
+}
+
+public class MedicalStation
+{
+    public static void ProcessMembers(VisitorQueue<CrewMember> queue)
+    {
+        while (queue.queue.Count > 0)
+        {
+            CrewMember currentMember = queue.queue.Dequeue();
+            Console.Write("Next visitor: ");
+
+            if (currentMember is Human human)
+            {
+                Console.WriteLine("Human - Prepare organic health scanner.");
+            }
+            else if(currentMember is Robot robot)
+            {
+                Console.WriteLine("Robot - Prepare hardware diagnostic tools.");
+            }
+            else if(currentMember is Cyborg cyborg || currentMember is BioRobot biorobot)
+            {
+                string type = currentMember is Cyborg ? "Cyborg" : "Biorobot";
+
+                Console.WriteLine($"{type} - Prepare organic health scanner, hardware diagnostic tools.");
+            }
+        }
+    }
+}
+
+public class ElderlyBehavior
+{
+    private List<ElderlyCrewMember> _elderly;
+
+    public ElderlyBehavior()
+    {
+        _elderly = new List<ElderlyCrewMember>();
+        PopulateList();
+    }
+
+    private void PopulateList()
+    {
+        _elderly.Add(new ElderlyCrewMember("Captain Reynolds", 90));
+        _elderly.Add(new ElderlyCrewMember("Senior Engineer Mikhelson", 90));
+
+        for (int i = 0; i < 8; i++)
+        {
+            _elderly.Add(new ElderlyCrewMember($"Elderly #{i}", i));
+        }
+    }
+
+    public void Demonstrate()
+    {
+        foreach (ElderlyCrewMember crewMember in _elderly) crewMember.ExpressMelancholy();
+        Console.WriteLine("\nLady Eliza grants them coffee!");
+        foreach (ElderlyCrewMember crewMember in _elderly) crewMember.ReceiveCoffe();
+
+    }
+}
+
+public class Program
+{
+
+
+
+    static void Main()
+    {
+        ElderlyBehavior elderlyBehavior = new ElderlyBehavior();
+
+        elderlyBehavior.Demonstrate();
+
+        Console.ReadKey();
+    }
+}
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+Hard
+
+Task 5
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////
