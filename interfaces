@@ -667,5 +667,188 @@ public class Program
 
 Task 6
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+using System;
 
+public class CrewMember
+{
+    public string Name { get; set; }
+    public int Health { get; set; }
+
+    public CrewMember(string name, int health)
+    {
+        Name = name;
+        Health = health;
+    }
+    public bool Work()
+    {
+        return true;
+    }
+}
+interface IOrganic
+{
+    void ConsumeOrganicFood();
+}
+interface IRobot
+{
+    void ConsumeRobotFood();
+}
+interface IBioRobot
+{
+    void ConsumeBioProtein();
+}
+interface IDrawable
+{
+    void Draw();
+}
+public class Human : CrewMember, IOrganic, IDrawable
+{
+    public Human(string name, int health) : base(name, health) { }
+
+    public void ConsumeOrganicFood()
+    {
+        Console.WriteLine($"{Name} is consuming organic food.");
+    }
+    public void Draw()
+    {
+        Console.WriteLine($"Human: {Name}");
+    }
+}
+public class Robot : CrewMember, IRobot, IDrawable
+{
+    public Robot(string name, int health) : base(name, health) { }
+
+    public void ConsumeRobotFood()
+    {
+        Console.WriteLine($"Robot {Name} consumes electricity.");
+    }
+    public void Draw()
+    {
+        Console.WriteLine($"Robot: {Name}");
+    }
+
+}
+public class BioRobot : CrewMember, IOrganic, IRobot, IBioRobot, IDrawable
+{
+
+    public BioRobot(string name, int health) : base(name, health) { }
+    public void ConsumeOrganicFood()
+    {
+        Console.WriteLine($"Biorobot {Name} is consuming organic food.");
+    }
+    public void ConsumeRobotFood()
+    {
+        Console.WriteLine($"Biorobot {Name} is consuming electric food.");
+    }
+    public void ConsumeBioProtein()
+    {
+        Console.WriteLine($"Biorobot {Name} is consuming proteins in form of bone.");
+    }
+    public void Draw()
+    {
+        Console.WriteLine($"BioRobot: {Name}");
+    }
+}
+public class Cyborg : CrewMember, IOrganic, IRobot, IDrawable
+{
+    public Cyborg(string name, int health) : base(name, health) { }
+    public void ConsumeOrganicFood()
+    {
+        Console.WriteLine($"Biorobot {Name} is consuming organic food.");
+    }
+    public void ConsumeRobotFood()
+    {
+        Console.WriteLine($"Biorobot {Name} is consuming electric food.");
+    }
+    public void Draw()
+    {
+        Console.WriteLine($"Cyborg: {Name}");
+    }
+}
+
+
+public class HandleCrewMembers
+{
+    Random random = new Random();
+    private List<CrewMember> crewMembers;
+
+    public HandleCrewMembers()
+    {
+        crewMembers = new List<CrewMember>();
+        PopulateCrewMembers();
+    }
+
+    private void PopulateCrewMembers()
+    {
+        int human = 0;
+        int robot = 0;
+        int cyborg = 0;
+        int biorobot = 0;
+
+        for (int i =0; i < 50; i++)
+        {
+            int helper = random.Next(0, 4);
+
+            switch (helper)
+            {
+                case 0:
+                    {
+                        crewMembers.Add(new Human($"Human #{human}", i));
+                        human++;
+                    }
+                    break;
+                case 1:
+                    {
+                        crewMembers.Add(new Robot($"Robot #{robot}", i));
+                        robot++;
+                    }
+                    break;
+                case 2:
+                    {
+                        crewMembers.Add(new Cyborg($"Cyborg #{cyborg}", i));
+                        cyborg++;
+                    }
+                    break;
+                case 3:
+                    {
+                        crewMembers.Add(new BioRobot($"Cyborg #{biorobot}", i));
+                        biorobot++;
+                    }
+                    break;
+                default:
+                    {
+                        crewMembers.Add(new Human($"Human #{human}", i));
+                        human++;
+                    }
+                    break;
+            }
+        }
+
+    }
+
+    public void InvokeDraw()
+    {
+        foreach (CrewMember member in crewMembers)
+        {
+            if (member is IDrawable canDraw)
+            {
+                canDraw.Draw();
+            }
+        }
+    }
+}
+
+
+public class Program
+{
+
+    static void Main()
+    {
+
+        HandleCrewMembers crewMembers = new HandleCrewMembers();
+
+        crewMembers.InvokeDraw();
+
+        Console.ReadKey();
+    }
+}
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////
