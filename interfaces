@@ -591,5 +591,81 @@ Hard
 
 Task 5
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+using System;
+
+
+public class CrewMember : IComparable<CrewMember>
+{
+    public string Name { get; set; }
+    public int Size { get; set; }
+
+    public CrewMember(string name, int size)
+    {
+        Name = name; 
+        Size = size;
+    }
+
+    public int CompareTo(CrewMember member)
+    {
+        if (member == null) return 1;
+
+        return member.Size.CompareTo(this.Size);
+    }
+}
+public class HandleMembers
+{
+    Random random { get; }
+
+    public HandleMembers()
+    {
+        random = new Random();
+    }
+    public void PopulateMember(List<CrewMember> crewMembers)
+    {
+        for (int i = 0; i < 50; i++)
+        {
+            crewMembers.Add(new CrewMember($"Member #{i}", random.Next(40, 151)));
+        }
+    }
+    public void SortMembers(List<CrewMember> crewMembers)
+    {
+        Console.WriteLine("Sorting the crewMembers based on weight...");
+        crewMembers.Sort();
+    }
+    public void DisplayMembers(List<CrewMember> crewMembers)
+    {
+        Console.WriteLine("The list of crewmembers:");
+        foreach (CrewMember member in crewMembers)
+        {
+            Console.WriteLine($"{member.Name} - {member.Size} kg");
+        }
+    }
+}
+
+public class Program
+{
+
+
+    static void Main()
+    {
+        List<CrewMember> members = new List<CrewMember>();
+        HandleMembers handleCrew = new HandleMembers();
+
+        handleCrew.PopulateMember(members);
+
+        
+        handleCrew.DisplayMembers(members);
+        Console.WriteLine();
+        handleCrew.SortMembers(members);
+        Console.WriteLine();
+        handleCrew.DisplayMembers(members);
+
+        Console.ReadKey();
+    }
+}
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+Task 6
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////
