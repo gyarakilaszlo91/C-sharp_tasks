@@ -2,5 +2,92 @@ Easy
 
 Task 1
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+using System;
+
+public class CrewMember
+{
+    public string Name { get; set; }
+    public int Health { get; set; }
+
+    public CrewMember(string name, int health)
+    {
+        Name = name;
+        Health = health;
+    }
+    public bool Work()
+    {
+        return true;
+    }
+}
+interface IOrganic
+{
+    void ConsumeOrganicFood();
+}
+interface IRobot
+{
+    void ConsumeRobotFood();
+}
+
+public class Human : CrewMember, IOrganic
+{
+    public Human(string name, int health) : base(name, health) { }
+
+    public void ConsumeOrganicFood()
+    {
+        Console.WriteLine($"{Name} is consuming organic food.");
+    }
+}
+public class Cyborg : CrewMember, IOrganic , IRobot
+{
+
+    public Cyborg(string name, int health) : base(name, health) { }
+    public void ConsumeOrganicFood()
+    {
+        Console.WriteLine($"Cyborg {Name} is consuming organic food.");
+    }
+    public void ConsumeRobotFood()
+    {
+        Console.WriteLine($"Cyborg {Name} is consuming electric food.");
+    }
+}
+
+public class FoodMachine
+{
+
+    public static void ServeFood(CrewMember member)
+    {
+        if (member is Human humanMember)
+        {
+            humanMember.ConsumeOrganicFood();
+        }
+        else if (member is Cyborg cyborgMember)
+        {
+            cyborgMember.ConsumeOrganicFood();
+            cyborgMember.ConsumeRobotFood();
+        }
+    }
+}
+
+
+public class Program
+{
+
+
+
+    static void Main()
+    {
+        Human crewMember = new Human("Erik", 90);
+        Cyborg cyborgMember = new Cyborg("Mikhelson", 100);
+
+        FoodMachine.ServeFood(crewMember);
+        FoodMachine.ServeFood(cyborgMember);
+
+        Console.ReadKey();
+    }
+}
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+Task 2
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////
