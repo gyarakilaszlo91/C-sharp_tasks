@@ -52,7 +52,7 @@ public class BarrelsOfBretonAle : BeerEventObject, IWhistling
         Console.WriteLine("The Breton Ale Barrel whistles with a dangerous sound!");
     }
 }
-public class Chicken : HangarObject
+public class Chicken : BeerEventObject
 {
     public Chicken() : base("")
     {
