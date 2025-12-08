@@ -663,5 +663,359 @@ Medium
 
 Task 3
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+using System;
+
+public abstract class HangarObject
+{
+    public string Name { get; set; }
+
+    public HangarObject(string name)
+    {
+        Name = name;
+    }
+
+    public void DisplayInfo()
+    {
+        Console.WriteLine(Name);
+    }
+    public virtual void Action()
+    {
+        Console.WriteLine($"{Name} doing something.");
+    }
+}
+
+public class BeerEventObject : HangarObject
+{
+    public BeerEventObject(string name) : base(name) { }
+}
+public class ZooObject : HangarObject
+{
+    public ZooObject(string name) : base(name) { }
+}
+
+interface IWhistling    
+{
+    void Whistle();
+}
+interface IMimickingSound
+{
+    void MimicSound(HangarObject sound);
+}
+interface IMakeSound
+{
+    public void MakeSound();
+}
+interface IMimicObject
+{
+    public void MimicObject(HangarObject furniture);
+}
+
+public class BarrelsOfBretonAle : BeerEventObject, IWhistling
+{
+    public BarrelsOfBretonAle() : base("")
+    {
+        Name = "Breton Ale";
+    }
+
+    public void Whistle()
+    {
+        Console.WriteLine("The Breton Ale Barrel whistles with a dangerous sound!");
+    }
+    public override void Action()
+    {
+        Console.WriteLine($"{Name} is ready for the beer day event.");
+    }
+}
+public class Chicken : BeerEventObject
+{
+    public Chicken() : base("")
+    {
+        Name = "Chicken";
+    }
+    public override void Action()
+    {
+        Console.WriteLine($"{Name} is ready for the beer day event.");
+    }
+}
+public class BretonNightingale : ZooObject, IWhistling
+{
+    public BretonNightingale() : base("")
+    {
+        Name = "Breton Nightingale";
+    }
+
+    public void Whistle()
+    {
+        Console.WriteLine("The Breton Nightingale whistles a pleasent tune.");
+    }
+    public override void Action()
+    {
+        Console.WriteLine($"{Name} is ready for the zoo event.");
+    }
+}
+public class Crayfish : BeerEventObject
+{
+    public Crayfish() : base("")
+    {
+        Name = "Crayfish";
+    }
+    public override void Action()
+    {
+        Console.WriteLine($"{Name} is ready to be used for snacks.");
+    }
+}
+public class PurpleCrayfish : ZooObject, IMimickingSound
+{
+    public int Age { get; set; }
+    public PurpleCrayfish() : base("")
+    {
+        Age = 500;
+        Name = "Crayfish";
+    }
+
+    public void MimicSound(HangarObject sound)
+    {
+        Console.WriteLine($"The Crayfish whistles like a {sound.Name}.");
+    }
+    public override void Action()
+    {
+        Console.WriteLine($"{Name} is ready for the zoo event.");
+    }
+}
+public class NovobukharaMimic : ZooObject, IMimickingSound, IMimicObject
+{
+    public NovobukharaMimic() : base("")
+    {
+        Name = "Novobukhara Mimic";
+    }
+
+    public void MimicSound(HangarObject sound)
+    {
+        Console.WriteLine($"The Novubukhara Mimic whistles after hearing the {sound.Name}.");
+    }
+    public void MimicObject(HangarObject furniture)
+    {
+        Console.WriteLine($"The Novubukhara Mimic, copying the {furniture.Name}.");
+    }
+    public void Bite()
+    {
+        Console.WriteLine("The Novubakhara Mimic bites the person sitting on him.");
+    }
+    public override void Action()
+    {
+        Console.WriteLine($"{Name} is quietly observing the surroundings.");
+    }
+}
+public class BretonGlassBunnies : ZooObject, IMimickingSound
+{
+    public BretonGlassBunnies() : base("")
+    {
+        Name = "Breton Glass Bunnies";
+    }
+
+    public void MimicSound(HangarObject sound)
+    {
+        Console.WriteLine($"The glass bunnies clink like {sound.Name}.");
+    }
+    public override void Action()
+    {
+        Console.WriteLine($"{Name} is ready for display in zoo.");
+    }
+}
+public class BretonGlasses : BeerEventObject, IMakeSound
+{
+    public BretonGlasses() : base("")
+    {
+        Name = "Breton Glasses";
+    }
+
+    public void MakeSound()
+    {
+        Console.WriteLine("The glasses cling when they are touched.");
+    }
+    public override void Action()
+    {
+        Console.WriteLine($"{Name} is ready for use in beer event.");
+    }
+}
+public class WhistlingSnakes : ZooObject, IMimickingSound
+{
+    public string Origin { get; set; }
+    public WhistlingSnakes() : base("")
+    {
+        Name = "Whistling snake";
+        Origin = "Hong Kong";
+    }
+
+    public void MimicSound(HangarObject sound)
+    {
+        Console.WriteLine($"Whistling snake whistles like {sound.Name}");
+    }
+    public override void Action()
+    {
+        Console.WriteLine($"{Name} is ready for the zoo day event.");
+    }
+}
+public class AtheninanRattles : ZooObject
+{
+    public string LifeFormBasedOn { get; set; }
+    public AtheninanRattles() : base("")
+    {
+        Name = "Athenian Rattlesnake";
+        LifeFormBasedOn = "Flint";
+    }
+    public override void Action()
+    {
+        Console.WriteLine($"{Name} is ready for the zoo day event.");
+    }
+}
+public class Grasshoppers : ZooObject, IMakeSound
+{
+    public string LifeFormBasedOn { get; set; }
+
+    public Grasshoppers() : base("")
+    {
+        Name = "Grasshopper";
+        LifeFormBasedOn = "Flint";
+    }
+
+    public void MakeSound()
+    {
+        Console.WriteLine("Grasshoppers making glass breaking sound when they collide.");
+    }
+    public override void Action()
+    {
+        Console.WriteLine($"{Name} is ready for the zoo day event.");
+    }
+}
+public class Chair : BeerEventObject
+{
+    public Chair() : base("")
+    {
+        Name = "Chair";
+    }
+    public override void Action()
+    {
+        Console.WriteLine($"{Name} is ready to be used in the beer day event.");
+    }
+}
+public class Tablets : BeerEventObject
+{
+    public Tablets() : base("")
+    {
+        Name = "Tablet";
+    }
+    public override void Action()
+    {
+        Console.WriteLine($"{Name} is ready to be used in the beer day event.");
+    }
+}
+public class SunUmbrella : BeerEventObject
+{
+    public SunUmbrella() : base("")
+    {
+        Name = "Sun Umbrella";
+    }
+    public override void Action()
+    {
+        Console.WriteLine($"{Name} is ready to be used in the beer day event.");
+    }
+}
+
+
+
+public class HandleWhistlers
+{
+    private Random random = new Random();
+    private List<IWhistling> _whistlers;
+    private List<IMimickingSound> _mimicSound;
+
+    private BretonNightingale _nightingale;
+
+    public HandleWhistlers()
+    {
+        _whistlers = new List<IWhistling>();
+        _mimicSound = new List<IMimickingSound>();
+        _nightingale = new BretonNightingale();
+        FillUpWhistling();
+        FillUpMimic();
+    }
+
+    private void FillUpWhistling()
+    {
+        for (int i = 0; i < 10; i++)
+        {
+            int randChance = random.Next(0, 2);
+            switch (randChance)
+            {
+                case 0: _whistlers.Add(new BarrelsOfBretonAle());
+                    break;
+                case 1: _whistlers.Add(new BretonNightingale());
+                    break;
+            }
+        }
+    }
+
+    private void FillUpMimic()
+    {
+        for(int i = 0; i < 10; i++)
+        {
+            int randChance = random.Next(0, 3);
+
+            switch (randChance)
+            {
+                case 0: _mimicSound.Add(new PurpleCrayfish());
+                    break;
+                case 1:
+                    _mimicSound.Add(new NovobukharaMimic());
+                    break;
+                case 2:
+                    _mimicSound.Add(new WhistlingSnakes());
+                    break;
+            }
+        }
+    }
+
+    private void HandleWhistling()
+    {
+        foreach(IWhistling whistler in _whistlers)
+        {
+            whistler.Whistle();
+        }
+    }
+
+    private void HandleMimic()
+    {
+        foreach(IMimickingSound mimic in _mimicSound)
+        {
+            mimic.MimicSound(_nightingale);
+        }
+    }
+
+    public void Whistle()
+    {
+        HandleWhistling();
+        Console.WriteLine();
+        HandleMimic();
+    }
+
+}
+
+class Program
+{
+
+    static void Main()
+    {
+        HandleWhistlers whistlers = new HandleWhistlers();
+
+        whistlers.Whistle();
+
+        Console.ReadKey();
+    }
+} 
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+Task 4
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
