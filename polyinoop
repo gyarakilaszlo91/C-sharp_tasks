@@ -1017,5 +1017,124 @@ class Program
 
 Task 4
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+using System;
+
+interface IRinging
+{
+    public void Ring();
+}
+
+public abstract class Item
+{
+    public string Name { get; set; }
+
+    public Item(string name)
+    {
+        Name = name;
+    }
+}
+
+public class ChurchBell : Item, IRinging
+{
+    public ChurchBell() : base("")
+    {
+        Name = "Church Bell";
+    }
+
+    public void Ring()
+    {
+        Console.WriteLine($"The {Name} rings loudly across the village!");
+    }
+}
+public class AlarmClock : Item, IRinging
+{
+    public AlarmClock() : base("")
+    {
+        Name = "Alarm Clock";
+    }
+
+    public void Ring()
+    {
+        Console.WriteLine($"The {Name} rings to wake you up!");
+    }
+}
+public class TrainBell : Item, IRinging
+{
+    public TrainBell() : base("")
+    {
+        Name = "Train Bell";
+    }
+
+    public void Ring()
+    {
+        Console.WriteLine($"The {Name} rings as the train arrives at the station!");
+    }
+}
+
+
+
+
+public class RingingItems
+{
+    private Random random = new Random();
+    private List<IRinging> _items;
+
+    public RingingItems()
+    {
+        _items = new List<IRinging>();
+        PopulateList();
+    }
+
+
+    private void PopulateList()
+    {
+
+        for ( int i = 0; i < 10; i++)
+        {
+            int randomChoser = random.Next(0, 3);
+
+            Item randomItem = ChoseRandomItem(randomChoser);
+
+            if (randomItem is IRinging ringingItem) _items.Add(ringingItem);
+        }
+    }
+    private Item ChoseRandomItem(int item)
+    {
+        switch (item)
+        {
+            case 0: return new ChurchBell();
+            case 1: return new AlarmClock();
+            case 2: return new TrainBell();
+            default: return new ChurchBell();
+        }
+    }
+
+    public void RingItems()
+    {
+        foreach ( IRinging ringing in _items ) ringing.Ring();
+    }
+
+
+}
+
+class Program
+{
+
+
+    static void Main()
+    {
+        RingingItems ringintItems = new RingingItems();
+
+        ringintItems.RingItems();
+
+        Console.ReadKey();
+    }
+}
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+Hard
+
+Task 5
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
