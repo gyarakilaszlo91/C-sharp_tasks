@@ -1136,5 +1136,138 @@ Hard
 
 Task 5
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+using System;
+
+interface IWhistling
+{
+    public void Whistle();
+}
+
+public class Furniture
+{
+    public string Name { get; set; }
+    public Furniture(string name) 
+    {
+        Name = name;
+    }
+}
+
+public class Mimic : Furniture, IWhistling
+{
+    public Mimic(string name) : base(name) { }
+
+    public void Whistle()
+    {
+        Console.WriteLine($"{Name} starts whistling.");
+    }
+}
+
+public class Room
+{
+    private Random random = new Random();
+    public List<Furniture> Furnitures;
+
+    public Room()
+    {
+        Furnitures = new List<Furniture>();
+    }
+
+    public void AddFurniture(Furniture furniture)
+    {
+        Furnitures.Add(furniture);
+    }
+
+    public void RemoveFurniture(Furniture furniture)
+    {
+        Furnitures.Remove(furniture);
+    }
+
+    private Furniture SelectRandomFurniture(int index)
+    {
+        switch(random.Next(0, 2))
+        {
+            case 0: return new Furniture($"Furniture #{index}");
+            case 1: return new Mimic($"Furniture #{index}");
+            default: return new Furniture($"Furniture #{index}");
+        }
+
+    }
+
+    public void FillRoomWithFurniture()
+    {
+        for (int i = 0; i < 50; i++)
+        {
+            Furnitures.Add(SelectRandomFurniture(i));
+        }
+    }
+}
+
+
+
+public class MoveFurniture
+{
+    private Room _startRoom;
+    private Room _separateRoom;
+
+    public MoveFurniture(Room startRoom, Room separateRoom)
+    {
+        _startRoom = startRoom;
+        _separateRoom = separateRoom;
+    }
+
+    public void SeparateMimics()
+    {
+        if(_startRoom.Furnitures.Count > 0)
+        {
+            for(int i = _startRoom.Furnitures.Count - 1; i >= 0; i--)
+            {
+                if (_startRoom.Furnitures[i] is Mimic mimic)
+                {
+                    _separateRoom.AddFurniture(_startRoom.Furnitures[i]);
+                    mimic.Whistle();
+                    _startRoom.Furnitures.Remove(_startRoom.Furnitures[i]);
+                }
+            }
+        }
+    }
+
+    public void DisplaySeparateRoom()
+    {
+        if (_separateRoom.Furnitures.Count > 0)
+        {
+            Console.WriteLine("\nMimics found in the room:");
+            foreach (Furniture mimic in _separateRoom.Furnitures)
+            {
+                Console.WriteLine(mimic.Name);
+            }
+        }
+        else Console.WriteLine("There was no mimic in the room.");
+    }
+}
+
+
+class Program
+{
+
+
+    static void Main()
+    {
+        Room room1 = new Room();
+        Room room2 = new Room();
+        MoveFurniture furnitures = new MoveFurniture(room1, room2);
+
+        room1.FillRoomWithFurniture();
+
+        furnitures.SeparateMimics();
+
+        furnitures.DisplaySeparateRoom();
+
+        Console.ReadKey();
+    }
+}
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+Task 6
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
