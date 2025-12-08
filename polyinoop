@@ -1269,5 +1269,157 @@ class Program
 
 Task 6
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+using System;
+
+public class Item
+{
+    public string Name { get; set; }
+    public string Category { get; set; }
+
+    public Item(string name, string category)
+    {
+        Name = name;
+        Category = category;
+    }
+
+    public virtual void PerformAction()
+    {
+        Console.WriteLine("Item is performing some action.");
+    }
+}
+
+public class Beer : Item
+{
+    public Beer() : base("Beer", "") { }
+
+    public override void PerformAction()
+    {
+        Console.WriteLine($"{Name}: {Category}");
+        Console.WriteLine("Enyojing the beer!");
+    }
+}
+public class Beverage : Item
+{
+    public Beverage() : base("Beverage", "") { }
+
+    public override void PerformAction()
+    {
+        Console.WriteLine($"{Name}: {Category}");
+        Console.WriteLine("Refreshing the drink!");
+    }
+}
+public class Animal : Item
+{
+    public Animal() : base("Animal", "") { }
+
+    public override void PerformAction()
+    {
+        Console.WriteLine($"{Name}: {Category}");
+        Console.WriteLine("Roaring in the Zoo");
+    }
+}
+public class Cage : Item
+{
+    public Cage() : base("Cage", "") { }
+
+    public override void PerformAction()
+    {
+        Console.WriteLine($"{Name}: {Category}");
+        Console.WriteLine("The cage is securelty locked.");
+    }
+}
+
+public class Collection
+{
+    public List<Item> List { get; }
+    public string Name { get; }
+
+    public Collection(string name)
+    {
+        List = new List<Item>();
+        Name = name;
+    }
+
+    public void Add(Item item)
+    {
+        List.Add(item);
+    }
+}
+
+public class HandleLogic
+{
+    private Random random = new Random();
+    private Collection _pathToBeer;
+    private Collection _zoo;
+
+    public HandleLogic(Collection pathToBeer, Collection zoo)
+    {
+        _pathToBeer = pathToBeer;
+        _zoo = zoo;
+        GenerateItems();
+    }
+
+    private void GenerateItems()
+    {
+        int amount = random.Next(50, 101);
+
+        for(int i = 0; i < amount; i++)
+        {
+            Item currentItem = SelectRandomItem();
+
+            if (currentItem is Beer beer || currentItem is Beverage beverage)
+            {
+                currentItem.Category = _pathToBeer.Name;
+                _pathToBeer.Add(currentItem);
+            }
+            else
+            {
+                currentItem.Category = _zoo.Name;
+                _zoo.Add(currentItem);
+            }
+
+        }
+
+    }
+    private Item SelectRandomItem()
+    {
+        int selector = random.Next(0, 4);
+
+        switch (selector)
+        {
+            case 0: return new Beer();
+            case 1: return new Beverage();
+            case 2: return new Animal();
+            case 3: return new Cage();
+            default: return new Beer();
+
+        }
+    }
+
+    public void DisplayItems()
+    {
+        Console.WriteLine($"Items in {_pathToBeer.Name}:");
+        foreach (Item item in _pathToBeer.List) item.PerformAction();
+        Console.WriteLine($"\nItems in {_zoo.Name}:");
+        foreach (Item item in _zoo.List) item.PerformAction();
+
+    }
+
+}
+
+class Program
+{
+    public static void Main()
+    {
+        Collection pathToBeer = new Collection("PathToBeer");
+        Collection zoo = new Collection("Zoo");
+
+        HandleLogic items = new HandleLogic(pathToBeer, zoo);
+
+        items.DisplayItems();
+
+        Console.ReadKey();
+    }
+}
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
