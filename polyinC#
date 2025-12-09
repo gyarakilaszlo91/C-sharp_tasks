@@ -486,5 +486,124 @@ class Program
 
 Task 4
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+using System;
+
+public abstract class Ship
+{
+    public int FuelTankSize {  get; }
+    public int CurrentFuelLevel { get; set; }
+    public List<Engine> Engines { get; set; }
+
+    public Ship(int fuelTankSize, int fuelLevel, List<Engine> engines)
+    {
+        FuelTankSize = fuelTankSize;
+        Engines = engines;
+        CurrentFuelLevel = fuelLevel;
+    }
+
+    public abstract void ChangeFuelLevel();
+}
+
+public class Proud : Ship
+{
+    public Proud(int fuelTankSize, int fuelLevel, List<Engine> engines) : base(fuelTankSize, fuelLevel, engines) { }
+
+    public override void ChangeFuelLevel()
+    {
+        foreach (Engine engine in Engines)
+        {
+            if (engine.Type == "Maneuvering")
+            {
+                if (CurrentFuelLevel > engine.Consumption)
+                {
+                    Console.WriteLine($"{engine.Type} engine: Consumes {engine.Consumption} unit of fuel per turn.");
+                    CurrentFuelLevel -= engine.Consumption;
+                }
+                else Console.WriteLine("Maneuvering not possible: Insufficient fuel level.");
+            }
+            else if (engine.Type == "Sustaining")
+            {
+                if (CurrentFuelLevel > engine.Consumption)
+                {
+                    Console.WriteLine($"{engine.Type} engine: Consumes {engine.Consumption} unit of fuel per unit of distance traveled.");
+                    CurrentFuelLevel -= engine.Consumption;
+                }
+                else Console.WriteLine("Insufficient fuel.");
+            }
+            else if (engine.Type == "Jumping")
+            {
+                if (CurrentFuelLevel > engine.Consumption)
+                {
+                    Console.WriteLine($"{engine.Type} engine: Consumes {engine.Consumption} unit of fuel per jump.");
+                    CurrentFuelLevel -= engine.Consumption;
+                }
+                else Console.WriteLine("Jumping not possible: Insufficient fuel level.");
+            }
+        }
+    }
+}
+
+public class Engine
+{
+    public string Type { get; }
+    public int Consumption { get; }
+    public Engine(string type)
+    {
+        Type = type;
+
+        if (type == "Jumping") Consumption = 100;
+        else if (type == "Sustaining") Consumption = 10;
+        else Consumption = 1;
+    }
+}
+
+
+
+
+public class HandleTask
+{
+    private Proud _proud;
+    private List<Engine> _engines;
+
+    public HandleTask()
+    {
+        _engines = new List<Engine>();
+        CreateEngines();
+        _proud = new Proud(200, 150, _engines);
+    }
+
+    private void CreateEngines()
+    {
+        _engines.Add(new Engine("Maneuvering"));
+        _engines.Add(new Engine("Sustaining"));
+        _engines.Add(new Engine("Jumping"));
+        _engines.Add(new Engine("Jumping"));
+    }
+
+    public void CallChangeFuelLevel()
+    {
+        _proud.ChangeFuelLevel();
+    }
+
+
+}
+
+class Program
+{
+    static void Main()
+    {
+        HandleTask task = new HandleTask();
+
+        task.CallChangeFuelLevel();
+
+        Console.ReadKey();
+    }
+}
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+Hard
+
+Task 5
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
