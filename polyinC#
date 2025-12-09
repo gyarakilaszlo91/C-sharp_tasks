@@ -283,5 +283,208 @@ Medium
 
 Task 3
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+using System;
+
+interface IShape
+{
+    void Draw();
+}
+
+public class NavigationTable : IShape
+{
+    private Random random = new Random();
+    private int[,] _field;
+    private int Size { get; }
+
+    public NavigationTable()
+    {
+        Size = 20;
+        _field = new int[Size, Size];
+        PopulateField();
+    }
+
+
+    private void PopulateField()
+    {
+        // getting min and max size for impassable
+        int minImpassable = (int)(Size * Size * 0.05);
+        int maxImpassable = (int)(Size * Size * 0.2);
+        // randomly chosing between min and max value
+        int impassableCounter = random.Next(minImpassable, maxImpassable + 1);
+
+        // filling up all cells with passable value
+        ClearField();
+
+        // randomly changing cells to impassable until it reaches the impassable counter
+        int counter = 0;
+
+        while (counter < impassableCounter)
+        {
+            int x = random.Next(0, Size);
+            int y = random.Next(0, Size);
+
+            if (_field[x, y] == 0)
+            {
+                _field[x, y] = 1;
+                counter++;
+            }
+        }
+    }
+
+    private void ClearField()
+    {
+        for (int i = 0; i < Size; i++)
+        {
+            for (int j = 0; j < Size; j++)
+            {
+                _field[i, j] = 0;
+            }
+        }
+    }
+
+    public void Draw()
+    {
+        for (int i = 0; i < Size; i++)
+        {
+            for (int j = 0; j < Size; j++)
+            {
+                Console.Write($" {_field[i, j]} ");
+            }
+            Console.WriteLine();
+        }
+    }
+
+    public void Move(char direction)
+    {
+        int newY;
+        int newX;
+
+        switch (direction)
+        {
+            case 'W':
+                {
+                    newY = -1;
+                    newX = 0;
+                }
+                break;
+            case 'A':
+                {
+                    newY = 0;
+                    newX = -1;
+                }
+                break;
+            case 'S':
+                {
+                    newY = 1;
+                    newX = 0;
+                }
+                break;
+            case 'D':
+                {
+                    newY = 0;
+                    newX = 1;
+                }
+                break;
+            default:
+                {
+                    newY = 0;
+                    newX = 0;
+                }
+                break;
+        }
+
+        // storing the current positions in a list
+        List<(int y, int x)> currentPositions = new List<(int y, int x)>();
+
+        for(int i = 0; i < Size; i++)
+        {
+            for (int j = 0; j < Size; j++)
+            {
+                if (_field[i, j] == 1)
+                {
+                    currentPositions.Add((i, j));
+                }
+            }
+        }
+
+        // clearing the field
+        ClearField();
+
+        foreach ((int y, int x) in currentPositions)
+        {
+            int nextY = y + newY;
+            int nextX = x + newX;
+
+            if (nextY < 0) nextY = Size-1;
+            if (nextX < 0) nextX = Size-1;
+            if (nextY > Size - 1) nextY = 0;
+            if (nextX > Size - 1) nextX = 0;
+
+            _field[nextY, nextX] = 1;
+
+        }
+
+
+
+
+
+    }
+
+
+}
+
+
+
+
+
+public class HandleLoop
+{
+
+    private NavigationTable _table;
+
+    public HandleLoop()
+    {
+        _table = new NavigationTable();
+    }
+
+    public void Play()
+    {
+        bool play = true;
+
+            while (play)
+            {
+
+                Console.Clear();
+
+                _table.Draw();
+
+                Console.Write("Next direction: ");
+                char direction = Convert.ToChar(Console.ReadLine().Trim().ToUpper());
+
+                if (direction == 'Q') play = false;
+
+                _table.Move(direction);
+
+            }
+    }
+
+
+}
+
+class Program
+{
+    static void Main()
+    {
+        HandleLoop loop = new HandleLoop();
+
+        loop.Play();
+
+        Console.ReadKey();
+    }
+}
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+Task 4
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
