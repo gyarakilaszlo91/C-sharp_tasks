@@ -92,5 +92,196 @@ public class Program
 
 Task 2
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+using System;
+
+interface ICalculateDistance
+{
+    void GetDistance(double startX, double startY);
+    void GetDistance((double, double) coordinates);
+    void GetDistance(string coordinates);
+}
+public class Point : ICalculateDistance
+{
+    public double X {  get; set; }
+    public double Y { get; set; }
+
+    public Point(double endX, double endY)
+    {
+        X = endX; 
+        Y = endY;
+    }
+    public Point ((double, double) coordinates)
+    {
+        X = coordinates.Item1;
+        Y = coordinates.Item2;
+    }
+    public Point (string coordinates)
+    {
+        X = Convert.ToDouble(coordinates.Split(",")[0]);
+        Y = Convert.ToDouble(coordinates.Split(",")[1]);
+    }
+
+    public void GetDistance(double startX, double startY)
+    {
+        double distance = Math.Sqrt(
+            Math.Pow((X - startX), 2) +
+            Math.Pow((Y - startY), 2)
+            );
+
+        Console.WriteLine($"The distance is {distance}");
+    }
+    public void GetDistance((double, double) coordinates)
+    {
+        double startX = coordinates.Item1;
+        double startY = coordinates.Item2;
+
+        double distance = Math.Sqrt(
+            Math.Pow((X - startX), 2) +
+            Math.Pow((Y - startY), 2)
+            );
+
+        Console.WriteLine($"The distance is {distance}");
+    }
+    public void GetDistance(string coordinates)
+    {
+        double startX = Convert.ToDouble(coordinates.Split(",")[0]);
+        double startY = Convert.ToDouble(coordinates.Split(",")[1]);
+
+        double distance = Math.Sqrt(
+            Math.Pow((X - startX), 2) +
+            Math.Pow((Y - startY), 2)
+            );
+
+        Console.WriteLine($"The distance is {distance}");
+    }
+
+    public double GetDistance(int startXcoord, int startYcoord)
+    {
+        double startX = startXcoord;
+        double startY = startYcoord;
+
+        double distance = Math.Sqrt(
+            Math.Pow((X - startX), 2) +
+            Math.Pow((Y - startY), 2)
+            );
+
+        return distance;
+    }
+
+}
+
+
+public class Engine
+{
+    public string Type { get; set; }
+
+    public Engine(string type) { Type = type; }
+
+    public virtual void Move()
+    {
+        Console.WriteLine("The ship is moving.");
+    }
+}
+
+public class ManeuveringEngine : Engine
+{
+    private Random random = new Random();
+    private string[] _movements = new string[] { "→", "←", "↑", "↓" };
+    private string _currentMovement;
+    public ManeuveringEngine() : base("Maneuvering Engine") { _currentMovement = _movements[2]; }
+
+    public override void Move()
+    {
+        string randomMovement = _currentMovement;
+        while (randomMovement == _currentMovement)
+        {
+            randomMovement = _movements[random.Next(0, _movements.Length)];
+        }
+
+        Console.WriteLine($"{Type}: Ship is rotating from {_currentMovement} to {randomMovement}");
+        _currentMovement = randomMovement;
+    }
+}
+
+public class SustainingEngine : Engine
+{
+    private double _distance;
+
+    public SustainingEngine() : base("Sustaining Engine") { _distance = 0; }
+    public SustainingEngine(double distance) : base("Sustaining Engine") { if (distance > 0) _distance = distance; else _distance = 0; }
+
+
+    public override void Move()
+    {
+        while (_distance > 0)
+        {
+            _distance--;
+            if(_distance < 0) _distance = 0;
+
+            Console.WriteLine($"{Type}: Ship is moving. Remaining distance: {_distance}");
+
+        }
+    }
+}
+
+public class JumpingEngine : Engine
+{
+    private double _distance;
+
+    public JumpingEngine() : base("Jumping Engine") { _distance = 0; }
+    public JumpingEngine(double distance) : base("Jumping Engine") { if (distance > 0) _distance = distance; else _distance = 0; }
+
+
+    public override void Move()
+    {
+        while (_distance > 0)
+        {
+            _distance -= 5;
+            if (_distance < 0) _distance = 0;
+
+            Console.WriteLine($"{Type}: Ship is moving. Remaining distance: {_distance}");
+
+        }
+    }
+}
+
+
+
+
+public class HandleLoop
+{
+    public static void ActivateLoop(List<Engine> engines)
+    {
+        foreach (Engine engine in engines) engine.Move();
+    }
+}
+
+public class Program
+{
+
+    static void Main()
+    {
+        Point distance = new Point(5, 5);
+
+        List<Engine> engines = new List<Engine>()
+        {
+            new ManeuveringEngine(),
+            new SustainingEngine(distance.GetDistance(30, 20)),
+            new JumpingEngine(distance.GetDistance(30, 20))
+
+        };
+
+        HandleLoop.ActivateLoop(engines);
+
+        Console.ReadKey();
+    }
+
+}
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+Medium
+
+Task 3
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
