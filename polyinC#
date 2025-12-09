@@ -250,7 +250,7 @@ public class JumpingEngine : Engine
 
 public class HandleLoop
 {
-    public static void ActivateLoop(List<Engine> engines)
+    public static void ActivateMove(List<Engine> engines)
     {
         foreach (Engine engine in engines) engine.Move();
     }
@@ -271,7 +271,7 @@ public class Program
 
         };
 
-        HandleLoop.ActivateLoop(engines);
+        HandleLoop.ActivateMove(engines);
 
         Console.ReadKey();
     }
