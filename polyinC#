@@ -1314,5 +1314,420 @@ class Program
 
 Task 7
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+using System;
 
+public struct Coordinates
+{
+    public int X {  get; set; }
+    public int Y { get; set; }
+    public int Z { get; set; }
+    public Coordinates(int x, int y, int z)
+    {
+        X = x; 
+        Y = y;
+        Z = z;
+    }
+}
+
+interface IRoute
+{
+    void MoveShip();
+}
+interface IShape
+{
+    void Draw();
+}
+
+public class StarMap
+{
+    private Random random = new Random();
+    private int[,,] _field;
+    public int Size { get; }
+    public int Depth { get; }
+    public Coordinates EndCoordinate { get; set; }
+
+    public StarMap()
+    {
+        Size = 20;
+        Depth = 2;
+        EndCoordinate = new Coordinates(Size - 1,Size - 1, 0);
+        _field = new int[Size, Size, Depth];
+        PopulateField();
+        GetEndCoordinate();
+    }
+
+    private void PopulateField()
+    {
+        // getting min and max size for impassable
+        int minImpassable = (int)(Size * Size * 0.05);
+        int maxImpassable = (int)(Size * Size * 0.2);
+        // randomly chosing between min and max value
+        int impassableCounter = random.Next(minImpassable, maxImpassable + 1);
+
+        // filling up all cells with passable value
+        ClearField();
+
+        // randomly changing cells to impassable until it reaches the impassable counter
+        int counter = 0;
+
+        // adding obstacles to the first layer
+        while (counter < impassableCounter)
+        {
+            int x = random.Next(0, Size);
+            int y = random.Next(0, Size);
+
+            // Filtering out the firt and end coordinate
+            if (x != 0 && y != 0 && x != Size - 1 && y != Size - 1)
+            {
+                if (_field[x, y, 0] == 0)
+                {
+                    _field[x, y, 0] = 1;
+                    counter++;
+                }
+            }
+        }
+
+
+        // adding obstacles to the second layer
+        counter = 0;
+        while (counter < impassableCounter)
+        {
+            int x = random.Next(0, Size);
+            int y = random.Next(0, Size);
+
+            // Filtering out the firt and end coordinate
+            if (x != 0 && y != 0 && x != Size - 1 && y != Size - 1)
+            {
+                if (_field[x, y, 1] == 0)
+                {
+                    _field[x, y, 1] = 1;
+                    counter++;
+                }
+            }
+        }
+
+
+    }
+
+    private void ClearField()
+    {
+        for (int i = 0; i < Size; i++)
+        {
+            for (int j = 0; j < Size; j++)
+            {
+                _field[i, j, 0] = 0;
+                _field[i, j, 1] = 0;
+
+            }
+        }
+    }
+
+    public bool Passable(int x, int y, int z)
+    {
+        if (_field[y, x, z] == 0) return true;
+        else return false;
+    }
+
+    public void Draw(int shipX, int shipY, string symbol, int layer)
+    {
+        Console.WriteLine($"Current Layer - {layer+1}");
+        for (int i = 0; i < Size; i++)
+        {
+            for (int j = 0; j < Size; j++)
+            {
+                if(i == shipY && j == shipX)
+                {
+                    Console.Write($" {symbol} ");
+                }
+                else
+                {
+                    Console.Write($" {_field[i, j, layer]} ");
+                }
+            }
+            Console.WriteLine();
+        }
+    }
+
+    public void GetEndCoordinate()
+    {
+        Console.WriteLine("Enter the destination coordinates:");
+
+        while (true)
+        {
+            try
+            {
+                Console.Write("X: ");
+                int x = Convert.ToInt32(Console.ReadLine().Trim());
+
+                Console.Write("Y: ");
+                int y = Convert.ToInt32(Console.ReadLine().Trim());
+
+                Console.Write("Z: ");
+                int z = Convert.ToInt32(Console.ReadLine().Trim());
+
+                if (Passable(x, y, z) && x >= 0 && y >= 0 && x < Size && y < Size)
+                {
+                    Coordinates current = new Coordinates(x, y, z);
+                    EndCoordinate = current;
+                    return;
+                }
+                else
+                {
+                    Console.WriteLine("Selected Coordinates are impassable objects");
+                }
+
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e.Message);
+            }
+        }
+    }
+
+}
+
+public class Proudy : IRoute, IShape
+{
+    private Coordinates _currentCoordinates;
+    public string Name { get; }
+    public int FuelLevel { get; set; }
+    private int _jumpengineConsumption { get; }
+    private int _engineConsumption { get; }
+    private List<(int x, int y, int z)> _possibleRoutes;
+    private StarMap _map;
+    public bool _finished;
+    private string _currentSymbol {  get; set; }
+    //private int _currentLayer;
+
+    public Proudy(StarMap map)
+    {
+        _currentCoordinates = new Coordinates(0, 0, 0);
+        _possibleRoutes = new List<(int x, int y, int z)>() { (1, 0, 0), (0, 1, 0), (-1, 0, 0), (0, -1, 0), (1, 0, 1), (0, 1, 1), (-1, 0, 1), (0, -1, 1) };
+        _engineConsumption = 1;
+        _jumpengineConsumption = 10;
+        Name = "Proudy";
+        FuelLevel = 100;
+        _map = map;
+        _finished = false;
+        _currentSymbol = "P";
+        //_currentLayer = 0;
+    }
+
+    private void MoveShipWithBaseEngine()
+    {
+        double currentDistance = CalculateDistance(_currentCoordinates.X, _currentCoordinates.Y, _currentCoordinates.Z, _map.EndCoordinate.X, _map.EndCoordinate.Y, _map.EndCoordinate.Z);
+
+        Coordinates nextCoordinates = _currentCoordinates;
+
+        // move ship with base engine
+        for ( int i = 0; i < _possibleRoutes.Count; i++)
+        {
+            int nextX = _currentCoordinates.X + _possibleRoutes[i].x;
+            int nextY = _currentCoordinates.Y + _possibleRoutes[i].y;
+            int nextZ = _possibleRoutes[i].z;
+
+            // checking for boundaries
+            if (nextX < 0 || nextY < 0 || nextX >= _map.Size || nextY >= _map.Size)
+            {
+                continue;
+            }
+                // checking if it's passable or not
+            if (_map.Passable(nextX, nextY, nextZ))
+            {
+                double nextDistance = CalculateDistance(nextX, nextY, nextZ, _map.EndCoordinate.X, _map.EndCoordinate.Y, _map.EndCoordinate.Z);
+                // checking the distances
+                if(nextDistance < currentDistance)
+                {
+                    nextCoordinates.X = nextX;
+                    nextCoordinates.Y = nextY;
+                    nextCoordinates.Z = nextZ;
+                }
+            }
+        }
+
+        // removing the fuel
+        FuelLevel -= _engineConsumption;
+
+        // getting the current symbol
+        _currentSymbol = GetSymbol(_currentCoordinates.X, _currentCoordinates.Y, nextCoordinates.X, nextCoordinates.Y);
+        
+
+        // setting the new coordinates
+        _currentCoordinates = nextCoordinates;
+
+
+    }
+    public void MoveShip()
+    {
+        double currentDistance = CalculateDistance(_currentCoordinates.X, _currentCoordinates.Y, _currentCoordinates.Z, _map.EndCoordinate.X, _map.EndCoordinate.Y, _map.EndCoordinate.Z);
+        double nextDistance = currentDistance;
+
+        Coordinates nextCoordinates = _currentCoordinates;
+        Coordinates controlCoordinates = _currentCoordinates;
+
+        int modifieX = 0;
+        int modifieY = 0;
+
+        // going through all the possible routes
+        for (int i = 0; i < _possibleRoutes.Count; i++)
+        {
+            int nextX = _currentCoordinates.X + _possibleRoutes[i].x;
+            int nextY = _currentCoordinates.Y + _possibleRoutes[i].y;
+            int nextZ = _possibleRoutes[i].z;
+
+            // checking for boundaries
+            if (nextX < 0 || nextY < 0 || nextX >= _map.Size || nextY >= _map.Size)
+            {
+                continue;
+            }
+
+            // calculating the distance for the next move
+            nextDistance = CalculateDistance(nextX, nextY, nextZ, _map.EndCoordinate.X, _map.EndCoordinate.Y, _map.EndCoordinate.Z);
+
+            // checking the distances
+            if (nextDistance < currentDistance)
+            {
+                nextCoordinates.X = nextX;
+                nextCoordinates.Y = nextY;
+                nextCoordinates.Z = nextZ;
+                // saving the direction
+                modifieX = _possibleRoutes[i].x;
+                modifieY = _possibleRoutes[i].y;
+            }
+        }
+
+        // checking if distance is not the same as currentdistance and if fuel level is over 30
+        if (currentDistance != nextDistance && FuelLevel > 30)
+        {
+            // checking if it's not impassable
+            if (!_map.Passable(nextCoordinates.X, nextCoordinates.Y, nextCoordinates.Z))
+            {
+                // checking if next coordinate is passable in the same direction
+                int jumpX = nextCoordinates.X + modifieX;
+                int jumpY = nextCoordinates.Y + modifieY;
+
+                if ( jumpX >= 0 && jumpX < _map.Size && jumpY >= 0 && jumpY < _map.Size && _map.Passable(jumpX, jumpY, nextCoordinates.Z))
+                {
+                    // adjusting the fuel level
+                    FuelLevel -= _jumpengineConsumption;
+                    // getting the current symbol
+                    _currentSymbol = GetSymbol(_currentCoordinates.X, _currentCoordinates.Y, jumpX, jumpY);
+
+                    _currentCoordinates.X = jumpX;
+                    _currentCoordinates.Y = jumpY;
+                    _currentCoordinates.Z = nextCoordinates.Z;
+
+
+                    // exiting the function, so MoveShipWithBaseEngine not called
+                    return;
+                }
+            }
+        }
+
+        // calling the baseengine movement if jumping is not possible
+        MoveShipWithBaseEngine();
+    }
+
+    private double CalculateDistance(int currentX, int currentY, int currentZ, int endX, int endY, int endZ)
+    {
+        double distance = Math.Sqrt(
+            Math.Pow(endX - currentX, 2) +
+            Math.Pow(endY - currentY, 2) +
+            Math.Pow(endZ - currentZ, 2)
+            );
+
+        return distance;
+    }
+
+    public int GetCurrentXCoordinate()
+    {
+        return _currentCoordinates.X;
+    }
+    public int GetCurrentYCoordinate()
+    {
+        return _currentCoordinates.Y;
+    }
+    public int GetCurrentZCoordinate()
+    {
+        return _currentCoordinates.Z;
+    }
+
+    private string GetSymbol(int currX, int currY, int nextX, int nextY)
+    {
+        string symbol = " P ";
+
+        if (currX != nextX)
+        {
+            if (currX < nextX) symbol = "→";
+            else symbol = "←";
+        }
+        else if(currY != nextY)
+        {
+            if (currY < nextY) symbol = "↓";
+            else symbol = "↑";
+        }
+            return symbol;
+    }
+
+    public void Draw()
+    {
+        int firstateCounter = 0;
+
+        while (!_finished && FuelLevel > 0)
+        {
+            Console.Clear();
+
+            if(firstateCounter == 0)
+            {
+                // Displaying the first state of the map
+                _map.Draw(GetCurrentXCoordinate(), GetCurrentYCoordinate(), _currentSymbol, GetCurrentZCoordinate());
+                // Displaying the distance to the target.
+                double firstDistance = CalculateDistance(_currentCoordinates.X, _currentCoordinates.Y, _currentCoordinates.Z, _map.EndCoordinate.X, _map.EndCoordinate.Y, _map.EndCoordinate.Z);
+                Console.WriteLine($"Current distance to the target: {Math.Round(firstDistance, 2)} unit");
+                Console.ReadKey();
+                Console.Clear();
+                firstateCounter++;
+            }
+
+
+            MoveShip();
+
+            if (GetCurrentXCoordinate() == _map.EndCoordinate.X && GetCurrentYCoordinate() == _map.EndCoordinate.Y && GetCurrentZCoordinate() == _map.EndCoordinate.Z) _finished = true;
+
+            _map.Draw(GetCurrentXCoordinate(), GetCurrentYCoordinate(), _currentSymbol, GetCurrentZCoordinate());
+
+            // Displaying the distance to the target.
+            double distance = CalculateDistance(_currentCoordinates.X, _currentCoordinates.Y, _currentCoordinates.Z, _map.EndCoordinate.X, _map.EndCoordinate.Y, _map.EndCoordinate.Z);
+            Console.WriteLine($"Current distance to the target: {Math.Round(distance, 2)} unit.");
+            Console.WriteLine($"Current fuel level: {FuelLevel}L");
+
+            Console.ReadKey();
+        }
+
+        if (GetCurrentXCoordinate() == _map.EndCoordinate.X && GetCurrentYCoordinate() == _map.EndCoordinate.Y && GetCurrentZCoordinate() == _map.EndCoordinate.Z) Console.WriteLine("\nProudy reached the destination");
+
+        if (FuelLevel <= 0 && GetCurrentXCoordinate() != _map.EndCoordinate.X && GetCurrentYCoordinate() != _map.EndCoordinate.Y && GetCurrentZCoordinate() != _map.EndCoordinate.Z) Console.WriteLine("Proudy can not reached the destination, out of fuel.");
+    }
+
+}
+
+
+
+
+
+class Program
+{
+
+    static void Main()
+    {
+
+        StarMap map = new StarMap();
+        Proudy ship = new Proudy(map);
+
+        ship.Draw();
+
+
+        Console.ReadKey();
+    }
+}
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
