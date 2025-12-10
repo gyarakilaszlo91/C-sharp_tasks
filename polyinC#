@@ -1497,12 +1497,17 @@ public class Proudy : IRoute, IShape
     private StarMap _map;
     public bool _finished;
     private string _currentSymbol {  get; set; }
-    //private int _currentLayer;
 
     public Proudy(StarMap map)
     {
         _currentCoordinates = new Coordinates(0, 0, 0);
-        _possibleRoutes = new List<(int x, int y, int z)>() { (1, 0, 0), (0, 1, 0), (-1, 0, 0), (0, -1, 0), (1, 0, 1), (0, 1, 1), (-1, 0, 1), (0, -1, 1) };
+        _possibleRoutes = new List<(int x, int y, int z)>()
+        {
+            (0, 0, 1), (0, 0, -1),
+            (1, 0, 0), (0, 1, 0), (-1, 0, 0), (0, -1, 0), 
+            (1, 0, 1), (0, 1, 1), (-1, 0, 1), (0, -1, 1),
+            (1, 0, -1), (0, 1, -1), (-1, 0, -1), (0, -1, -1),
+        };
         _engineConsumption = 1;
         _jumpengineConsumption = 10;
         Name = "Proudy";
@@ -1510,7 +1515,6 @@ public class Proudy : IRoute, IShape
         _map = map;
         _finished = false;
         _currentSymbol = "P";
-        //_currentLayer = 0;
     }
 
     private void MoveShipWithBaseEngine()
@@ -1524,10 +1528,10 @@ public class Proudy : IRoute, IShape
         {
             int nextX = _currentCoordinates.X + _possibleRoutes[i].x;
             int nextY = _currentCoordinates.Y + _possibleRoutes[i].y;
-            int nextZ = _possibleRoutes[i].z;
+            int nextZ = _currentCoordinates.Z + _possibleRoutes[i].z;
 
             // checking for boundaries
-            if (nextX < 0 || nextY < 0 || nextX >= _map.Size || nextY >= _map.Size)
+            if (nextX < 0 || nextY < 0 || nextX >= _map.Size || nextY >= _map.Size || nextZ < 0 || nextZ >= _map.Depth)
             {
                 continue;
             }
@@ -1550,11 +1554,9 @@ public class Proudy : IRoute, IShape
 
         // getting the current symbol
         _currentSymbol = GetSymbol(_currentCoordinates.X, _currentCoordinates.Y, nextCoordinates.X, nextCoordinates.Y);
-        
 
         // setting the new coordinates
         _currentCoordinates = nextCoordinates;
-
 
     }
     public void MoveShip()
@@ -1573,10 +1575,10 @@ public class Proudy : IRoute, IShape
         {
             int nextX = _currentCoordinates.X + _possibleRoutes[i].x;
             int nextY = _currentCoordinates.Y + _possibleRoutes[i].y;
-            int nextZ = _possibleRoutes[i].z;
+            int nextZ = _currentCoordinates.Z + _possibleRoutes[i].z;
 
             // checking for boundaries
-            if (nextX < 0 || nextY < 0 || nextX >= _map.Size || nextY >= _map.Size)
+            if (nextX < 0 || nextY < 0 || nextX >= _map.Size || nextY >= _map.Size || nextZ < 0 || nextZ >= _map.Depth)
             {
                 continue;
             }
@@ -1617,7 +1619,6 @@ public class Proudy : IRoute, IShape
                     _currentCoordinates.Y = jumpY;
                     _currentCoordinates.Z = nextCoordinates.Z;
 
-
                     // exiting the function, so MoveShipWithBaseEngine not called
                     return;
                 }
@@ -1654,7 +1655,8 @@ public class Proudy : IRoute, IShape
 
     private string GetSymbol(int currX, int currY, int nextX, int nextY)
     {
-        string symbol = " P ";
+        // symbol remains P if only depth changing
+        string symbol = "P";
 
         if (currX != nextX)
         {
