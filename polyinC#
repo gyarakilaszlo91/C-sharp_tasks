@@ -606,7 +606,6 @@ Hard
 Task 5
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 using System;
-using System.Drawing;
 
 public struct Coordinates
 {
@@ -617,6 +616,11 @@ public struct Coordinates
         X = x; 
         Y = y;
     }
+}
+
+interface IRoute
+{
+    void MoveShip();
 }
 
 public class StarMap
@@ -707,7 +711,7 @@ public class StarMap
 
 }
 
-public class Proudy
+public class Proudy : IRoute
 {
     private Coordinates _currentCoordinates;
     public string Name { get; }
