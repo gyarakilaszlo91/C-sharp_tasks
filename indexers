@@ -164,5 +164,99 @@ Medium
 
 Task 3
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+using System;
+
+class Cadet
+{
+    public string Name { get; set; }
+    public int SumGrade { get; set; }
+
+    public Cadet(string name, int sumGrade)
+    {
+        Name = name;
+        SumGrade = sumGrade;
+    }
+}
+
+class GradeBook
+{
+    public List<Cadet> Cadets = new List<Cadet>();
+
+    public int this[string name]
+    {
+        get
+        {
+            return Cadets.FirstOrDefault(cadet => cadet.Name == name).SumGrade;
+        }
+        set
+        {
+            Cadets.FirstOrDefault(cadet => cadet.Name == name).SumGrade = value;
+        }
+    }
+
+    public void AddCadet(Cadet cadet)
+    {
+        if(Cadets.Count < 20) Cadets.Add(cadet);
+    }
+}
+
+
+class HandleGradeBook
+{
+    private Random random = new Random();
+    private GradeBook _gradebook;
+
+    public HandleGradeBook(GradeBook gradebook)
+    {
+        _gradebook = gradebook;
+        AddCadets();
+    }
+
+    private void AddCadets()
+    {
+        for(int i = 0; i < 30; i++)
+        {
+        _gradebook.AddCadet(new Cadet($"Cadet #{i}", random.Next(30, 101)));
+        }
+    }
+
+    public void DisplayCadets()
+    {
+        foreach(Cadet cadet in _gradebook.Cadets)
+        {
+            Console.WriteLine($"Name: {cadet.Name}, SumGrade {_gradebook[cadet.Name]}");
+        }
+    }
+
+    public void UpdateGrades()
+    {
+        Console.WriteLine("\nUpdating grades...\n");
+        foreach(Cadet cadet in _gradebook.Cadets)
+        {
+            _gradebook[cadet.Name] = random.Next(0, 101);
+        }
+    }
+
+}
+
+class Program
+{
+    static void Main()
+    {
+        GradeBook gradebook = new GradeBook();
+        HandleGradeBook GradeBook = new HandleGradeBook(gradebook);
+
+        GradeBook.DisplayCadets();
+        GradeBook.UpdateGrades();
+        GradeBook.DisplayCadets();
+
+
+        Console.ReadKey();
+    }
+}
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+Task 4
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////
