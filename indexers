@@ -461,5 +461,316 @@ class Program
 
 Task 5
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+using System;
+
+class Cadet
+{
+    public string Name { get; set; }
+    public int Points { get; set; }
+
+    public Cadet(string name, int points)
+    {
+        Name = name;
+        Points = points;
+    }
+}
+
+class Product
+{
+    public string Name { get; set; }
+    public int Price { get; set; }
+
+    public Product(string name, int price)
+    {
+        Name = name;
+        Price = price;
+    }
+}
+
+class Category
+{
+    public string Name { get; set; }
+    public Dictionary<string, Product> Products = new Dictionary<string, Product>();
+
+    public Category(string name) { Name = name; }
+
+    public Product this[string name]
+    {
+        get
+        {
+            Product searchedProduct;
+
+            Products.TryGetValue(name, out searchedProduct);
+            return searchedProduct;
+        }
+        set
+        {
+            Products[name] = value;
+        }
+    }
+
+    public void AddProduct(Product product)
+    {
+        Products.Add(product.Name, product);
+    }
+
+    public void DisplayProducts()
+    {
+        foreach(KeyValuePair<string, Product> product in Products)
+        {
+            Console.WriteLine($"Product: {product.Key}, Price: {product.Value.Price}");
+        }
+    }
+}
+
+class Store
+{
+    public Dictionary<string, Category> Items = new Dictionary<string, Category>();
+
+    public Category this[string name]
+    {
+        get
+        {
+            Category category1;
+            Items.TryGetValue(name, out category1);
+            return category1;
+
+        }
+        set
+        {
+            Items[name] = value;
+        }
+    }
+
+    public int this[string command, int dummy]
+    {
+        get
+        {
+            List<string> result = new List<string>();
+
+            if (command == "Show Products")
+            {
+                foreach(KeyValuePair<string, Category> category in Items)
+                {
+                    foreach( KeyValuePair<string, Product> product in category.Value.Products)
+                    {
+                        Console.WriteLine(product.Key);
+                    }
+                }
+            }
+            else if (command == "Show Categories")
+            {
+                foreach(KeyValuePair<string, Category> category in Items)
+                {
+                    Console.WriteLine(category.Key);
+                }
+            }
+            return 0;
+        }
+    }
+
+
+    public void AddCategory(Category category)
+    {
+        Items.Add(category.Name, category);
+    }
+
+    public void DisplayProducts()
+    {
+        Console.WriteLine("Welcome to the shop");
+        foreach(KeyValuePair<string, Category> products in Items)
+        {
+            Console.WriteLine($"Category: {products.Key}");
+            products.Value.DisplayProducts();
+        }
+    }
+}
+
+class Command
+{
+    public string Name { get; set; }
+    public string Description { get; set; }
+
+    public Command(string name, string description)
+    {
+        Name = name;
+        Description = description;
+    }
+}
+
+class SecretCommands
+{
+    public Dictionary<string, Command> Commands = new Dictionary<string, Command>();
+
+    public string this[string command]
+    {
+        get
+        {
+            Command commandOut;
+            Commands.TryGetValue(command, out commandOut);
+            return commandOut.Description;
+        }
+    }
+
+    public void AddCommand(Command command)
+    {
+        Commands.Add(command.Name, command);
+    }
+}
+
+
+
+
+class HandlePurchase
+{
+    private Category _sweets = new Category("Sweets");
+    private Category _snacks = new Category("Snacks");
+    private Category _drinks = new Category("Drinks");
+
+    private Store _store;
+    private Cadet _cadet;
+
+
+    public HandlePurchase(Cadet cadet, Store store)
+    {
+        _cadet = cadet;
+        _store = store;
+
+        CreateProducts();
+        PopulateStore();
+
+    }
+    public void CreateProducts()
+    {
+        _sweets.AddProduct(new Product("Candy", 10));
+        _sweets.AddProduct(new Product("Chocolate", 15));
+
+        _snacks.AddProduct(new Product("Chips", 5));
+        _snacks.AddProduct(new Product("Cookies", 8));
+
+        _drinks.AddProduct(new Product("Soda", 12));
+        _drinks.AddProduct(new Product("Juice", 7));
+    }
+
+    public void PopulateStore()
+    {
+        _store.AddCategory(_sweets);
+        _store.AddCategory(_drinks);
+        _store.AddCategory(_snacks);
+    }
+
+    public void BuyItems()
+    {
+        string category;
+        string item;
+
+        _store.DisplayProducts();
+        Console.WriteLine("\nPlease enter the category and the name of the desired product or Q to quit");
+
+        while (true)
+        {
+            Console.Write("Category: ");
+            category = Console.ReadLine().Trim();
+
+            if (category.ToLower() == "q") return;
+
+            if (_store.Items.ContainsKey(category)) break;
+            Console.WriteLine("Category not found please enter a correct category.");
+
+        }
+        while (true)
+        {
+            Console.Write("Product: ");
+            item = Console.ReadLine().Trim();
+
+            if (item == "Q" || item == "q") return;
+
+            if (_store[category].Products.ContainsKey(item)) break;
+            Console.WriteLine("Product not found please enter a correct product.");
+        }
+
+        if (_store[category][item].Price < _cadet.Points)
+        {
+            _cadet.Points -= _store[category][item].Price;
+            Console.WriteLine($"Purchase Completed, remaining points: {_cadet.Points}");
+        }
+        else Console.WriteLine("You don't have enough point to buy this product.");
+
+    }
+
+}
+class HandleSecretCommands
+{
+    SecretCommands _secretCommands;
+    Store _store;
+
+    public HandleSecretCommands( SecretCommands secretCommands, Store store)
+    {
+        _secretCommands = secretCommands;
+        _store = store;
+        AddPreDefCommands();
+    }
+
+    private void AddPreDefCommands()
+    {
+        _secretCommands.AddCommand(new Command("Show Categories", "Displays all available products in the store"));
+        _secretCommands.AddCommand(new Command("Show Products", "Displays all available product categories"));
+    }
+    private void DisplaySecretCommands()
+    {
+        Console.WriteLine("Available commands: ");
+        foreach(KeyValuePair<string, Command> command in _secretCommands.Commands)
+        {
+            Console.WriteLine($"{command.Key} - { command.Value.Description }");
+        }
+    }
+
+    public void Run()
+    {
+        string command;
+
+        DisplaySecretCommands();
+
+        
+        while (true)
+        {
+            Console.Write("Enter the command or Q/q to quit: ");
+            command = Console.ReadLine().Trim();
+
+            if (command.ToLower() == "q") return;
+
+            if (_secretCommands.Commands.ContainsKey(command)) break;
+            Console.WriteLine("Command not found please enter a correct command.");
+        }
+
+        int dummy = _store[command, 1];
+    }
+
+}
+
+class Program
+{
+    static void Main()
+    {
+        Cadet cadet = new Cadet("helper", 10);
+        Store store = new Store();
+        HandlePurchase purchase = new HandlePurchase(cadet, store);
+
+
+        SecretCommands secretCommands = new SecretCommands();
+        HandleSecretCommands commands = new HandleSecretCommands(secretCommands, store);
+
+        commands.Run();
+
+
+        Console.ReadKey();
+    }
+}
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+Hard
+
+Task 6
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////
