@@ -1,0 +1,65 @@
+Easy
+
+Task 1
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+using System;
+
+
+class Book
+{
+    public string Title { get; set; }
+    public string Author { get; set; }
+    public string CourseOfStudy { get; set; }
+
+    public Book(string title, string author, string courseOfStudy)
+    {
+        Title = title;
+        Author = author;
+        CourseOfStudy = courseOfStudy;
+    }
+}
+
+
+class Library
+{
+    public List<Book> books = new List<Book>();
+
+    public Book this[string author]
+    {
+        get
+        {
+            return books.FirstOrDefault(book => book.Author == author);
+        }
+        set
+        {
+            books.Add(value);
+        }
+    }
+}
+
+class Program
+{
+
+    static void Main()
+    {
+        Library library = new Library();
+
+        library["Anne Lamott"] = new Book("Bird by bird", "Anne Lamott", "Birds");
+        library["Umberto Eco"] = new Book("How to Write a Thesis", "Umberto Eco", "Thesis");
+        library["Wayne C. Booth"] = new Book("The Craft of Research", "Wayne C. Booth", "Research");
+
+
+        foreach (Book book in library.books)
+        {
+            Console.WriteLine(library[book.Author].Title);
+        }
+
+        Console.ReadKey();
+    }
+}
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+Task 2
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////
