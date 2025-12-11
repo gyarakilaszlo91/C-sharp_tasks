@@ -61,5 +61,108 @@ class Program
 
 Task 2
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+using System;
+
+
+class Book
+{
+    public string Title { get; set; }
+    public string Author { get; set; }
+    public string CourseOfStudy { get; set; }
+
+    public Book(string title, string author, string courseOfStudy)
+    {
+        Title = title;
+        Author = author;
+        CourseOfStudy = courseOfStudy;
+    }
+
+    public override string ToString()
+    {
+        return $"Title: {Title}, Author: {Author}, Course of study: {CourseOfStudy}";
+    }
+}
+
+
+class Library
+{
+    public List<Book> books = new List<Book>();
+
+    public Book this[string author]
+    {
+        get
+        {
+            return books.FirstOrDefault(book => book.Author == author);
+        }
+        set
+        {
+            books.Add(value);
+        }
+    }
+    public List<Book> this[string courseOfStudy, int dummy]
+    {
+        get
+        {
+            return books.Where(book => book.CourseOfStudy == courseOfStudy).ToList();
+        }
+    }
+}
+
+ class HandleLibrary
+{
+    private Library _library;
+
+    public HandleLibrary(Library library)
+    {
+        _library = library;
+        PopulateLibrary();
+    }
+
+    private void PopulateLibrary()
+    {
+        _library["1"] = new Book("The Art of War", " Sun Tzu", "Military Strategy");
+        _library["2"] = new Book("Introduction to C#", " John Doe", "Software Engineering");
+        _library["3"] = new Book("Data Structures and Algorithms", "Jane Smith", "Computer Science");
+        _library["4"] = new Book("Introduction to Psychology", "Dr. Amy Brown", "Psychology");
+        _library["5"] = new Book("Advanced Military Tactics", "General Lee", "Military Strategy");
+        _library["6"] = new Book("Mastering C#", "Robert Green", "Software Engineering");
+        _library["7"] = new Book("Database Management", "Alex Johnson", "Computer Science");
+        _library["8"] = new Book("Theories of Personality", "Dr. Rachel White", "Psychology");
+    }
+
+    public void SearchForStudy(string courseOfStudy)
+    {
+        Console.WriteLine($"Books for {courseOfStudy}");
+        foreach (Book book in _library[courseOfStudy, 1])
+        {
+            Console.WriteLine(book.ToString());
+        }
+    }
+
+}
+
+class Program
+{
+
+    static void Main()
+    {
+        Library library = new Library();
+
+        HandleLibrary Library = new HandleLibrary(library);
+
+        Library.SearchForStudy("Software Engineering");
+
+
+
+
+        Console.ReadKey();
+    }
+}
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+Medium
+
+Task 3
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////
