@@ -772,5 +772,196 @@ Hard
 
 Task 6
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+using System;
+
+class Cadet
+{
+    public string Name { get; set; }
+    public int Score { get; set; }
+
+    public Cadet(string name)
+    {
+        Name = name;
+        Score = 0;
+    }
+
+    public int this[string name]
+    {
+        get
+        {
+            return Score;
+        }
+        set
+        {
+            Score = value;
+        }
+    }
+}
+
+class TestQuestion
+{
+    public string Question { get; }
+    public List<string> Answers { get; }
+    public int CorrectAnswerId { get; }
+    public int Points {  get; }
+
+    public TestQuestion(string question, int correctanswerId, int awardedPoints, params string[] answers)
+    {
+        Question = question;
+        CorrectAnswerId = correctanswerId;
+        Points = awardedPoints;
+        Answers = new List<string>();
+
+        foreach (string answer in answers)
+        {
+            Answers.Add(answer);
+        }
+    }
+
+    public string this[int index]
+    {
+        get
+        {
+            if(index >= 0 && index < Answers.Count)
+            {
+                return Answers[index];
+            }
+            else
+            {
+                throw new IndexOutOfRangeException("Index not found");
+            }
+        }
+        set
+        {
+            Answers[index] = value;
+        }
+    }
+
+
+}
+
+
+class Test
+{
+    public List<TestQuestion> Questions = new List<TestQuestion>();
+    public int TotalScore { get; set; } = 0;
+
+    public TestQuestion this[int index]
+    {
+        get
+        {
+            if(index > 0 && index < Questions.Count)
+            {
+                return Questions[index];
+            }
+            else
+            {
+                throw new IndexOutOfRangeException("Index not found");
+            }
+        }
+        set
+        {
+            Questions[index] = value;
+        }
+    }
+
+}
+
+
+
+class HandleTest
+{
+    private Test _test;
+    private List<Cadet> _cadets;
+
+    public HandleTest()
+    {
+        _test = new Test();
+        _cadets = new List<Cadet>();
+        AddCadets();
+        CreateQuestions();
+    }
+
+    private void CreateQuestions()
+    {
+        _test.Questions.Add( new TestQuestion("What is the capital of France?", 2, 10, "Berlin", "Madrid", "Paris", "Rome"));
+        _test.Questions.Add( new TestQuestion("What is 2 + 2?", 1, 5, "3", "4", "5", "6"));
+        _test.Questions.Add( new TestQuestion("Who wrote '1984'?", 0, 15, "George Orwell", "Mark Twain", "J.K. Rowling", "F. Scott Fitzgerald"));
+        _test.Questions.Add(new TestQuestion("What is the chemical symbol for water?", 0, 10, "H2O", "O2", "CO2", "N2"));
+        _test.Questions.Add(new TestQuestion("Who painted the Mona Lisa?", 2, 10, "Vincent van Gogh", "Pablo Picasso", "Leonardo da Vinci", "Claude Monet"));
+    }
+
+    private void AddCadets()
+    {
+        _cadets.Add(new Cadet("John Doe"));
+    }
+
+    public void RunTest()
+    {
+        string name;
+        Console.Write("Please enter your name: ");
+        name = Console.ReadLine().Trim();
+
+        if (!_cadets.Any(cadet => cadet.Name == name))
+        {
+            Console.WriteLine("Name not found.");
+            return;
+        }
+
+        Console.Clear();
+        for (int i = 0; i < _test.Questions.Count; i++)
+        {
+            
+            Console.WriteLine(_test.Questions[i].Question);
+            for(int j = 0; j < _test.Questions[i].Answers.Count; j++)
+            {
+                Console.WriteLine($"{j+1}. {_test.Questions[i][j]}");
+            }
+
+            int indexOfAnswer;
+            Console.Write("Enter your answer number: ");
+            try
+            {
+                indexOfAnswer = Convert.ToInt32(Console.ReadLine().Trim());
+
+                if (indexOfAnswer - 1 == _test.Questions[i].CorrectAnswerId)
+                {
+                    Console.WriteLine($"Correct! You gained {_test.Questions[i].Points} points\n");
+                    _cadets.First(cadet => cadet.Name == name)[name] += 20;
+
+                }
+                else Console.WriteLine($"Incorrect answer, correct answer was: {_test.Questions[i].CorrectAnswerId+1}\n");
+
+            }
+            catch(Exception ex)
+            {
+                Console.WriteLine(ex.Message);
+            }
+        }
+
+        Console.Clear();
+        Console.WriteLine($"Test Finished! Your score is: {_cadets.First(cadet => cadet.Name == name)[name]} point.");
+
+    }
+
+}
+
+
+
+class Program
+{
+    static void Main()
+    {
+        HandleTest test = new HandleTest();
+
+        test.RunTest();
+
+        Console.ReadKey();
+    }
+}
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+Task 7
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////
