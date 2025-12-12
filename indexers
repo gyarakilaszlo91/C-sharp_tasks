@@ -924,14 +924,19 @@ class HandleTest
             {
                 indexOfAnswer = Convert.ToInt32(Console.ReadLine().Trim());
 
+//!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! UPDATED !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! UPDATED !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
                 if (indexOfAnswer - 1 == _test.Questions[i].CorrectAnswerId)
                 {
                     Console.WriteLine($"Correct! You gained {_test.Questions[i].Points} points\n");
-                    _cadets.First(cadet => cadet.Name == name)[name] += 20;
+                    _cadets.First(cadet => cadet.Name == name)[name] += _test.Questions[i].Points;
 
                 }
-                else Console.WriteLine($"Incorrect answer, correct answer was: {_test.Questions[i].CorrectAnswerId+1}\n");
-
+                else
+                {
+                    Console.WriteLine($"Incorrect answer, correct answer was: {_test.Questions[i].CorrectAnswerId + 1}\n");
+                    _cadets.First(cadet => cadet.Name == name)[name] -= _test.Questions[i].Points;
+                }
+//!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! UPDATED !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! UPDATED !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
             }
             catch(Exception ex)
             {
