@@ -1,0 +1,213 @@
+Easy
+
+Task 1
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+using System;
+using System.Security.Cryptography;
+
+class Card
+{
+    public string Name { get; set; }
+    public int Points { get; set; }
+    public Card(string name, int points)
+    {
+        Name = name;
+        Points = points;
+    }
+
+    public static int operator +(int total, Card card)
+    {
+        return total + card.Points;
+    }
+}
+
+class Deck
+{
+    private Random random = new Random();
+    public List<Card> cards;
+    public Deck()
+    {
+        cards = new List<Card>();
+        CreateDeck();
+    }
+
+
+    private void Shuffle()
+    {
+        int n = this.cards.Count;
+        while (n > 1)
+        {
+            n--;
+            int k = random.Next(n + 1);
+            Card value = cards[k];
+            cards[k] = cards[n];
+            cards[n] = value;
+        }
+    }
+    public void Draw(int amount, PlayerHand hand)
+    {
+        Shuffle();
+        for (int i = 0; i < amount; i++)
+        {
+            hand.cards.Add(cards[i]);
+        }
+
+    }
+
+    private void CreateDeck()
+    {
+        cards.Add(new Card("Cabin boy", 1));
+        cards.Add(new Card("Cabin boy", 1));
+
+        cards.Add(new Card("Mechanic", 2));
+        cards.Add(new Card("Mechanic", 2));
+        
+        cards.Add(new Card("Boarding Party Member", 3));
+        cards.Add(new Card("Boarding Party Member", 3));
+
+        cards.Add(new Card("Senior Mechanic", 4));
+        cards.Add(new Card("Senior Mechanic", 4));
+
+        cards.Add(new Card("Engineer", 7));
+        cards.Add(new Card("Engineer", 7));
+        cards.Add(new Card("Engineer", 7));
+
+        cards.Add(new Card("Sergeant Vasquez", 10));
+        cards.Add(new Card("Lieutenant of the Medical Service Lady De Bretagne", 13));
+        cards.Add(new Card("Senior Engineer Michelson", 15));
+        cards.Add(new Card("Navigator Presley", 18));
+        cards.Add(new Card("Captain Freeman", 25));
+
+
+    }
+}
+
+class PlayerHand
+{
+    public List<Card> cards {  get; set; } = new List<Card>();
+    public int sum = 0;
+    public void CalculatePoints()
+    {
+        foreach (Card card in cards)
+        {
+            sum += card;
+        }
+    }
+}
+
+
+
+class HandleGame
+{
+    private Deck _deck;
+    private PlayerHand _playerHand;
+
+    public HandleGame()
+    {
+        _deck = new Deck();
+        _playerHand = new PlayerHand();
+    }
+
+    public void Run()
+    {
+        while (true)
+        {
+            int cardsToDraw;
+            cardsToDraw = GetAmount();
+
+            _deck.Draw(cardsToDraw, _playerHand);
+
+            DisplayCards();
+
+            _playerHand.CalculatePoints();
+            Console.WriteLine($"Total points: {_playerHand.sum}");
+
+            if(CheckWinningStatus() == 0) return;
+            if(QuitGame() == 0) return;
+
+        }
+    }
+
+    private int GetAmount()
+    {
+        int amount = -1;
+        while (true)
+        {
+            Console.WriteLine("How many cards do you want to draw? (1-3)");
+            try
+            {
+                amount = Convert.ToInt32(Console.ReadLine().Trim());
+            }
+            catch(Exception ex)
+            {
+                Console.WriteLine(ex.Message);
+            }
+
+            if(amount > 0 || amount < 4)
+            {
+                break;
+            }
+        }
+        return amount;
+    }
+
+    private void DisplayCards()
+    {
+        Console.WriteLine("Current cards:");
+        foreach(Card card in _playerHand.cards)
+        {
+            Console.WriteLine($"{card.Name} - {card.Points} points");
+        }
+    }
+
+    private int CheckWinningStatus()
+    {
+        if(_playerHand.sum == 25)
+        {
+            Console.WriteLine("You win! You've reached 25 points!");
+            return 0;
+        }
+
+        foreach(Card card in _playerHand.cards)
+        {
+            if(card.Name == "Captain Freeman")
+            {
+                Console.WriteLine("You win! You've drawn the Captain card!");
+                return 0;
+            }
+        }
+
+        return -1;
+
+    }
+
+    private int QuitGame()
+    {
+        string exit = "";
+        Console.WriteLine("Press Enter to continue or type 'exit' to quit");
+
+        exit = Console.ReadLine();
+
+        if (exit == "exit") return 0;
+        else return 1;
+    }
+
+}
+
+
+class Program
+{
+    static void Main()
+    {
+        HandleGame game = new HandleGame();
+        game.Run();
+
+        Console.ReadKey();
+    }
+}
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+Task 2
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
