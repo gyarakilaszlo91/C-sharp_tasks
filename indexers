@@ -968,5 +968,449 @@ class Program
 
 Task 7
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+using System;
 
+class Cadet
+{
+    public string Name { get; set; }
+    public int Score { get; set; }
+
+    public Cadet(string name)
+    {
+        Name = name;
+        Score = 0;
+    }
+
+    public int this[string name]
+    {
+        get
+        {
+            return Score;
+        }
+        set
+        {
+            Score = value;
+        }
+    }
+}
+class TestQuestion
+{
+    public string Question { get; }
+    public List<string> Answers { get; }
+    public int CorrectAnswerId { get; }
+    public int Points {  get; }
+
+    public TestQuestion(string question, int correctanswerId, int awardedPoints, params string[] answers)
+    {
+        Question = question;
+        CorrectAnswerId = correctanswerId;
+        Points = awardedPoints;
+        Answers = new List<string>();
+
+        foreach (string answer in answers)
+        {
+            Answers.Add(answer);
+        }
+    }
+
+    public string this[int index]
+    {
+        get
+        {
+            if(index >= 0 && index < Answers.Count)
+            {
+                return Answers[index];
+            }
+            else
+            {
+                throw new IndexOutOfRangeException("Index not found");
+            }
+        }
+        set
+        {
+            Answers[index] = value;
+        }
+    }
+
+
+}
+class Test
+{
+    public List<TestQuestion> Questions = new List<TestQuestion>();
+    public int TotalScore { get; set; } = 0;
+
+    public TestQuestion this[int index]
+    {
+        get
+        {
+            if(index > 0 && index < Questions.Count)
+            {
+                return Questions[index];
+            }
+            else
+            {
+                throw new IndexOutOfRangeException("Index not found");
+            }
+        }
+        set
+        {
+            Questions[index] = value;
+        }
+    }
+
+}
+class HandleTest
+{
+    private Test _test;
+    private List<Cadet> _cadets;
+
+    public HandleTest()
+    {
+        _test = new Test();
+        _cadets = new List<Cadet>();
+        CreateQuestions();
+    }
+
+    private void CreateQuestions()
+    {
+        _test.Questions.Add( new TestQuestion("What is the capital of France?", 2, 10, "Berlin", "Madrid", "Paris", "Rome"));
+        _test.Questions.Add( new TestQuestion("What is 2 + 2?", 1, 5, "3", "4", "5", "6"));
+        _test.Questions.Add( new TestQuestion("Who wrote '1984'?", 0, 15, "George Orwell", "Mark Twain", "J.K. Rowling", "F. Scott Fitzgerald"));
+        _test.Questions.Add(new TestQuestion("What is the chemical symbol for water?", 0, 10, "H2O", "O2", "CO2", "N2"));
+        _test.Questions.Add(new TestQuestion("Who painted the Mona Lisa?", 2, 10, "Vincent van Gogh", "Pablo Picasso", "Leonardo da Vinci", "Claude Monet"));
+    }
+
+    public void AddCadets(Cadet cadet)
+    {
+        _cadets.Add(cadet);
+    }
+
+    public void RunTest()
+    {
+        string name;
+        Console.Write("Please enter your name: ");
+        name = Console.ReadLine().Trim();
+
+        if (!_cadets.Any(cadet => cadet.Name == name))
+        {
+            Console.WriteLine("Name not found.");
+            return;
+        }
+
+        Console.Clear();
+        for (int i = 0; i < _test.Questions.Count; i++)
+        {
+            
+            Console.WriteLine(_test.Questions[i].Question);
+            for(int j = 0; j < _test.Questions[i].Answers.Count; j++)
+            {
+                Console.WriteLine($"{j+1}. {_test.Questions[i][j]}");
+            }
+
+            int indexOfAnswer;
+            Console.Write("Enter your answer number: ");
+            try
+            {
+                indexOfAnswer = Convert.ToInt32(Console.ReadLine().Trim());
+
+                if (indexOfAnswer - 1 == _test.Questions[i].CorrectAnswerId)
+                {
+                    Console.WriteLine($"Correct! You gained {_test.Questions[i].Points} points\n");
+                    _cadets.First(cadet => cadet.Name == name)[name] += _test.Questions[i].Points;
+
+                }
+                else
+                {
+                    Console.WriteLine($"Incorrect answer, correct answer was: {_test.Questions[i].CorrectAnswerId + 1}\n");
+                    _cadets.First(cadet => cadet.Name == name)[name] -= _test.Questions[i].Points;
+                }
+
+            }
+            catch(Exception ex)
+            {
+                Console.WriteLine(ex.Message);
+            }
+        }
+
+        Console.Clear();
+        Console.WriteLine($"Test Finished! Your score is: {_cadets.First(cadet => cadet.Name == name)[name]} point.");
+
+    }
+
+}
+class TimeSlot
+{
+    public DateTime StartTime { get; set; }
+    public DateTime EndTime { get; set; }
+}
+class Schedule
+{
+    public Dictionary<string, TimeSlot> Week { get; set; }
+
+    public Schedule()
+    {
+        Week = new Dictionary<string, TimeSlot>();
+        FillUpDays();
+    }
+
+    public TimeSlot this[string day]
+    {
+        get
+        {
+            TimeSlot result;
+            Week.TryGetValue(day, out result);
+            return result;
+        }
+        set
+        {
+            Week[day] = value;
+        }
+    }
+
+    private void FillUpDays()
+    {
+        Week.Add("Monday", new TimeSlot());
+        Week.Add("Tuesday", new TimeSlot());
+        Week.Add("Wednesday", new TimeSlot());
+        Week.Add("Thursday", new TimeSlot());
+        Week.Add("Friday", new TimeSlot());
+        Week.Add("Saturday", new TimeSlot());
+        Week.Add("Sunday", new TimeSlot());
+    }
+
+
+}
+class Product
+{
+    public string Name { get; set; }
+    public int Price { get; set; }
+
+    public Product(string name, int price)
+    {
+        Name = name;
+        Price = price;
+    }
+}
+class Category
+{
+    public string Name { get; set; }
+    public Dictionary<string, Product> Products = new Dictionary<string, Product>();
+
+    public Category(string name) { Name = name; }
+
+    public Product this[string name]
+    {
+        get
+        {
+            Product searchedProduct;
+
+            Products.TryGetValue(name, out searchedProduct);
+            return searchedProduct;
+        }
+        set
+        {
+            Products[name] = value;
+        }
+    }
+
+    public void AddProduct(Product product)
+    {
+        Products.Add(product.Name, product);
+    }
+
+    public void DisplayProducts()
+    {
+        foreach (KeyValuePair<string, Product> product in Products)
+        {
+            Console.WriteLine($"Product: {product.Key}, Price: {product.Value.Price}");
+        }
+    }
+}
+class Store
+{
+    public Dictionary<string, Category> Items = new Dictionary<string, Category>();
+
+    public Category this[string name]
+    {
+        get
+        {
+            Category category1;
+            Items.TryGetValue(name, out category1);
+            return category1;
+
+        }
+        set
+        {
+            Items[name] = value;
+        }
+    }
+
+    public void AddCategory(Category category)
+    {
+        Items.Add(category.Name, category);
+    }
+
+    public void DisplayProducts()
+    {
+        Console.WriteLine("Welcome to the shop");
+        foreach (KeyValuePair<string, Category> products in Items)
+        {
+            Console.WriteLine($"Category: {products.Key}");
+            products.Value.DisplayProducts();
+        }
+    }
+}
+class HandlePurchase
+{
+    private Category _sweets = new Category("Sweets");
+    private Category _snacks = new Category("Snacks");
+    private Category _drinks = new Category("Drinks");
+
+    private Store _store;
+    private Cadet _cadet;
+
+
+    public HandlePurchase(Cadet cadet)
+    {
+        _cadet = cadet;
+        _store = new Store();
+
+        CreateProducts();
+        PopulateStore();
+
+    }
+    public void CreateProducts()
+    {
+        _sweets.AddProduct(new Product("Candy", 10));
+        _sweets.AddProduct(new Product("Chocolate", 15));
+
+        _snacks.AddProduct(new Product("Chips", 5));
+        _snacks.AddProduct(new Product("Cookies", 8));
+
+        _drinks.AddProduct(new Product("Soda", 12));
+        _drinks.AddProduct(new Product("Juice", 7));
+    }
+
+    public void PopulateStore()
+    {
+        _store.AddCategory(_sweets);
+        _store.AddCategory(_drinks);
+        _store.AddCategory(_snacks);
+    }
+
+    public void BuyItems()
+    {
+        string category;
+        string item;
+
+        _store.DisplayProducts();
+        Console.WriteLine("\nPlease enter the category and the name of the desired product or Q to quit");
+
+        while (true)
+        {
+            Console.Write("Category: ");
+            category = Console.ReadLine().Trim();
+
+            if (category.ToLower() == "q") return;
+
+            if (_store.Items.ContainsKey(category)) break;
+            Console.WriteLine("Category not found please enter a correct category.");
+
+        }
+        while (true)
+        {
+            Console.Write("Product: ");
+            item = Console.ReadLine().Trim();
+
+            if (item == "Q" || item == "q") return;
+
+            if (_store[category].Products.ContainsKey(item)) break;
+            Console.WriteLine("Product not found please enter a correct product.");
+        }
+
+        if (_store[category][item].Price < _cadet.Score)
+        {
+            _cadet.Score -= _store[category][item].Price;
+            Console.WriteLine($"Purchase Completed, remaining points: {_cadet.Score}");
+        }
+        else Console.WriteLine("You don't have enough point to buy this product.");
+
+    }
+
+}
+
+class HandleScheduledTest
+{
+    private Schedule _schedule;
+    private HandleTest _test;
+    private HandlePurchase _purchase;
+    private string[] _days = new string[] { "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday" };
+
+    public HandleScheduledTest(Cadet cadet)
+    {
+        _schedule = new Schedule();
+        _test = new HandleTest();
+        _purchase = new HandlePurchase(cadet);
+        _test.AddCadets(cadet);
+
+    }
+
+    public void ScheduleTest(string day, DateTime startTime, DateTime endTime)
+    {
+        _schedule[day].StartTime = startTime;
+        _schedule[day].EndTime = endTime;
+    }
+
+    public void SearchForTest()
+    {
+        Console.WriteLine("Currently scheduled tests:");
+        foreach (string day in _days)
+        {
+            if (_schedule[day].StartTime > DateTime.Now)
+            {
+                Console.WriteLine($"Test Start: {_schedule[day].StartTime}");
+                Console.WriteLine($"Test Ends: {_schedule[day].EndTime}");
+            }
+        }
+    }
+
+    public void SimulateTest()
+    {
+        foreach (string day in _days)
+        {
+            if (_schedule[day].StartTime >= DateTime.Now)
+            {
+                // Searching for upcoming tests, that starts in 10 minutes
+                if (_schedule[day].StartTime.Subtract(TimeSpan.FromMinutes(10)) <= DateTime.Now)
+                {
+                    Console.WriteLine($"Test Starts: {_schedule[day].StartTime}");
+                    Console.WriteLine($"Test Ends: {_schedule[day].EndTime}");
+                    _test.RunTest();
+                    
+                    Console.WriteLine("\nYou Finished the test, go buy a snack.");
+                    _purchase.BuyItems();
+                }
+            }
+        }
+    }
+
+}
+
+
+class Program
+{
+    static void Main()
+    {
+        Cadet cadet = new Cadet("John");
+        HandleScheduledTest scheduledTest = new HandleScheduledTest(cadet);
+
+        scheduledTest.ScheduleTest("Monday", DateTime.Now.Add(TimeSpan.FromMinutes(10)), DateTime.Now.Add(TimeSpan.FromMinutes(70)));
+
+        scheduledTest.SearchForTest();
+        
+        scheduledTest.SimulateTest();
+
+        Console.ReadKey();
+    }
+}
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////
